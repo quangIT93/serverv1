@@ -39,7 +39,7 @@ const readPostByIdController = async (
         // GET POST DATA
         let postData = await postServices.readPostById(postId);
 
-        console.log(postData);
+        // console.log(postData);
 
         if (postData === null) {
             return next(createError(500));
