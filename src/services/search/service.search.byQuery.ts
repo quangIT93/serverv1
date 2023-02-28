@@ -84,12 +84,12 @@ const searchByQueryService = async (
             "AND (title LIKE ? OR " +
             "company_name LIKE ? OR " +
             "description LIKE ? OR " +
-            "MATCH (title, company_name, description) AGAINST (? IN BOOLEAN MODE) OR " +
+            // "MATCH (title, company_name, description) AGAINST (? IN BOOLEAN MODE) OR " +
             "MATCH (title, company_name, description) AGAINST (? IN NATURAL LANGUAGE MODE) OR " +
             "MATCH (title, company_name, description) AGAINST (? WITH QUERY EXPANSION)) " +
             "GROUP BY posts.id " +
             "ORDER BY " +
-            "MATCH (title, company_name, description) AGAINST (? IN BOOLEAN MODE) DESC, " +
+            // "MATCH (title, company_name, description) AGAINST (? IN BOOLEAN MODE) DESC, " +
             "MATCH (title, company_name, description) AGAINST (? IN NATURAL LANGUAGE MODE) DESC, " +
             "MATCH (title, company_name, description) AGAINST (? WITH QUERY EXPANSION) DESC " +
             // }` +
