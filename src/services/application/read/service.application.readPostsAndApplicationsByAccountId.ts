@@ -33,7 +33,8 @@ const readPostsAndApplicationsBYAccountIdService = async (accountId: String, pag
         "posts.salary_min, " +
         "posts.salary_max, " +
         "posts.salary_type as salary_type_id," +
-        "posts.money_type " +
+        "posts.money_type, " +
+        "applications.updated_at " +
         "FROM applications " +
         "LEFT JOIN posts ON applications.post_id = posts.id " +
         "WHERE applications.account_id = ? " +
@@ -54,7 +55,8 @@ const readPostsAndApplicationsBYAccountIdService = async (accountId: String, pag
         "posts.salary_min, " +
         "posts.salary_max, " +
         "posts.salary_type as salary_type_id," +
-        "posts.money_type " +
+        "posts.money_type, " +
+        "COALESCE((SELECT MAX(updated_at) FROM applications WHERE post_id = posts.id), posts.created_at) as updated_at " +
         "FROM posts " +
         "LEFT JOIN applications ON applications.post_id = posts.id " +
         "WHERE posts.account_id = ? " +
@@ -66,7 +68,7 @@ const readPostsAndApplicationsBYAccountIdService = async (accountId: String, pag
         "LEFT JOIN provinces ON provinces.id = districts.province_id " +
         "LEFT JOIN (SELECT DISTINCT post_id, image FROM post_images GROUP BY post_id) " +
         "as post_images ON post_images.post_id = t.post_id " +
-        "ORDER BY created_at DESC " +
+        "ORDER BY updated_at DESC " +
         "LIMIT ? OFFSET ?";
         
         const params = [accountId, accountId, 10, page * 10];
