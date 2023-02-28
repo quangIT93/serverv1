@@ -50,7 +50,7 @@ const verifyEmailOtpController = async (
         // CHECK OTP EXPIRE
         // created_at + 60s > current time
         if (
-            +new Date(lastOtpByEmail.created_at).getTime() + 60000 <=
+            +new Date(lastOtpByEmail.created_at).getTime() + 60000 * 3 <=
             +new Date().getTime()
         ) {
             return next(createError(400, "Otp expired"));

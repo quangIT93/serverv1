@@ -8,7 +8,18 @@ const readProfileByIdService = async (profileId: string) => {
         //     "SELECT profiles.id, profiles.name, profiles.birthday, provinces.name as address, profiles.gender, profiles.introduction, profiles.phone, profiles.email, profiles.avatar " +
         //     "FROM profiles, provinces WHERE profiles.id = ? AND profiles.address = provinces.id";
         const query =
-            "SELECT profiles.id, profiles.name, profiles.birthday, provinces.id as province_id, provinces.name as address, profiles.gender, profiles.introduction, profiles.phone, profiles.email, profiles.avatar, profiles.facebook, profiles.linkedin " +
+            "SELECT profiles.id, " +
+            "profiles.name, " +
+            "profiles.birthday, " +
+            "provinces.id as province_id, " +
+            "provinces.name as address, " +
+            "profiles.gender, " +
+            "profiles.introduction, " +
+            "profiles.phone, " +
+            "profiles.email, " +
+            "profiles.avatar, " +
+            "profiles.facebook, " +
+            "profiles.linkedin " +
             "FROM profiles " +
             "LEFT JOIN provinces " +
             "ON provinces.id = profiles.address " +

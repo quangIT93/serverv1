@@ -67,7 +67,7 @@ const verifyPhoneNumberOtpController = async (
             lastOtpByPhoneNumber.created_at
         );
         if (
-            +new Date(lastOtpByPhoneNumber.created_at).getTime() + 60000 <=
+            +new Date(lastOtpByPhoneNumber.created_at).getTime() + 60000 * 3 <=
             +new Date().getTime()
         ) {
             return next(createError(400, "OTP is expired"));
