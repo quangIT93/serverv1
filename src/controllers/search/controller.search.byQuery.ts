@@ -207,7 +207,7 @@ const searchByQueryController = async (req: Request, res: Response, next: NextFu
         if (req.headers.authorization) {
             const headerAuthorization = req.headers.authorization;
             if (!headerAuthorization) {
-                logging.warning("Invalid header authorization");
+                logging.warning("search: Invalid header authorization");
                 return next(createError(401));
             }
             // GET ACCESS TOKEN

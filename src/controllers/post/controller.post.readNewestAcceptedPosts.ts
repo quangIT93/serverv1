@@ -189,7 +189,7 @@ const readNewestAcceptedPostsController = async (
         if (req.headers.authorization) {
             const headerAuthorization = req.headers.authorization;
             if (!headerAuthorization) {
-                logging.warning("Invalid header authorization");
+                logging.warning("readNewest: Invalid header authorization");
                 return next(createError(401));
             }
             // GET ACCESS TOKEN

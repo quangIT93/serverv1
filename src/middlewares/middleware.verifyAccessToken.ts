@@ -14,7 +14,7 @@ const verifyAccessToken = (req: Request, res: Response, next: NextFunction) => {
     const headerAuthorization = req.headers.authorization;
 
     if (!headerAuthorization) {
-        logging.warning("Invalid header authorization");
+        logging.warning("verify: Invalid header authorization");
         return next(createError(401));
     }
 

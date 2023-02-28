@@ -28,7 +28,7 @@ const configSocket = (server) => {
         const headerAuthorization = socket.request.headers.authorization;
 
         if (!headerAuthorization.trim()) {
-            logging.warning("Invalid header authorization");
+            logging.warning("socket: Invalid header authorization");
             return next(createError(401));
         }
 
