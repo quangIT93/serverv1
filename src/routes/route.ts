@@ -50,9 +50,9 @@ const route = (app: Application) => {
         description: 'HiJobs App API',
       },
       servers: [
-        // {
-        //     url: "https://aiworks.vn",
-        // },
+        {
+            url: "https://aiworks.vn",
+        },
         {
           url: 'http://localhost:5000',
         },
