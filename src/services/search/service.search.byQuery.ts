@@ -83,7 +83,7 @@ const searchByQueryService = async (
             `${endDate !== null ? "AND posts.end_date <= ? " : ""}` +
             "AND (title LIKE ? OR " +
             "company_name LIKE ? OR " +
-            "description LIKE ? " +
+            "description LIKE ?) " +
             // "MATCH (title, company_name, description) AGAINST (? IN BOOLEAN MODE) OR " +
             // "MATCH (title, company_name, description) AGAINST (? IN NATURAL LANGUAGE MODE) OR " +
             // "MATCH (title, company_name, description) AGAINST (? WITH QUERY EXPANSION)) " +
