@@ -5,6 +5,6 @@ import verifyAccessToken from "../../middlewares/middleware.verifyAccessToken";
 const router = express.Router();
 
 router.get("/today", verifyAccessToken, accountController.readTodayAccounts);
-router.get("/", accountController.readAccounts);
+router.get("/", verifyAccessToken, accountController.readAccounts);
 
 export default router;
