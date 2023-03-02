@@ -56,7 +56,7 @@ const createPostController = async (
             const salaryMax = +req.body.salaryMax;
             const salaryType = +req.body.salaryType;
             const description = req.body.description
-                ? req.body.description
+                ? req.body.description.toString().trim()
                 : null;
             const categoryIds = req.body.categoryIds
                 ? typeof req.body.categoryIds === "string"
@@ -201,9 +201,18 @@ const createPostController = async (
                 );
             }
 
-            if (!description.trim()) {
+            if (!description) {
                 logging.warning("Invalid description");
                 return next(createError(400, "Description is required"));
+            }
+            if (description.length > 1500) {
+                logging.warning("Invalid description");
+                return next(
+                    createError(
+                        400,
+                        "Description must be less than 1500 characters"
+                    )
+                );
             }
 
             if (!categoryIds) {

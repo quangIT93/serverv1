@@ -35,7 +35,7 @@ const updatePostInformationByAdminController = async (
         const salaryMin = +req.body.salaryMin;
         const salaryMax = +req.body.salaryMax;
         const salaryType = +req.body.salaryType;
-        const description = req.body.description ? req.body.description : null;
+        const description = req.body.description ? req.body.description.toString().trim() : null;
         const categoryIds = req.body.categoryIds ? req.body.categoryIds : null;
         const moneyType = req.body.moneyType ? +req.body.moneyType : null;
         const enabledImageIds = req.body.enabledImageIds
@@ -130,6 +130,23 @@ const updatePostInformationByAdminController = async (
                 createError(400, "Invalid money type, only 1 (VND) or 2 (USD)")
             );
         }
+
+        if (description.length > 1500) {
+            logging.warning("Description is too long");
+            return next(createError(400, "Mô tả quá dài (tối đa 1500 ký tự)"));
+        }
+        if (!categoryIds) {
+            logging.warning("Invalid categoryIds");
+            return next(createError(400, "CategoryIds is required"));
+        }
+
+        let isValidCategoryId = true;
+        categoryIds.forEach((categoryId) => {
+            if (!Number.isInteger(+categoryId)) {
+                isValidCategoryId = false;
+                return;
+            }
+        });
 
         // HANDLE UPDATE
         const isUpdateSuccess = await postServices.updateInformationByAdmin(
