@@ -11,7 +11,12 @@ const readAccountsController = async (
 ) => {
     try {
         logging.info("Read all accounts controller start ...");
-
+        // GET ROLE
+        const { role: roleFromToken } = req.user;
+        if (roleFromToken !== 1) {
+            logging.warning("Invalid role");
+            return next(createError(406));
+        }
         const role = +req.query.role;
         let accounts;
         if (role === 2) {
