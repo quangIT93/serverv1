@@ -95,11 +95,11 @@ const signInWithFacebook = async (
         // SIGN ACCESS TOKEN AND REFRESH TOKEN
         const accessTokenResponse = await signAccessTokenService({
             id: accountId,
-            role: account['role'] || 0,
+            role: 0,
         });
         const refreshTokenResponse = await signRefreshTokenService({
             id: accountId,
-            role: account['role'] || 0,
+            role: 0,
         });
 
         // SUCCESS

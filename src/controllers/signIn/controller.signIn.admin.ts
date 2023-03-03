@@ -39,10 +39,12 @@ const adminSignInController = async (
         }
 
         if (accountData.role !== 1 && accountData.role !== 2) {
+            logging.error("Not admin");
             return next(createError(401));
         }
 
         if (accountData.id !== password) {
+            logging.error("Wrong password");
             return next(createError(401));
         }
 

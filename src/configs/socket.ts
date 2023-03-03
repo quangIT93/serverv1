@@ -27,10 +27,12 @@ const configSocket = (server) => {
     // const token = socket.handshake.auth.token;
     const headerAuthorization = socket.request.headers.authorization;
 
+
     if (!headerAuthorization.trim()) {
       logging.warning('socket: Invalid header authorization');
       return next(createError(401));
     }
+
 
     // GET ACCESS TOKEN
     const accessToken = headerAuthorization.split('Bearer')[1]
