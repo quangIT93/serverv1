@@ -134,7 +134,7 @@ const configSocket = (server) => {
                             "Create chat failure"
                         );
                     } else {
-                        if (Array.isArray(files) && files.length > 0) {
+                        if (Array.isArray(files) && files.length > 0 && type === "image") {
                             logging.success("create chat success... 2");
                             // UPLOAD FILES TO AWS
                             if (imagesType === "base64") {
