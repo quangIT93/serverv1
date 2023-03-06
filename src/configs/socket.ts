@@ -166,6 +166,7 @@ const configSocket = (server) => {
                   try {
                     const reply = await redisClient.get(`socket-${receiverId}`);
                     if (reply) {
+                      console.log('---image: reply: ' + reply);
                       io.to(reply).emit('server-send-message-to-receiver', {
                         id: chatIdInserted,
                         sender_id: senderId,
@@ -216,7 +217,7 @@ const configSocket = (server) => {
                 const reply = await redisClient.get(`socket-${receiverId}`);
                 console.log("reply: " + reply);
                 if (reply) {
-                  
+
                   io.to(reply).emit('server-send-message-to-receiver', {
                     id: chatIdInserted,
                     sender_id: senderId,
