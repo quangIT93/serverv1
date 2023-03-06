@@ -126,6 +126,7 @@ const configSocket = (server) => {
             postId,
             createdAt
           );
+          logging.success('Create chat success');
           // let buf = Buffer.from(files[0], 'base64');
           if (!chatIdInserted) {
             // SEND ERROR MESSAGE TO CLIENT
@@ -213,7 +214,9 @@ const configSocket = (server) => {
               // GET SOCKET ID OF RECEIVER
               try {
                 const reply = await redisClient.get(`socket-${receiverId}`);
+                console.log("reply: " + reply);
                 if (reply) {
+                  
                   io.to(reply).emit('server-send-message-to-receiver', {
                     id: chatIdInserted,
                     sender_id: senderId,
