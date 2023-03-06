@@ -166,7 +166,9 @@ const configSocket = (server) => {
                   // EMIT TO RECEIVER
                   // GET SOCKET ID OF RECEIVER
                   try {
-                    const reply = await redisClient.get(`socket-${receiverId}`);
+                    logging.info('Get socket id of receiver');
+                    const reply = redisClient.get(`socket-${receiverId}`);
+                    console.log('reply: ' + reply);
                     if (reply) {
                       logging.info('Emit to receiver');
                       io.to(reply).emit('server-send-message-to-receiver', {
