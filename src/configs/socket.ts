@@ -133,7 +133,7 @@ const configSocket = (server) => {
             logging.info('create chat failure');
             socket.emit('server-send-error-message', 'Create chat failure');
           } else {
-            if (Array.isArray(files) && files.length > 0) {
+            if (files !== null && Array.isArray(files) && files.length > 0) {
               // UPLOAD FILES TO AWS
               if (imagesType === 'base64') {
                 files.forEach((file, index) => {
