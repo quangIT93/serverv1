@@ -124,15 +124,18 @@ const configSocket = (server) => {
                         postId,
                         createdAt
                     );
+                    logging.success("create chat success");
                     // let buf = Buffer.from(files[0], 'base64');
                     if (!chatIdInserted) {
                         // SEND ERROR MESSAGE TO CLIENT
+                        logging.error("create chat failure... 1");
                         socket.emit(
                             "server-send-error-message",
                             "Create chat failure"
                         );
                     } else {
                         if (Array.isArray(files) && files.length > 0) {
+                            logging.success("create chat success... 2");
                             // UPLOAD FILES TO AWS
                             if (imagesType === "base64") {
                                 files.forEach((file, index) => {
@@ -151,14 +154,17 @@ const configSocket = (server) => {
                                         chatIdInserted,
                                         urlsUploaded
                                     );
+                                logging.success("create chat success... 3");
                                 if (!isCreateChatImagesSuccess) {
                                     // SEND ERROR MESSAGE TO CLIENT
+                                    logging.error("create chat failure... 2");
                                     socket.emit(
                                         "server-send-error-message",
                                         "Create chat images failure"
                                     );
                                 } else {
                                     // EMIT TO SENDER
+                                    logging.success("create chat success... 4");
                                     socket.emit(
                                         "server-send-message-was-sent",
                                         {
@@ -175,6 +181,7 @@ const configSocket = (server) => {
                                         const reply = redisClient.get(
                                             `socket-${receiverId}`
                                         );
+                                        logging.success("create chat success... 5");
                                         if (reply) {
                                             io.to(reply).emit(
                                                 "server-send-message-to-receiver",
@@ -188,6 +195,7 @@ const configSocket = (server) => {
                                             );
                                         }
                                     } catch (error) {
+                                        logging.error("create chat failure... 3");
                                         socket.emit(
                                             "server-send-error-message",
                                             "Send message to receiver failure"
@@ -216,6 +224,7 @@ const configSocket = (server) => {
                             }
                         } else {
                             // EMIT TO SENDER
+                            logging.success("create chat success... 6");
                             socket.emit("server-send-message-was-sent", {
                                 id: chatIdInserted,
                                 message: message,
@@ -229,6 +238,7 @@ const configSocket = (server) => {
                                 const reply = redisClient.get(
                                     `socket-${receiverId}`
                                 );
+                                logging.success("create chat success... 7");
                                 if (reply) {
                                     io.to(reply).emit(
                                         "server-send-message-to-receiver",
@@ -242,6 +252,7 @@ const configSocket = (server) => {
                                     );
                                 }
                             } catch (error) {
+                                logging.error("create chat failure... 4");
                                 socket.emit(
                                     "server-send-error-message",
                                     "Send message to receiver failure"
@@ -270,6 +281,7 @@ const configSocket = (server) => {
                     }
                 } catch (error) {
                     // SEND ERROR MESSAGE TO CLIENT
+                    logging.error("create chat failure... 5");
                     socket.emit(
                         "server-send-error-message",
                         "Create chat failure"
