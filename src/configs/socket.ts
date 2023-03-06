@@ -171,7 +171,7 @@ const configSocket = (server) => {
                       io.to(reply).emit('server-send-message-to-receiver', {
                         id: chatIdInserted,
                         sender_id: senderId,
-                        images: urlsUploaded,
+                        images: [urlsUploaded],
                         type: 'image',
                         created_at: createdAt,
                       });
