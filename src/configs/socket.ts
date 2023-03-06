@@ -154,15 +154,10 @@ const configSocket = (server) => {
                   );
                 } else {
                   // EMIT TO SENDER
-                  console.log('urlsUploaded: ' + [urlsUploaded]);
+                  console.log('urlsUploaded: ' + [urlsUploaded].toString());
                   socket.emit('server-send-message-was-sent', {
                     id: chatIdInserted,
-                    images: [
-                      {
-                        "image": urlsUploaded,
-                        "id": chatIdInserted,
-                      }
-                    ],
+                    image: urlsUploaded.toString(),
                     created_at: createdAt,
                     type: 'image',
                   });
@@ -172,16 +167,10 @@ const configSocket = (server) => {
                   try {
                     const reply = await redisClient.get(`socket-${receiverId}`);
                     if (reply) {
-                      console.log('---image: reply: ' + reply);
                       io.to(reply).emit('server-send-message-to-receiver', {
                         id: chatIdInserted,
                         sender_id: senderId,
-                        images: [
-                          {
-                            "image": urlsUploaded,
-                            "id": chatIdInserted,
-                          }
-                        ],
+                        image: urlsUploaded.toString(),
                         type: 'image',
                         created_at: createdAt,
                       });
@@ -226,7 +215,6 @@ const configSocket = (server) => {
               // GET SOCKET ID OF RECEIVER
               try {
                 const reply = await redisClient.get(`socket-${receiverId}`);
-                console.log("reply: " + reply);
                 if (reply) {
 
                   io.to(reply).emit('server-send-message-to-receiver', {
