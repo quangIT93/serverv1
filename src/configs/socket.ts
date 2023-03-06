@@ -126,9 +126,11 @@ const configSocket = (server) => {
             postId,
             createdAt
           );
+          logging.info('create chat success');
           // let buf = Buffer.from(files[0], 'base64');
           if (!chatIdInserted) {
             // SEND ERROR MESSAGE TO CLIENT
+            logging.info('create chat failure');
             socket.emit('server-send-error-message', 'Create chat failure');
           } else {
             if (Array.isArray(files) && files.length > 0) {
