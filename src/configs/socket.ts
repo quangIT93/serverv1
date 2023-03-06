@@ -116,7 +116,7 @@ const configSocket = (server) => {
 
       // logging.info("type: " + type);
 
-      if (type === 'text' || type === 'image') {
+      if (type === 'text' || type === 'image' || type === 'addr') {
         try {
           const chatIdInserted = await chatServices.create(
             senderId,
@@ -153,6 +153,7 @@ const configSocket = (server) => {
                   );
                 } else {
                   // EMIT TO SENDER
+                  logging.info('Emit to sender');
                   socket.emit('server-send-message-was-sent', {
                     id: chatIdInserted,
                     images: urlsUploaded,
@@ -165,6 +166,7 @@ const configSocket = (server) => {
                   try {
                     const reply = await redisClient.get(`socket-${receiverId}`);
                     if (reply) {
+                      logging.info('Emit to receiver');
                       io.to(reply).emit('server-send-message-to-receiver', {
                         id: chatIdInserted,
                         sender_id: senderId,
@@ -174,6 +176,7 @@ const configSocket = (server) => {
                       });
                     }
                   } catch (error) {
+                    logging.error(error);
                     socket.emit(
                       'server-send-error-message',
                       'Send message to receiver failure'
@@ -202,6 +205,7 @@ const configSocket = (server) => {
               }
             } else {
               // EMIT TO SENDER
+              logging.info('Emit to sender');
               socket.emit('server-send-message-was-sent', {
                 id: chatIdInserted,
                 message: message,
@@ -214,6 +218,7 @@ const configSocket = (server) => {
               try {
                 const reply = await redisClient.get(`socket-${receiverId}`);
                 if (reply) {
+                  logging.info('Emit to receiver');
                   io.to(reply).emit('server-send-message-to-receiver', {
                     id: chatIdInserted,
                     sender_id: senderId,
@@ -223,6 +228,7 @@ const configSocket = (server) => {
                   });
                 }
               } catch (error) {
+                logging.error(error);
                 socket.emit(
                   'server-send-error-message',
                   'Send message to receiver failure'
@@ -251,6 +257,7 @@ const configSocket = (server) => {
           }
         } catch (error) {
           // SEND ERROR MESSAGE TO CLIENT
+          logging.error(error);
           socket.emit('server-send-error-message', 'Create chat failure');
         }
       }
