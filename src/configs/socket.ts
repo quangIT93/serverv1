@@ -154,9 +154,10 @@ const configSocket = (server) => {
                   );
                 } else {
                   // EMIT TO SENDER
+                  console.log('urlsUploaded: ' + [urlsUploaded]);
                   socket.emit('server-send-message-was-sent', {
                     id: chatIdInserted,
-                    images: urlsUploaded,
+                    images: [urlsUploaded],
                     created_at: createdAt,
                     type: 'image',
                   });
