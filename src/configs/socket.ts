@@ -116,7 +116,7 @@ const configSocket = (server) => {
 
       // logging.info("type: " + type);
 
-      if (type === 'text' || type === 'image' || type === 'addr') {
+      if (type === 'text' || type === 'image') {
         try {
           const chatIdInserted = await chatServices.create(
             senderId,
