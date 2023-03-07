@@ -11,22 +11,27 @@ const readNearbyAcceptedPostsController = async (
     req: Request,
     res: Response,
     next: NextFunction
-) => {
+    ) => {
     try {
         logging.info("Read nearby accepted posts controller start ...");
-
+        
         // CHECK AUTHORIZE
         if (!req.user) {
             return next(createError(401));
         }
-
+        
         // GET QUERY PARAMETERS
         const parentCategoryId = req.query.pcid;
         const childCategoryIds = req.query.ccid;
         const provinceIds = req.query.pvid;
         const limit = req.query.limit;
         const threshold = req.query.threshold;
-
+        console.log("provinceIds: ", provinceIds);
+        // PROVINCE IDS
+        if (!provinceIds) {
+            logging.warning("Invalid province id value");
+            return next(createError(400));
+        }
         // VALIDATION
         // PARENT CATEGORY ID
         if (
@@ -58,11 +63,6 @@ const readNearbyAcceptedPostsController = async (
             return next(createError(400));
         }
 
-        // PROVINCE IDS
-        if (!provinceIds) {
-            logging.warning("Invalid province id value");
-            return next(createError(400));
-        }
 
         // LIMIT
         if (limit === "" || (limit && (Number.isNaN(+limit) || +limit <= 0))) {
@@ -98,7 +98,7 @@ const readNearbyAcceptedPostsController = async (
                     Array.isArray(provinceIds)
                         ? provinceIds.map((item) => +item)
                         : [+provinceIds],
-                    Number.isInteger(+limit) ? +limit : null,
+                    Number.isInteger(+limit) ? +limit + 1 : null,
                     Number.isInteger(+threshold) ? +threshold : null
                 );
         } else if (parentCategoryId && provinceIds) {
@@ -113,7 +113,7 @@ const readNearbyAcceptedPostsController = async (
                     Array.isArray(provinceIds)
                         ? provinceIds.map((item) => item)
                         : [provinceIds],
-                    Number.isInteger(+limit) ? +limit : null,
+                    Number.isInteger(+limit) ? +limit + 1 : null,
                     Number.isInteger(+threshold) ? +threshold : null
                 );
         } else {
@@ -122,7 +122,7 @@ const readNearbyAcceptedPostsController = async (
                 Array.isArray(provinceIds)
                     ? provinceIds.map((item) => item)
                     : [provinceIds],
-                Number.isInteger(+limit) ? +limit : null,
+                Number.isInteger(+limit) ? +limit + 1 : null,
                 Number.isInteger(+threshold) ? +threshold : null
             );
         }
@@ -177,8 +177,8 @@ const readNearbyAcceptedPostsController = async (
             message: "Successfully",
         });
     } catch (error) {
-        logging.error(
-            "Read nearby accepted posts controller has error: ",
+            logging.error(
+                "Read nearby accepted posts controller has error: ",
             error
         );
         return next(createError(500));

@@ -1,16 +1,10 @@
 const initQueryReadPost = {
     q1: "SELECT " +
     "posts.id," +
-    // "posts.status," +
     "posts.account_id," +
     "posts.title," +
     "posts.company_name," +
-    // "posts.address," +
-    // "posts.latitude," +
-    // "posts.longitude," +
     "posts.ward_id," +
-    // "posts.is_date_period," +
-    // "posts.is_working_weekend," +
     "posts.start_date," +
     "posts.end_date," +
     "posts.start_time," +
@@ -19,8 +13,6 @@ const initQueryReadPost = {
     "posts.salary_max," +
     "posts.salary_type as salary_type_id," +
     "posts.money_type," +
-    // "posts.description," +
-    // "posts.phone_contact," +
     "posts.created_at," +
     "wards.full_name as ward," + 
     "wards.name as ward_name," +
@@ -88,7 +80,7 @@ const initQueryReadPost = {
     "LEFT JOIN post_images " +
     "ON post_images.post_id = posts.id " +
     "LEFT JOIN salary_types " +
-    "ON salary_types.id = posts.salary_type "
+    "ON salary_types.id = posts.salary_type ",
 }
 
 export default initQueryReadPost;

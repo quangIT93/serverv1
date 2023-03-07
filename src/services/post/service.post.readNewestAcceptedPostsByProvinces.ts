@@ -19,11 +19,14 @@ const readNewestAcceptedPostsByProvinces = async (
             provinceIds.map((provinceId) => "?").join(", ") +
             ") " +
             (threshold && threshold > 0 ? "AND posts.id < ? " : "") +
-            "GROUP BY posts.id ORDER BY posts.id DESC " +
+            "GROUP BY posts.id " +
+            "ORDER BY " +
+            `${provinceIds.length > 1 ? "FIELD(provinces.id, " + 
+            provinceIds.map((provinceId) => "?").join(", ") + ") " : ""}` +
             (limit && limit > 0 ? "LIMIT ?" : "");
         
-
-        let params = [1, ...provinceIds];
+        console.log(query);
+        let params = [1, ...provinceIds, ...provinceIds];
 
         if (threshold && threshold > 0) {
             params = [...params, threshold];

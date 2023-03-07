@@ -25,7 +25,9 @@ const readNewestAcceptedPostsByParentCategoryAndProvinces = async (
             `${provinceIds.length > 0 ? `AND provinces.id IN (${provinceIds.map((_) => `?`).join(", ")})` : ""}` +
             `${threshold && threshold > 0 ? "AND posts.id < ? " : " "}` +
             "GROUP BY posts.id " +  
-            "ORDER BY posts.id DESC " +
+            "ORDER BY " +
+            `${provinceIds.length > 1 ? "FIELD(provinces.id, " + 
+            provinceIds.map((_) => "?").join(", ") + ") " : ""}` +
             `${limit && limit > 0 ? "LIMIT ?" : ""}`;
 
         let params: any[] = [1, parentCategoryId];
@@ -35,6 +37,7 @@ const readNewestAcceptedPostsByParentCategoryAndProvinces = async (
         }
 
         params = threshold && threshold > 0 ? [...params, threshold] : [...params];
+        params = [...params, ...provinceIds];
         params = limit && limit > 0 ? [...params, limit] : [...params];
 
 
