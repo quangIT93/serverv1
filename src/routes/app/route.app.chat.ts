@@ -7,5 +7,6 @@ const router = express.Router();
 router.get("/users", verifyAccessToken, chatController.getUsersChated);
 router.get("/messages", verifyAccessToken, chatController.getPostChats);
 router.put("/status", verifyAccessToken, chatController.updateStatus);
+router.get("/unread", verifyAccessToken, chatController.getUnreadChats);
 
 export default router;

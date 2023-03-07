@@ -32,10 +32,7 @@ const readAllNotificationsByAccountIdController = async (req: Request, res: Resp
                 notification.type_text = "applicator"
                 if (+notification.application_status === 2) {
                     notification.title = "Đơn ứng tuyển đã được duyệt!";
-                    notification.content = `Đơn ứng tuyển của bạn vào ${notification.company_name} cho công việc ${notification.post_title} đã được duyệt.`;
-                // } else if (+notification.application_status === 3) {
-                //     notification.title = "Đơn ứng tuyển đã bị từ chối";
-                //     notification.content = `Đơn ứng tuyển của bạn vào ${notification.company_name} cho công việc ${notification.post_title} đã bị từ chối.`;
+                    notification.content = `Đơn ứng tuyển vị trí ${notification.post_title} cho ${notification.company_name} của bạn đã được nhà tuyển dụng duyệt.`;
                 } else if (+notification.application_status === 4) {
                     notification.title = "Chúc mừng";
                     notification.content = `Chúc mừng bạn đã được chọn cho công việc ${notification.post_title} tại ${notification.company_name}.`;
