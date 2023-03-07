@@ -41,7 +41,7 @@ const getPostChatsController = async (
                     const image = await chatImageServices.readChatImages(
                         chat.id
                     );
-                    chat.image = image.toString();
+                    chat.image = image && image[0] ? image[0].image : null ;
                 } else {
                     chat.image = null;
                 }
