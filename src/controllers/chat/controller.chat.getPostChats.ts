@@ -38,12 +38,12 @@ const getPostChatsController = async (
                 chat.created_at = +chat.created_at;
                 chat.is_sender = chat.sender_id === id;
                 if (chat.type === "image") {
-                    const images = await chatImageServices.readChatImages(
+                    const image = await chatImageServices.readChatImages(
                         chat.id
                     );
-                    chat.images = images;
+                    chat.image = image.toString();
                 } else {
-                    chat.images = null;
+                    chat.image = null;
                 }
             })
         );
