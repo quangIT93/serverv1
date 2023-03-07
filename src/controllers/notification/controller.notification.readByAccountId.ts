@@ -31,11 +31,11 @@ const readAllNotificationsByAccountIdController = async (req: Request, res: Resp
             if (notification.type === "0") {
                 notification.type_text = "applicator"
                 if (+notification.application_status === 2) {
-                    notification.title = "Đơn ứng tuyển đã được duyệt";
+                    notification.title = "Đơn ứng tuyển đã được duyệt!";
                     notification.content = `Đơn ứng tuyển của bạn vào ${notification.company_name} cho công việc ${notification.post_title} đã được duyệt.`;
-                } else if (+notification.application_status === 3) {
-                    notification.title = "Đơn ứng tuyển đã bị từ chối";
-                    notification.content = `Đơn ứng tuyển của bạn vào vào ${notification.company_name} cho công việc ${notification.post_title} đã bị từ chối.`;
+                // } else if (+notification.application_status === 3) {
+                //     notification.title = "Đơn ứng tuyển đã bị từ chối";
+                //     notification.content = `Đơn ứng tuyển của bạn vào ${notification.company_name} cho công việc ${notification.post_title} đã bị từ chối.`;
                 } else if (+notification.application_status === 4) {
                     notification.title = "Chúc mừng";
                     notification.content = `Chúc mừng bạn đã được chọn cho công việc ${notification.post_title} tại ${notification.company_name}.`;
@@ -44,8 +44,8 @@ const readAllNotificationsByAccountIdController = async (req: Request, res: Resp
                 // if (notification.application_status === ) {
                 // }
                 notification.type_text = "recruiter"
-                notification.title = "Đơn ứng tuyển mới";
-                notification.content = `${notification.name} đã ứng tuyển vào công việc ${notification.post_title}.`;
+                notification.title = "Ứng viên mới đã nộp hồ sơ";
+                notification.content = `Ứng viên ${notification.name} đã ứng tuyển vào công việc ${notification.post_title}.`;
             }   
             notification.created_at = new Date(notification.created_at).getTime();
             notification.is_read_value = notification.is_read === "1" ? true : false;

@@ -51,12 +51,14 @@ const updateApplicationController = async (req: Request, res: Response, next: Ne
         }
 
         //CREATE NOTIFICATION FOR APPLICANT
-        notificationService.createNotificationService(
-            postInformation.account_id,
-            +applicationId,
-            +status,
-            0
-        )
+        if (status !== 3) {
+            await notificationService.createNotificationService(
+                postInformation.account_id,
+                +applicationId,
+                +status,
+                0
+            )
+        }
 
         // RETURN DATA
         return res.status(200).json({
