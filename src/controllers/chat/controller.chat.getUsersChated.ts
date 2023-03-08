@@ -3,6 +3,7 @@ import createError from "http-errors";
 import logging from "../../utils/logging";
 import * as chatServices from "../../services/chat/_service.chat";
 import redisClient from "../../configs/redis";
+import MoneyType from "../../enum/money_type.enum";
 
 const getUsersChattedController = async (
     req: Request,
@@ -25,7 +26,7 @@ const getUsersChattedController = async (
 
         // Modify
         await Promise.all(
-            usersChatted.map(async (userChatted, index) => {
+            usersChatted.map(async (userChatted, _) => {
                 if (userChatted.sender_id === id) {
                     userChatted.user_id = userChatted.receiver_id;
                     userChatted.is_sender = true;
@@ -42,7 +43,10 @@ const getUsersChattedController = async (
                 const reply = await redisClient.get(
                     `socket-${userChatted.user_id}`
                 );
-                console.log(reply);
+                if (userChatted.money_type !== undefined) {
+                    userChatted.money_type = +userChatted.money_type;
+                    userChatted.money_type_text = MoneyType[userChatted.money_type];
+                }
                 userChatted.is_online = reply ? true : false;
             })
         );
