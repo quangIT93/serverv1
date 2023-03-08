@@ -37,7 +37,7 @@ const readNewestAcceptedPostsByParentCategoryAndProvinces = async (
         }
 
         params = threshold && threshold > 0 ? [...params, threshold] : [...params];
-        params = [...params, ...provinceIds];
+        params = [...params, ...(provinceIds.length > 1 ? provinceIds : [])];
         params = limit && limit > 0 ? [...params, limit] : [...params];
 
 

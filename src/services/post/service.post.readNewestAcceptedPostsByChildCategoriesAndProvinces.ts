@@ -24,9 +24,8 @@ const readNewestAcceptedPostsByChildCategoriesAndProvinces = async (
             `${threshold ? "AND posts.id < ? " : ""} ` +
             "UNION " +
             "GROUP BY posts.id " +
-            "ORDER BY " +
-            `${provinceIds.length > 1 ? "FIELD(provinces.id, " + 
-            provinceIds.map((provinceId) => "?").join(", ") + ") " : ""}` +
+            `${provinceIds.length > 1 ? "ORDER BY FIELD(provinces.id, " + 
+            provinceIds.map((_) => "?").join(", ") + ") " : ""}` +
             `${limit ? "LIMIT ?" : ""}`;
 
         // console.log(query);
@@ -36,7 +35,7 @@ const readNewestAcceptedPostsByChildCategoriesAndProvinces = async (
             ...chilCategoryIds,
             ...provinceIds,
             ...(threshold ? [threshold] : []),
-            ...provinceIds,
+            ...(provinceIds.length > 1 ? provinceIds : []),
             ...(limit ? [limit] : []),
         ];
 

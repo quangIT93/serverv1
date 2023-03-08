@@ -1,13 +1,17 @@
 import * as admin from "firebase-admin";
 
 const pushNotification = async (
-    account_id: string,
+    accountId: string,
     title: string,
     body: string,
     imageUrl: string
 ) => {
 
     const token = [];
+
+    // Get all tokens of account_id from the database
+
+    
 
     await admin.messaging().sendMulticast({
         tokens: token,

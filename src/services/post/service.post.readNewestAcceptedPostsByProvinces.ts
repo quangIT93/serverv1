@@ -16,20 +16,22 @@ const readNewestAcceptedPostsByProvinces = async (
             initQueryReadPost.q1 +
             "WHERE posts.status = ? " +
             "AND provinces.id IN (" + 
-            provinceIds.map((provinceId) => "?").join(", ") +
+            provinceIds.map((_) => "?").join(", ") +
             ") " +
             (threshold && threshold > 0 ? "AND posts.id < ? " : "") +
             "GROUP BY posts.id " +
-            "ORDER BY " +
-            `${provinceIds.length > 1 ? "FIELD(provinces.id, " + 
-            provinceIds.map((provinceId) => "?").join(", ") + ") " : ""}` +
+            `${provinceIds.length > 1 ? "ORDER BY FIELD(provinces.id, " + 
+            provinceIds.map((_) => "?").join(", ") + ") " : ""}` +
             (limit && limit > 0 ? "LIMIT ?" : "");
         
-        console.log(query);
-        let params = [1, ...provinceIds, ...provinceIds];
+        let params = [1, ...provinceIds];
 
         if (threshold && threshold > 0) {
             params = [...params, threshold];
+        }
+
+        if (provinceIds.length) {
+            params = [...params, ...provinceIds];
         }
 
         if (limit && limit > 0) {

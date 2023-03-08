@@ -6,7 +6,6 @@ const getUnreadChatsService = async (
 ) => {
     try {
         logging.info("Get unread chats service start ...");
-        console.log(account_id);
         const query =
             "SELECT COUNT(*) as quantity FROM chats WHERE receiver_id = ? AND status = 0";
         const params = [account_id];

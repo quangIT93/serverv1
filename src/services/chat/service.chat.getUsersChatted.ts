@@ -6,27 +6,6 @@ const getUsersChatted = async (id: string) => {
         logging.info("Get users chated service start ...");
 
         const query =
-            // Right???
-            // "SELECT t.*, posts.title AS post_title, profiles.name, profiles.avatar, profiles.phone " +
-            // "FROM " +
-            // "( " +
-            // "select chats.* from chats " +
-            // "join " +
-            // "( " +
-            // "select user, max(id) m from " +
-            // "( " +
-            // "(select id, receiver_id USER, created_at from chats where sender_id='596ed003-a4f8-4002-8abd-412851703e2e') " +
-            // "union " +
-            // "(select id, sender_id USER, created_at from chats where receiver_id='596ed003-a4f8-4002-8abd-412851703e2e') " +
-            // ") t1 group by user " +
-            // ") t2 " +
-            // "on ((sender_id='596ed003-a4f8-4002-8abd-412851703e2e' and receiver_id=user) or " +
-            // "(sender_id=user AND receiver_id='596ed003-a4f8-4002-8abd-412851703e2e')) and (id = m) " +
-            // "order by created_at DESC " +
-            // ") t, profiles, posts " +
-            // "WHERE posts.id = t.post_id AND profiles.id = IF(t.sender_id = '596ed003-a4f8-4002-8abd-412851703e2e', t.receiver_id, t.sender_id) " +
-            // "GROUP BY t.id ";
-
             "SELECT t.*, posts.title AS post_title, profiles.name, profiles.avatar, profiles.phone " +
             "FROM (select chats.* from chats " +
             "join " +
