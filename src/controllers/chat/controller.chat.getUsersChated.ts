@@ -50,8 +50,10 @@ const getUsersChattedController = async (
                 }
                 if (userChatted.application_status !== null) {
                     userChatted.application_status_text = ApplicationStatus[userChatted.application_status];
+                    userChatted.applied = true;
                 } else {
                     userChatted.application_status_text = null;
+                    userChatted.applied = false;
                 }
                 userChatted.is_online = reply ? true : false;
             })
