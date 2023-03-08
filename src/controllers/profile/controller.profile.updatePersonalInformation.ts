@@ -55,7 +55,7 @@ const updatePersonalInformationController = async (
             introduction ? introduction.toString().trim() : null
         );
         if (!isUpdateSuccess) {
-            return next(createError(500));
+            return next(createError(500, "Update personal information failed"));
         }
 
         // SUCCESS

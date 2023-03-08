@@ -4,6 +4,7 @@ import logging from "../../utils/logging";
 import * as chatServices from "../../services/chat/_service.chat";
 import redisClient from "../../configs/redis";
 import MoneyType from "../../enum/money_type.enum";
+import ApplicationStatus from "../../enum/application.enum";
 
 const getUsersChattedController = async (
     req: Request,
@@ -46,6 +47,11 @@ const getUsersChattedController = async (
                 if (userChatted.money_type !== undefined) {
                     userChatted.money_type = +userChatted.money_type;
                     userChatted.money_type_text = MoneyType[userChatted.money_type];
+                }
+                if (userChatted.application_status !== null) {
+                    userChatted.application_status_text = ApplicationStatus[userChatted.application_status];
+                } else {
+                    userChatted.application_status_text = null;
                 }
                 userChatted.is_online = reply ? true : false;
             })

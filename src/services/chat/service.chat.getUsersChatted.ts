@@ -34,13 +34,13 @@ const getUsersChatted = async (id: string) => {
             "profiles.avatar, " +
             "profiles.phone, " +
             "posts.company_name, " +
-            // "posts.id AS post_id, " +
             "posts.salary_min, " +
             "posts.salary_max, " +
             "posts.salary_type as salary_type_id, " +
             "posts.money_type, " +
             "salary_types.value as salary_type, " +
-            "post_images.image AS image " +
+            "post_images.image AS image, " +
+            "applications.status AS application_status " +
             "FROM (select chats.* from chats " +
             "join " +
             "(select user, max(id) m from " +
@@ -52,10 +52,10 @@ const getUsersChatted = async (id: string) => {
             "order by created_at DESC) AS t, profiles, posts " +
             "LEFT JOIN salary_types ON posts.salary_type = salary_types.id " +
             "LEFT JOIN post_images ON posts.id = post_images.post_id " +
+            "LEFT JOIN applications ON posts.id = applications.post_id AND applications.account_id = ? " +
             "WHERE posts.id = t.post_id AND profiles.id = IF(t.sender_id = ?, t.receiver_id, t.sender_id) " +
             "GROUP BY t.id";
-            console.log(query);
-        const params = [id, id, id, id, id];
+        const params = [id, id, id, id, id, id];
         const res = await executeQuery(query, params);
         return res ? res : null;
     } catch (error) {
