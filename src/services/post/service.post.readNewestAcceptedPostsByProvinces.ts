@@ -30,7 +30,7 @@ const readNewestAcceptedPostsByProvinces = async (
             params = [...params, threshold];
         }
 
-        if (provinceIds.length) {
+        if (provinceIds.length > 1) {
             params = [...params, ...provinceIds];
         }
 

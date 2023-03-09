@@ -205,12 +205,12 @@ const createPostController = async (
                 logging.warning("Invalid description");
                 return next(createError(400, "Description is required"));
             }
-            if (description.length > 1500) {
+            if (description.length > 4000) {
                 logging.warning("Invalid description");
                 return next(
                     createError(
                         400,
-                        "Description must be less than 1500 characters"
+                        "Description must be less than 4000 characters"
                     )
                 );
             }
