@@ -82,8 +82,8 @@ const searchByQueryService = async (
             `${startDate !== null ? "AND posts.start_date >= ? " : ""}` +
             `${endDate !== null ? "AND posts.end_date <= ? " : ""}` +
             "AND (title LIKE ? OR " +
-            "company_name LIKE ? OR " +
-            "description LIKE ? ) " +
+            "company_name LIKE ?) " +
+            // "description LIKE ? ) " +
             // "MATCH (title, company_name, description) AGAINST (? IN BOOLEAN MODE) AND " +
             // "MATCH (title, company_name, description) AGAINST (? IN NATURAL LANGUAGE MODE) AND " +
             // "MATCH (title, company_name, description) AGAINST (? WITH QUERY EXPANSION) " +
@@ -93,6 +93,7 @@ const searchByQueryService = async (
             // "MATCH (title, company_name, description) AGAINST (? IN NATURAL LANGUAGE MODE) DESC, " +
             // "MATCH (title, company_name, description) AGAINST (? WITH QUERY EXPANSION) DESC "
             // }` +
+            "ORDER BY posts.created_at DESC " +
             "LIMIT 20 " +
             `OFFSET ${page ? (page - 1) * 20 : 0}`;
         const params = []

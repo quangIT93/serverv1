@@ -32,7 +32,7 @@ const adminSignInController = async (
             email
         );
 
-        console.log(accountData);
+        // console.log(accountData);
 
         if (!accountData) {
             return next(createError(404));

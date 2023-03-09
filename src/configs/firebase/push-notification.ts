@@ -10,7 +10,6 @@ const pushNotification = async (
     const token = [];
 
     // Get all tokens of account_id from the database
-
     
 
     await admin.messaging().sendMulticast({
