@@ -3,6 +3,7 @@ import { executeQuery } from "../../configs/database";
 import initQueryReadPost from "./_service.post.initQuery";
 
 const readNewestAcceptedPostsByParentCategoryAndProvinces = async (
+    accountId: string,
     parentCategoryId: number,
     provinceIds: string[],
     limit: number | null,
@@ -24,19 +25,20 @@ const readNewestAcceptedPostsByParentCategoryAndProvinces = async (
             "WHERE posts.status = ? AND parent_categories.id = ? " +
             `${provinceIds.length > 0 ? `AND provinces.id IN (${provinceIds.map((_) => `?`).join(", ")})` : ""}` +
             `${threshold && threshold > 0 ? "AND posts.id < ? " : " "}` +
+            "AND districts.id NOT IN (SELECT location_id FROM profiles_locations WHERE account_id = ?) " +
             "GROUP BY posts.id " +  
             "ORDER BY " +
             `${provinceIds.length > 1 ? "FIELD(provinces.id, " + 
             provinceIds.map((_) => "?").join(", ") + ") " : ""}` +
             `${limit && limit > 0 ? "LIMIT ?" : ""}`;
 
-        let params: any[] = [1, parentCategoryId];
+        let params: any [] = [1, parentCategoryId];
         
         if (provinceIds.length > 0) {
             params = [...params, ...provinceIds];
         }
-
         params = threshold && threshold > 0 ? [...params, threshold] : [...params];
+        params = [...params, accountId];
         params = [...params, ...(provinceIds.length > 1 ? provinceIds : [])];
         params = limit && limit > 0 ? [...params, limit] : [...params];
 
