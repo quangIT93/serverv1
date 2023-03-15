@@ -32,8 +32,7 @@ const readNewestAcceptedPostsByParentCategoryAndProvinces = async (
             provinceIds.map((_) => "?").join(", ") + ") " : ""}` +
             `${limit && limit > 0 ? "LIMIT ?" : ""}`;
 
-        let params: any[] = [1, parentCategoryId];
-        params = [...params, accountId];
+        let params: any[] = [1, parentCategoryId, accountId];
         
         if (provinceIds.length > 0) {
             params = [...params, ...provinceIds];
@@ -55,5 +54,3 @@ const readNewestAcceptedPostsByParentCategoryAndProvinces = async (
 };
 
 export default readNewestAcceptedPostsByParentCategoryAndProvinces;
-// Error: (conn=746, no: 1064, SQLState: 42000) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '[object Object]LEFT JOIN posts_categories ON posts_categories.post_id = posts...' at line 1
-// sql: [object Object]LEFT JOIN posts_categories ON posts_categories.post_id = posts.id LEFT JOIN child_categories ON child_categories.id = posts_categories.category_id LEFT JOIN parent_categories ON parent_categories.id = child_categories.parent_category_id WHER... 
