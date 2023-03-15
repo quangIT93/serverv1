@@ -20,11 +20,11 @@ const signInWithFacebook = async (
 ) => {
     try {
         // Get id token and user data from client request
-        const accessToken: String = req.body.accessToken
-            ? req.body.accessToken.toString().trim()
+        const fbAccessToken: String = req.body.fbAccessToken
+            ? req.body.fbAccessToken.toString().trim()
             : "";
         // Check id token and user data are valid?
-        if (!accessToken) {
+        if (!fbAccessToken) {
             return res.status(200).json({
                 code: 404,
                 success: false,
@@ -34,7 +34,7 @@ const signInWithFacebook = async (
 
         // Verify facebook account
         const verifyFacebookAccount = await axios.get(
-            `https://graph.facebook.com/me?access_token=${accessToken}`
+            `https://graph.facebook.com/me?access_token=${fbAccessToken}`
         ).then((response) => {
             return response;
         }).catch((error) => {
@@ -52,7 +52,7 @@ const signInWithFacebook = async (
         const userId = verifyFacebookAccount.data['id'] ? verifyFacebookAccount.data['id'] : '';
         const userName = verifyFacebookAccount.data['name'] ? verifyFacebookAccount.data['name'] : '';
 
-        const userData = await (await axios.get(`https://graph.facebook.com/${userId}?fields=id,email&access_token=${accessToken}`)).data;
+        const userData = await (await axios.get(`https://graph.facebook.com/${userId}?fields=id,email&access_token=${fbAccessToken}`)).data;
 
         if (!userData) {
             return next(createError(404, "Invalid facebook token"));
@@ -93,11 +93,11 @@ const signInWithFacebook = async (
         }
 
         // SIGN ACCESS TOKEN AND REFRESH TOKEN
-        const accessTokenResponse = await signAccessTokenService({
+        const accessToken = await signAccessTokenService({
             id: accountId,
             role: 0,
         });
-        const refreshTokenResponse = await signRefreshTokenService({
+        const refreshToken = await signRefreshTokenService({
             id: accountId,
             role: 0,
         });
@@ -108,8 +108,8 @@ const signInWithFacebook = async (
             success: true,
             data: {
                 accountId,
-                accessTokenResponse,
-                refreshTokenResponse,
+                accessToken,
+                refreshToken,
             },
         });
 

@@ -3,6 +3,7 @@ import { executeQuery } from "../../configs/database";
 import initQueryReadPost from "./_service.post.initQuery";
 
 const readNewestAcceptedPostsByParentCategoryAndProvinces = async (
+    accountId: string,
     parentCategoryId: number,
     provinceIds: string[],
     limit: number | null,
@@ -22,6 +23,7 @@ const readNewestAcceptedPostsByParentCategoryAndProvinces = async (
             "LEFT JOIN parent_categories " +
             "ON parent_categories.id = child_categories.parent_category_id " +
             "WHERE posts.status = ? AND parent_categories.id = ? " +
+            "AND district_id NOT IN (SELECT location_id FROM profiles_locations WHERE account_id = ?) " +
             `${provinceIds.length > 0 ? `AND provinces.id IN (${provinceIds.map((_) => `?`).join(", ")})` : ""}` +
             `${threshold && threshold > 0 ? "AND posts.id < ? " : " "}` +
             "GROUP BY posts.id " +  
@@ -31,10 +33,12 @@ const readNewestAcceptedPostsByParentCategoryAndProvinces = async (
             `${limit && limit > 0 ? "LIMIT ?" : ""}`;
 
         let params: any[] = [1, parentCategoryId];
+        params = [...params, accountId];
         
         if (provinceIds.length > 0) {
             params = [...params, ...provinceIds];
         }
+
 
         params = threshold && threshold > 0 ? [...params, threshold] : [...params];
         params = [...params, ...(provinceIds.length > 1 ? provinceIds : [])];

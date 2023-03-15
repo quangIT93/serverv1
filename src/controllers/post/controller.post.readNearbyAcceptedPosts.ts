@@ -92,6 +92,7 @@ const readNearbyAcceptedPostsController = async (
             );
             posts =
                 await postServices.readNewestAcceptedPostsByChildCategoriesAndProvinces(
+                    req.user.id,
                     Array.isArray(childCategoryIds)
                         ? childCategoryIds.map((item) => +item)
                         : [+childCategoryIds],
@@ -109,6 +110,7 @@ const readNearbyAcceptedPostsController = async (
             );
             posts =
                 await postServices.readNewestAcceptedPostsByParentCategoryAndProvinces(
+                    req.user.id,
                     +parentCategoryId,
                     Array.isArray(provinceIds)
                         ? provinceIds.map((item) => item)
@@ -119,6 +121,7 @@ const readNearbyAcceptedPostsController = async (
         } else {
             logging.info("Read nearby accepted posts by provinces");
             posts = await postServices.readNewestAcceptedPostsByProvinces(
+                req.user.id,
                 Array.isArray(provinceIds)
                     ? provinceIds.map((item) => item)
                     : [provinceIds],
