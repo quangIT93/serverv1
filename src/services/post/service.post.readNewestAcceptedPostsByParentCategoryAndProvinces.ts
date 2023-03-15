@@ -54,3 +54,6 @@ const readNewestAcceptedPostsByParentCategoryAndProvinces = async (
 };
 
 export default readNewestAcceptedPostsByParentCategoryAndProvinces;
+
+
+// select parent_categories.id, parent_categories.name, child_categories.id as cid, child_categories.name as cname from parent_categories JOIN child_categories ON child_categories.parent_category_id  = parent_categories.id where parent_categories.id = 2 ORDER by cname;

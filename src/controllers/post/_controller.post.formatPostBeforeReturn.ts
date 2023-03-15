@@ -38,6 +38,10 @@ function formatPostBeforeReturn(post) {
             // post.is_inhouse_data_value = +post.is_inhouse_data ? true : false;
         }
 
+        if (post.phone_contact !== undefined) {
+            post.phone_contact = "+" + post.phone_contact || null;
+        }
+
     }
     return post;
 }
