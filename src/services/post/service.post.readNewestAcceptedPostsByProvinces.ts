@@ -22,7 +22,6 @@ const readNewestAcceptedPostsByProvinces = async (
             ") " +
             "AND district_id NOT IN (SELECT location_id FROM profiles_locations WHERE account_id = ?) " +
             (threshold && threshold > 0 ? "AND posts.id < ? " : "") +
-            "AND districts.id NOT IN (SELECT location_id FROM profiles_locations WHERE account_id = ?) " +
             "GROUP BY posts.id " +
             `${provinceIds.length > 1 ? "ORDER BY FIELD(provinces.id, " + 
             provinceIds.map((_) => "?").join(", ") + ") " : ""}` +
@@ -44,10 +43,7 @@ const readNewestAcceptedPostsByProvinces = async (
         if (limit && limit > 0) {
             params = [...params, limit];
         }
-
-        console.log(query)
-        console.log(params)
-
+        
         const res = await executeQuery(query, params);
         return res ? res : null;
     } catch (error) {

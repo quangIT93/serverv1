@@ -23,7 +23,6 @@ const readNewestAcceptedPostsByChildCategoriesAndProvinces = async (
             `(${childCategoryIds.map(() => "?").join(", ")})) ` +
             "AND provinces.id IN " +
             `(${provinceIds.map(() => "?").join(", ")}) ` +
-            "AND districts.id NOT IN (SELECT location_id FROM profiles_locations WHERE account_id = ?) " +
             `${threshold ? "AND posts.id < ? " : ""} ` +
             "UNION " +
             "GROUP BY posts.id " +
@@ -38,7 +37,6 @@ const readNewestAcceptedPostsByChildCategoriesAndProvinces = async (
             accountId,
             ...childCategoryIds,
             ...provinceIds,
-            accountId,
             ...(threshold ? [threshold] : []),
             ...(provinceIds.length > 1 ? provinceIds : []),
             ...(limit ? [limit] : []),
