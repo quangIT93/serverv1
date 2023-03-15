@@ -26,6 +26,7 @@ const readNewestAcceptedPostsByParentCategoryAndProvinces = async (
             "AND district_id NOT IN (SELECT location_id FROM profiles_locations WHERE account_id = ?) " +
             `${provinceIds.length > 0 ? `AND provinces.id IN (${provinceIds.map((_) => `?`).join(", ")})` : ""}` +
             `${threshold && threshold > 0 ? "AND posts.id < ? " : " "}` +
+            "AND districts.id NOT IN (SELECT location_id FROM profiles_locations WHERE account_id = ?) " +
             "GROUP BY posts.id " +  
             "ORDER BY " +
             `${provinceIds.length > 1 ? "FIELD(provinces.id, " + 
@@ -41,6 +42,7 @@ const readNewestAcceptedPostsByParentCategoryAndProvinces = async (
 
 
         params = threshold && threshold > 0 ? [...params, threshold] : [...params];
+        params = [...params, accountId];
         params = [...params, ...(provinceIds.length > 1 ? provinceIds : [])];
         params = limit && limit > 0 ? [...params, limit] : [...params];
 
