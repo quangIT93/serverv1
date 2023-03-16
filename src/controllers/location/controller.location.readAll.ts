@@ -49,11 +49,15 @@ const readAllLocationsController = async (
         let districts = await locationServices.readDistrictsByProvince(
           province.id
         );
+        // Sort
+        districts = districts.sort((a, b) => a.full_name.localeCompare(b.full_name));
         districts = await Promise.all(
           districts.map(async (district) => {
             const wards = await locationServices.readWardsByDistrict(
               district.id
             );
+            // Sort
+            wards.sort((a, b) => a.full_name.localeCompare(b.full_name));
             return {
               district_id: district.id,
               district: district.full_name,

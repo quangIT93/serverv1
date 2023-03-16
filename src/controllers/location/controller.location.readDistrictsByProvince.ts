@@ -27,11 +27,14 @@ const readDistrictByProvince = async (
             return next(createError(500));
         }
 
+        // Sort
+        const sortedDistrict = districts.sort((a, b) => a.full_name.localeCompare(b.full_name));
+
         // SUCCESS
         return res.status(200).json({
             code: 200,
             success: true,
-            data: districts,
+            data: sortedDistrict,
             message: "Successfully",
         });
     } catch (error) {
