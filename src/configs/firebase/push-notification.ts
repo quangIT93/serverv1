@@ -8,6 +8,13 @@ interface TokenResult {
     account_id: string;
     created_at: string;
 }
+
+interface NotificationData {
+    type: number;
+    type_text: string;
+    id: number;
+}
+
 const initializeApp = () => {
     return admin.initializeApp({
         credential: admin.credential.cert(
@@ -23,7 +30,7 @@ let app = initializeApp();
     title: string,
     body: string,
     imageUrl: string,
-    data: any,
+    data: NotificationData,
 ) => {
 
     const res = await readFcmTokenService(accountId);
@@ -46,8 +53,10 @@ let app = initializeApp();
             body: body || "",
         },
         data: {
-            ...data,
-        },
+            "type": data.type.toString(),
+            "type_text": data.type_text,
+            "id": data.id.toString(),
+        }
     }).then(() => {
         console.log("Firebase-notification: Successfully sent message.",);
     }).catch((error) => {
