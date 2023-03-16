@@ -44,14 +44,14 @@ let app = initializeApp();
         notification: {
             title: title || "",
             body: body || "",
-            
-            // imageUrl: imageUrl || "",
         },
-        data: data || {},
+        data: {
+            ...data,
+        },
     }).then(() => {
         console.log("Firebase-notification: Successfully sent message.",);
-    }).catch(() => {
-        console.log("Firebase-notification: Error sending message.");
+    }).catch((error) => {
+        console.log("Firebase-notification: Error sending message.", error);
     });
     return;
 
