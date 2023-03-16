@@ -1,25 +1,57 @@
 import * as admin from "firebase-admin";
+import readFcmTokenService from "../../services/fcm-token/service.fcm-token.readByAccountId";
+import serviceAccount from "../../keys/serviceAccountKey.json";
+import logging from "../../utils/logging";
 
-const pushNotification = async (
-    accountId: string,
+interface TokenResult {
+    token: string;
+    account_id: string;
+    created_at: string;
+}
+const initializeApp = () => {
+    return admin.initializeApp({
+        credential: admin.credential.cert(
+            serviceAccount as admin.ServiceAccount
+            ),
+        }) as admin.app.App | null;
+    };
+let app = initializeApp();
+    
+    
+    const pushNotification = async (
+        accountId: string,
     title: string,
     body: string,
     imageUrl: string
 ) => {
 
-    const token = [];
+    const res = await readFcmTokenService(accountId);
 
-    // Get all tokens of account_id from the database
-    
 
-    await admin.messaging().sendMulticast({
-        tokens: token,
+    if (!app) {
+        app = initializeApp();
+    }
+
+    if (!(res[0] !== undefined) || !(res[0] !== null) || !res[0]) {
+        return;
+    }
+
+    const tokens = res.map((item: TokenResult) => item.token);
+
+    await app.messaging().sendMulticast({
+        tokens: tokens,
         notification: {
-            title: "Weather Warning!",
-            body: "A new weather warning has been issued for your location.",
-            imageUrl: "https://my-cdn.com/extreme-weather.png",
+            title: title || "",
+            body: body || "",
+            // imageUrl: imageUrl || "",
         },
+    }).then(() => {
+        console.log("Firebase-notification: Successfully sent message.",);
+    }).catch(() => {
+        console.log("Firebase-notification: Error sending message.");
     });
+    return;
+
 }
 
 export default pushNotification;

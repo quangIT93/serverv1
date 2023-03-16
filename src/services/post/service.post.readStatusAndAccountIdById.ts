@@ -4,7 +4,7 @@ import { executeQuery } from "../../configs/database";
 const readStatusAndAccountIdById = async (postId: number) => {
     try {
        
-        const query = "SELECT status, account_id FROM posts WHERE id = ?";
+        const query = "SELECT status, account_id, title, company_name FROM posts WHERE id = ?";
         const params = [postId];
         const res = await executeQuery(query, params);
         return res ? res[0] : null;

@@ -31,6 +31,7 @@ import appApplicationRouter from './app/route.app.application';
 import appSearchRouter from './app/route.app.search';
 import appNotificationRouter from './app/route.app.notification';
 import chatRouter from './app/route.app.chat';
+import fcmRouter from './app/route.app.fcm-token';
 
 const route = (app: Application) => {
   app.all('/', (req: Request, res: Response, next: NextFunction) => {
@@ -87,6 +88,7 @@ const route = (app: Application) => {
   app.use('/api/v1/search', appSearchRouter); // SEARCH
   app.use('/api/v1/notification', appNotificationRouter); // NOTIFICATION
   app.use('/api/v1/chats', chatRouter); // CHAT
+  app.use('/api/v1/fcm-token', fcmRouter); // FCM TOKEN
   app.use('/api/v1', appSiteRouter); // SITE
 
   // ERROR ROUTES

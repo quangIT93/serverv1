@@ -5,6 +5,8 @@ import readStatusAndAccountIdById from '../../services/post/service.post.readSta
 import readProfileByIdService from '../../services/profile/service.profile.readById';
 import applicationService from '../../services/application/_service.application'; 
 import * as notificationService from '../../services/notification/_service.notification';
+import { createNotificationContent } from '../notification/createNotificationContent/createForApplication';
+import pushNotification from '../../configs/firebase/push-notification';
 const createApplicationController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // GET DATA
@@ -105,6 +107,14 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
 
 
         // CREATE NOTIFICATION FOR RECRUITER
+        
+        // RETURN DATA
+        res.status(201).json({
+            code: 201,
+            success: true,
+            message: "Create application successfully"
+        });
+        
         notificationService.createNotificationService(
             postStatusAndAccountId.account_id,
             applicationIdNumber,
@@ -112,13 +122,22 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
             1
         );
 
-        // RETURN DATA
-        return res.status(201).json({
-            code: 201,
-            success: true,
-            message: "Create application successfully"
-        });
+        const notificationContent = createNotificationContent(
+            1,
+            0,
+            postStatusAndAccountId.title,
+            postStatusAndAccountId.company_name,
+            userProfile.name,
+        );
 
+        pushNotification(
+            postStatusAndAccountId.account_id,
+            notificationContent.title,
+            notificationContent.content,
+            ""
+        );
+
+        return;
     } catch (error) {
         logging.error(error);
         

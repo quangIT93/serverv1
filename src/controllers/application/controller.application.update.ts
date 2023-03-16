@@ -3,6 +3,8 @@ import { Response, Request, NextFunction } from 'express';
 import logging from '../../utils/logging';
 import applicationService from '../../services/application/_service.application';
 import * as notificationService from '../../services/notification/_service.notification';
+import { createNotificationContent } from '../notification/createNotificationContent/createForApplication';
+import pushNotification from '../../configs/firebase/push-notification';
 
 const updateApplicationController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -51,6 +53,7 @@ const updateApplicationController = async (req: Request, res: Response, next: Ne
         }
 
         //CREATE NOTIFICATION FOR APPLICANT
+        //IGNORE NOTIFICATION IF STATUS IS 3
         if (status !== 3) {
             await notificationService.createNotificationService(
                 postInformation.account_id,
@@ -61,11 +64,32 @@ const updateApplicationController = async (req: Request, res: Response, next: Ne
         }
 
         // RETURN DATA
-        return res.status(200).json({
+        res.status(200).json({
             code: 200,
             success: true,
             message: "Update application successfully",
         });
+
+        if (status !== 3) {
+            const notificationContent = createNotificationContent(
+                0,
+                +status,
+                postInformation.title,
+                postInformation.company_name,
+                ""
+            )
+
+            // SEND NOTIFICATION
+            pushNotification(
+                postInformation.account_id,
+                notificationContent.title,
+                notificationContent.content,
+                ""
+            )
+        }
+
+        return;
+
     }
     catch (error) {
         logging.error(error);
