@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 
 import logging from "../../utils/logging";
 import * as categoryServices from "../../services/category/_service.category";
+import { sortChildrenCategory } from "./_sortChildrenCategory";
 
 const readChildCategoriesByParentCategoryId = async (
     req: Request,
@@ -35,7 +36,7 @@ const readChildCategoriesByParentCategoryId = async (
         return res.status(200).json({
             code: 200,
             success: true,
-            data: childCategories,
+            data: sortChildrenCategory(childCategories),
             message: "Successfully",
         });
     } catch (error) {

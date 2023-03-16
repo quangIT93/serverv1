@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 
 import logging from "../../utils/logging";
 import * as categoryServices from "../../services/category/_service.category";
+import { sortChildrenCategory } from "./_sortChildrenCategory";
 
 const readAllCategoriesController = async (
     req: Request,
@@ -34,7 +35,7 @@ const readAllCategoriesController = async (
                     parent_category_id: parentCategory.id,
                     parent_category: parentCategory.name,
                     image: parentCategory.image,
-                    childs: childCategories,
+                    childs: sortChildrenCategory(childCategories),
                 };
             })
         );
