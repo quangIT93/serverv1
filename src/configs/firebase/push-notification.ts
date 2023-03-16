@@ -22,7 +22,8 @@ let app = initializeApp();
         accountId: string,
     title: string,
     body: string,
-    imageUrl: string
+    imageUrl: string,
+    data: any,
 ) => {
 
     const res = await readFcmTokenService(accountId);
@@ -43,8 +44,10 @@ let app = initializeApp();
         notification: {
             title: title || "",
             body: body || "",
+            
             // imageUrl: imageUrl || "",
         },
+        data: data || {},
     }).then(() => {
         console.log("Firebase-notification: Successfully sent message.",);
     }).catch(() => {

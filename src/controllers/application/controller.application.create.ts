@@ -123,6 +123,7 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
         );
 
         const notificationContent = createNotificationContent(
+            applicationIdNumber,
             1,
             0,
             postStatusAndAccountId.title,
@@ -134,7 +135,8 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
             postStatusAndAccountId.account_id,
             notificationContent.title,
             notificationContent.content,
-            ""
+            "",
+            notificationContent.data
         );
 
         return;
