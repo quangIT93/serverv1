@@ -54,13 +54,14 @@ const updateApplicationController = async (req: Request, res: Response, next: Ne
 
         //CREATE NOTIFICATION FOR APPLICANT
         //IGNORE NOTIFICATION IF STATUS IS 3
+        let createNotificationStatus = false;
         if (status !== 3) {
-            await notificationService.createNotificationService(
+            createNotificationStatus = await notificationService.createNotificationService(
                 postInformation.account_id,
                 +applicationId,
                 +status,
                 0
-            )
+            ) !== null;
         }
 
         // RETURN DATA
@@ -70,7 +71,7 @@ const updateApplicationController = async (req: Request, res: Response, next: Ne
             message: "Update application successfully",
         });
 
-        if (status !== 3) {
+        if (status !== 3 && createNotificationStatus) {
             const notificationContent = createNotificationContent(
                 applicationId,
                 0,
