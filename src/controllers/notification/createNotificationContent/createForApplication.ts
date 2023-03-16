@@ -15,10 +15,15 @@ const createNotificationContent = (
 ) => {
     let title = "";
     let content = "";
-    let data: NotificationData;
+    let data: NotificationData = {
+        type: 0,
+        type_text: "",
+        id: -1
+    };
 
+    
     data.id = application_id;
-
+    
     if (type === 0) {
         data.type = 0;
         data.type_text = "applicator";
