@@ -72,6 +72,7 @@ const updateApplicationController = async (req: Request, res: Response, next: Ne
 
         if (status !== 3) {
             const notificationContent = createNotificationContent(
+                applicationId,
                 0,
                 +status,
                 postInformation.title,
@@ -84,7 +85,8 @@ const updateApplicationController = async (req: Request, res: Response, next: Ne
                 postInformation.account_id,
                 notificationContent.title,
                 notificationContent.content,
-                ""
+                "",
+                notificationContent.data
             )
         }
         return;
