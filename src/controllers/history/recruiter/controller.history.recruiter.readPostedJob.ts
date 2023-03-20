@@ -36,6 +36,8 @@ const readPostedJobByRecruiterIdController = async (req: Request, res: Response,
             element.start_time = +element.start_time || null;
             element.end_time = +element.end_time || null;
             element.created_at = new Date(element.created_at).getTime();
+            posts.image = posts.image ? 
+                `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + posts.image : null;
         })
 
         const data = await Promise.all(posts.map(async (a) => {

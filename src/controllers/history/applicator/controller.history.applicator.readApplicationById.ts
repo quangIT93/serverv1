@@ -25,6 +25,10 @@ const readApplicationByIdController = async (req: Request, res: Response, next: 
             return next(createError(404, "Application profile not found"));
         }
 
+        // FORMAT AVATAR
+        applicationProfile.avatar = applicationProfile.avatar ?
+            `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + applicationProfile.avatar : null;
+
         // READ APPLICATION CATEGORY
         const applicationCategories = await applicationService.read.readCategoriesById(+applicationId);
         if (applicationCategories === null) {

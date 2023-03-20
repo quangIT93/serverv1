@@ -31,6 +31,8 @@ const readAcceptedApplicationsByRecruiterId = async (req: Request, res: Response
             a.created_at = new Date(a.created_at).getTime();
             a.birthday = a.birthday ? +a.birthday : null;
             a.categories = await applicationService.read.readCategoriesById(a.id);
+            a.avatar = a.avatar ? 
+                `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + a.avatar : null;
             return a;
         }));
         

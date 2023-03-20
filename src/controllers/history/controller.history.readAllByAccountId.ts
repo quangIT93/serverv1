@@ -51,6 +51,8 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
                 } else {
                     a.image = firstParentCategoryImage.image;
                 }
+            } else {
+                a.image = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + a.image;
             }
             return a;
         }));

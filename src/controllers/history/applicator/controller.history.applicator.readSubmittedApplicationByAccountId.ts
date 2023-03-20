@@ -49,6 +49,8 @@ const readSubmittedApplicationByAccountId = async (req: Request, res: Response, 
                 } else {
                     element.image = firstParentCategoryImage.image;
                 }
+            } else {
+                element.image = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + element.image;
             }
         }));
 

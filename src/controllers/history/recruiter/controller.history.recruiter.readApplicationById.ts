@@ -37,6 +37,9 @@ const readApplicationByIdController = async (req: Request, res: Response, next: 
         applicationProfile.liked_value = applicationProfile.liked === 0 ? null : 
             applicationProfile.liked === 1 ? true : false;
 
+        // FORMAT AVATAR
+        applicationProfile.avatar = applicationProfile.avatar ?
+            `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + applicationProfile.avatar : null;
         // CONVERT BIRTHDAY TO TIMESTAMP
         applicationProfile.birthday = applicationProfile.birthday ? +applicationProfile.birthday : null;
 

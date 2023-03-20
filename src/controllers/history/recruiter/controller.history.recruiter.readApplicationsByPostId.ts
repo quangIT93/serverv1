@@ -62,6 +62,8 @@ const readApplicationsByPostIdController = async (req: Request, res: Response, n
             a.categories = await applicationService.read.readCategoriesById(a.id);
             a.liked = +a.liked;
             a.liked_value = a.liked === 0 ? null : a.liked === 1 ? true : false;
+            a.avatar = a.avatar ? 
+                `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + a.avatar : null;
             return a;
         }));        
 
