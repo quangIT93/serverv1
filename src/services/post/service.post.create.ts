@@ -48,7 +48,8 @@ const createPost = async (
             "description, " +
             "phone_contact, " +
             "money_type, "+
-            "is_inhouse_data" +
+            "is_inhouse_data," +
+            "status" //test
             ") " +
             "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         const params = [
@@ -73,6 +74,7 @@ const createPost = async (
             phoneNumber,
             moneyType,
             role === 1 || role === 2 ? '1' : '0',
+            1 //test
         ];
         const res = await executeQuery(query, params);
         return res ? Number(res.insertId) : null;
