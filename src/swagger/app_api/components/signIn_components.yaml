@@ -77,7 +77,7 @@ components:
         SignInWithFacebookForm:
             type: object
             properties:
-                accessToken:
+                fbAccessToken:
                     type: string
             required:
                 - accessToken
