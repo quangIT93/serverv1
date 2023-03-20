@@ -56,6 +56,18 @@ const getUsersChattedController = async (
                     userChatted.applied = false;
                 }
                 userChatted.is_online = reply ? true : false;
+                // Get image
+                if (userChatted.image === null) {
+                    const firstParentCategoryImage =
+                        await userChatted.readDefaultPostImageByPostId(
+                            userChatted.post_id
+                        );
+                    if (firstParentCategoryImage) {
+                        userChatted.image = firstParentCategoryImage.image;
+                    }
+                } else {
+                    userChatted.image = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + userChatted.image;
+                }
             })
         );
 

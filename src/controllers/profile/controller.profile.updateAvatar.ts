@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from "express";
 import logging from "../../utils/logging";
 import * as awsServices from "../../services/aws/_service.aws";
 import * as profileServices from "../../services/profile/_service.profile";
+import ImageBucket from "../../enum/imageBucket.enum";
 
 const updateAvatar = async (
     req: Request,
@@ -22,7 +23,7 @@ const updateAvatar = async (
 
         // UPLOAD IMAGES TO AWS
         if (req.files && req.files.length > 0) {
-            const urlsUploaded = await awsServices.uploadImages(req.files);
+            const urlsUploaded = await awsServices.uploadImages(req.files, ImageBucket.AVATAR_IMAGES);
             if (!urlsUploaded || urlsUploaded.length === 0) {
                 return next(createError(500));
             }

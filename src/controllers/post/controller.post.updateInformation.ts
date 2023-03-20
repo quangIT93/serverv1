@@ -8,6 +8,7 @@ import * as postImageServices from "../../services/postImage/_service.postImage"
 import * as postCategoryServices from "../../services/postCategory/_service.postCategory";
 import * as awsServices from "../../services/aws/_service.aws";
 import Helper from "../../helpers/helper.class";
+import ImageBucket from "../../enum/imageBucket.enum";
 
 const updatePostInformationController = async (
     req: Request,
@@ -23,13 +24,19 @@ const updatePostInformationController = async (
             }
 
             // UPLOAD IMAGES TO AWS
+            const postId = +req.body.id;
+
+            if (!Number.isInteger(postId) || postId <= 0) {
+                logging.error("Invalid post id");
+                return next(createError(400));
+            }
+
             const urlsUploaded =
                 req.files && req.files.length > 0
-                    ? await awsServices.uploadImages(req.files)
+                    ? await awsServices.uploadImages(req.files, ImageBucket.POST_IMAGES, postId)
                     : [];
 
             // GET BODY DATA
-            const postId = +req.body.id;
             const title = req.body.title
                 ? req.body.title.toString().trim()
                 : null;
@@ -73,10 +80,6 @@ const updatePostInformationController = async (
             }
 
             // VALIDATION
-            if (!Number.isInteger(postId) || postId <= 0) {
-                logging.error("Invalid post id");
-                return next(createError(400));
-            }
 
             if (!title || !companyName || !description) {
                 logging.warning("Invalid body data");

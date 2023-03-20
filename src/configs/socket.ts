@@ -7,6 +7,7 @@ import * as chatServices from '../services/chat/_service.chat';
 import * as awsServices from '../services/aws/_service.aws';
 import * as chatImageServices from '../services/chatImage/_service.chatImage';
 import redisClient from './redis';
+import ImageBucket from '../enum/imageBucket.enum';
 
 interface Payload {
   id: string;
@@ -139,7 +140,7 @@ const configSocket = (server) => {
                   files[index] = Buffer.from(file, 'base64');
                 });
               }
-              const urlsUploaded = await awsServices.uploadImages(files);
+              const urlsUploaded = await awsServices.uploadImages(files, ImageBucket.CHAT_IMAGES);
 
               // INSERT TO DB
               if (urlsUploaded.length > 0) {

@@ -294,6 +294,8 @@ const searchByQueryController = async (req: Request, res: Response, next: NextFu
                             } else {
                                 element.image = firstParentCategoryImage.image;
                             }
+                        } else {
+                            element.image = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + element.image;
                         }
                     }));
 
@@ -360,6 +362,22 @@ const searchByQueryController = async (req: Request, res: Response, next: NextFu
                 item.money_type_text = MoneyType[item.money_type];
                 item.money_type = +item.money_type;
             })
+
+            await Promise.all(posts.map(async (element) => {
+                if (element.image === null) {
+                    const firstParentCategoryImage =
+                        await readDefaultPostImageByPostId(
+                            element.id
+                        );
+                    if (!firstParentCategoryImage) {
+                        element.image = null;
+                    } else {
+                        element.image = firstParentCategoryImage.image;
+                    }
+                } else {
+                    element.image = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + element.image;
+                }
+            }));
 
             let isOver = false;
             if (posts.length < 20) {

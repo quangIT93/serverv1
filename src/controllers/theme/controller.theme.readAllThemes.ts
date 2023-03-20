@@ -19,6 +19,10 @@ const readAllThemesController = async (
             return next(createError(500));
         }
 
+        themes.forEach((theme) => {
+            theme.image = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + theme.image;
+        });
+
         // GET THEME LOCATIONS
         await Promise.all(
             themes.map(async (theme, index) => {
