@@ -4,6 +4,7 @@ import logging from "../../utils/logging";
 import * as awsServices from "../../services/aws/_service.aws";
 import * as themeServices from "../../services/theme/_service.theme";
 import * as themeLocationServices from "../../services/themeLocation/_service.themeLocation";
+import ImageBucket from "../../enum/imageBucket.enum";
 
 const updateThemeController = async (
     req: Request,
@@ -33,7 +34,7 @@ const updateThemeController = async (
 
         if (req.files && req.files.length > 0) {
             // UPLOAD FILE TO AWS
-            const urlsUploaded = await awsServices.uploadImages(req.files);
+            const urlsUploaded = await awsServices.uploadImages(req.files, ImageBucket.THEME_IMAGES);
             imageUrl =
                 urlsUploaded && urlsUploaded.length > 0
                     ? urlsUploaded[0]

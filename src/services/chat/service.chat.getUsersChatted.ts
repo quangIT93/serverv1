@@ -38,6 +38,7 @@ const getUsersChatted = async (id: string) => {
             "posts.salary_max, " +
             "posts.salary_type as salary_type_id, " +
             "posts.money_type, " +
+            "posts.id as post_id, " +
             "salary_types.value as salary_type, " +
             "post_images.image AS image, " +
             "applications.status AS application_status " +

@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import logging from "../../utils/logging";
 import * as bannerServices from "../../services/banner/_service.banner";
 import * as awsServices from "../../services/aws/_service.aws";
+import ImageBucket from "../../enum/imageBucket.enum";
 
 const createBannerController = async (
     req: Request,
@@ -39,7 +40,7 @@ const createBannerController = async (
         if (files && files.length > 0) {
             // UPLOAD FILE TO AWS AND CREATE BANNER
             // UPLOAD FILE TO AWS
-            const urlsUploaded = await awsServices.uploadImages(files);
+            const urlsUploaded = await awsServices.uploadImages(files, ImageBucket.BANNER_IMAGES);
             const imageUrl =
                 urlsUploaded && urlsUploaded.length > 0
                     ? urlsUploaded[0]

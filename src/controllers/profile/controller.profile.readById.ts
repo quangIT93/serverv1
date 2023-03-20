@@ -42,6 +42,8 @@ const readProfileByIdController = async (
 
         profileData.birthday = +profileData.birthday;
 
+        profileData.avatar = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + profileData.avatar;
+
         delete profileData.province_id;
 
         // GET CATEGORIES OF PROFILE

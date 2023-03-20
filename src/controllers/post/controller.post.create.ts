@@ -8,6 +8,7 @@ import * as postServices from "../../services/post/_service.post";
 import * as postImageServices from "../../services/postImage/_service.postImage";
 import * as postCategoryServices from "../../services/postCategory/_service.postCategory";
 import Helper from "../../helpers/helper.class";
+import ImageBucket from "../../enum/imageBucket.enum";
 
 const createPostController = async (
     req: Request,
@@ -268,7 +269,7 @@ const createPostController = async (
 
             if (req.files && req.files.length > 0) {
                 // UPLOAD IMAGES TO AWS
-                const urlsUploaded = await awsServices.uploadImages(req.files);
+                const urlsUploaded = await awsServices.uploadImages(req.files, ImageBucket.POST_IMAGES, postIdCreated);
 
                 // CREATE IMAGES OF POST
                 if (urlsUploaded && urlsUploaded.length > 0) {

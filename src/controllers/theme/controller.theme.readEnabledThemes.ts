@@ -18,6 +18,10 @@ const readEnabledThemesController = async (
             return next(createError(500));
         }
 
+        themes.forEach((theme) => {
+            theme.image = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + theme.image;
+        });
+
         // SUCCESS
         return res.status(200).json({
             code: 200,

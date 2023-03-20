@@ -42,6 +42,10 @@ function formatPostBeforeReturn(post) {
             post.phone_contact = "+" + post.phone_contact || null;
         }
 
+        if (post.image !== undefined && post.image !== null) {
+            post.image = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + post.image;
+        }
+
     }
     return post;
 }
