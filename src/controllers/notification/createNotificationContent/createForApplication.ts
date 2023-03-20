@@ -2,49 +2,57 @@
 interface NotificationData {
     type: number;
     type_text: string;
-    id: number;
+    applicationId: number | null;
+    postId: number | null;
 }
 
-const createNotificationContent = (
-    application_id: number,
-    type: number, 
-    applicationStatus: number, 
-    postTitle: string, 
-    companyName: string, 
-    name: string
-) => {
+interface NotificationContent {
+    application_id: number | null;
+    post_id: number | null;
+    type: number | null;
+    applicationStatus: number | null;
+    postTitle: string | null;
+    companyName: string | null;
+    name: string | null;
+}
+
+const createNotificationContent = (content: NotificationContent) => {
     let title = "";
-    let content = "";
+    let body = "";
     let data: NotificationData = {
         type: 0,
         type_text: "",
-        id: -1
+        applicationId: null,
+        postId: null
     };
 
     
-    data.id = application_id;
+    data.applicationId = content.application_id;
+    data.postId = content.post_id;
     
-    if (type === 0) {
+    if (content.type === 0) {
         data.type = 0;
         data.type_text = "applicator";
-        if (applicationStatus === 2) {
+        if (content.applicationStatus === 2) {
             title = "Đơn ứng tuyển đã được duyệt!";
-            content = `Đơn ứng tuyển vị trí ${postTitle} cho ${companyName} của bạn đã được nhà tuyển dụng duyệt.`;
-        } else if (applicationStatus === 4) {
+            body = `Đơn ứng tuyển vị trí ${content.postTitle} cho ${content.companyName} của bạn đã được nhà tuyển dụng duyệt.`;
+        } else if (content.applicationStatus === 4) {
             title = "Chúc mừng";
-            content = `Chúc mừng bạn đã được chọn cho công việc ${postTitle} tại ${companyName}.`;
+            body = `Chúc mừng bạn đã được chọn cho công việc ${content.postTitle} tại ${content.companyName}.`;
         }
-    } else if (type === 1) {
+    } else if (content.type === 1) {
         data.type = 1;
         data.type_text = "recruiter";
         title = "Ứng viên mới đã nộp hồ sơ";
-        content = `Ứng viên ${name} đã ứng tuyển vào công việc ${postTitle}.`;
+        body = `Ứng viên ${content.name} đã ứng tuyển vào công việc ${content.postTitle}.`;
     }
     return {
         title,
-        content,
+        body,
         data
     }
 }
 
 export { createNotificationContent };
+export type { NotificationData };
+export type { NotificationContent };

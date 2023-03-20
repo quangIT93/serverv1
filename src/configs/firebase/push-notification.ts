@@ -12,7 +12,8 @@ interface TokenResult {
 interface NotificationData {
     type: number;
     type_text: string;
-    id: number;
+    applicationId: number | null;
+    postId: number | null;
 }
 
 const initializeApp = () => {
@@ -25,8 +26,8 @@ const initializeApp = () => {
 let app = initializeApp();
     
     
-    const pushNotification = async (
-        accountId: string,
+const pushNotification = async (
+    accountId: string,
     title: string,
     body: string,
     imageUrl: string,
@@ -55,7 +56,8 @@ let app = initializeApp();
         data: {
             "type": data.type.toString(),
             "type_text": data.type_text,
-            "id": data.id.toString(),
+            "applicationId": data.applicationId.toString(),
+            "postId": data.postId.toString(),
         }
     }).then(() => {
         console.log("Firebase-notification: Successfully sent message.",);

@@ -5,7 +5,7 @@ import readStatusAndAccountIdById from '../../services/post/service.post.readSta
 import readProfileByIdService from '../../services/profile/service.profile.readById';
 import applicationService from '../../services/application/_service.application'; 
 import * as notificationService from '../../services/notification/_service.notification';
-import { createNotificationContent } from '../notification/createNotificationContent/createForApplication';
+import { createNotificationContent, NotificationContent } from '../notification/createNotificationContent/createForApplication';
 import pushNotification from '../../configs/firebase/push-notification';
 const createApplicationController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -122,19 +122,24 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
             1
         );
 
+        const content: NotificationContent = {
+            application_id: applicationIdNumber,
+            post_id: +postId,
+            type: 1,
+            applicationStatus: 0,
+            postTitle: postStatusAndAccountId.title,
+            companyName: postStatusAndAccountId.company_name,
+            name: userProfile.name,
+        }
+
         const notificationContent = createNotificationContent(
-            applicationIdNumber,
-            1,
-            0,
-            postStatusAndAccountId.title,
-            postStatusAndAccountId.company_name,
-            userProfile.name,
+            content
         );
 
         pushNotification(
             postStatusAndAccountId.account_id,
             notificationContent.title,
-            notificationContent.content,
+            notificationContent.body,
             "",
             notificationContent.data
         );

@@ -3,7 +3,7 @@ import { Response, Request, NextFunction } from 'express';
 import logging from '../../utils/logging';
 import applicationService from '../../services/application/_service.application';
 import * as notificationService from '../../services/notification/_service.notification';
-import { createNotificationContent } from '../notification/createNotificationContent/createForApplication';
+import { createNotificationContent, NotificationContent } from '../notification/createNotificationContent/createForApplication';
 import pushNotification from '../../configs/firebase/push-notification';
 
 const updateApplicationController = async (req: Request, res: Response, next: NextFunction) => {
@@ -71,21 +71,26 @@ const updateApplicationController = async (req: Request, res: Response, next: Ne
             message: "Update application successfully",
         });
 
+        
         if (status !== 3 && createNotificationStatus) {
+            const content: NotificationContent = {
+                application_id: +applicationId,
+                post_id: postInformation.post_id,
+                applicationStatus: +status,
+                type: 0,
+                postTitle: postInformation.title,
+                companyName: postInformation.company_name,
+                name: postInformation.name,
+            }
             const notificationContent = createNotificationContent(
-                applicationId,
-                0,
-                +status,
-                postInformation.title,
-                postInformation.company_name,
-                ""
+                content
             )
 
             // SEND NOTIFICATION
             pushNotification(
                 postInformation.account_id,
                 notificationContent.title,
-                notificationContent.content,
+                notificationContent.body,
                 "",
                 notificationContent.data
             )

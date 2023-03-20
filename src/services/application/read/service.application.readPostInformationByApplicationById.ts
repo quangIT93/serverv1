@@ -10,6 +10,7 @@ const readPostInformationByApplicationByIdService = async (applicationId: number
         "posts.company_name, " +
         "posts.status as postStatus, " + 
         "applications.post_id, "+
+        "applications.name, " +
         "applications.status, applications.account_id, applications.liked " +
         "FROM applications LEFT JOIN posts ON applications.post_id = posts.id WHERE applications.id = ?";
         const params = [applicationId];
