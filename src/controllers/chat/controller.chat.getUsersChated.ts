@@ -56,6 +56,9 @@ const getUsersChattedController = async (
                     userChatted.applied = false;
                 }
                 userChatted.is_online = reply ? true : false;
+                if (userChatted.avatar !== null) {
+                    userChatted.avatar = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + userChatted.avatar;
+                }
                 // Get image
                 if (userChatted.image === null) {
                     const firstParentCategoryImage =
