@@ -27,6 +27,8 @@ router.post("/google", signInController.signInWithGoogle);
 
 router.post("/facebook", signInController.signInWithFacebook);
 
+router.post("/apple", signInController.signInWithAppleId);
+
 router.post("/admin", signInController.adminSignIn);
 
 export default router;

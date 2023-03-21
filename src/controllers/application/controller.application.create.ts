@@ -115,12 +115,16 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
             message: "Create application successfully"
         });
         
-        notificationService.createNotificationService(
+        const insertId = await notificationService.createNotificationService(
             postStatusAndAccountId.account_id,
             applicationIdNumber,
             0,
             1
         );
+
+        if (!insertId) {
+            return;
+        }
 
         const content: NotificationContent = {
             application_id: applicationIdNumber,
@@ -130,6 +134,7 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
             postTitle: postStatusAndAccountId.title,
             companyName: postStatusAndAccountId.company_name,
             name: userProfile.name,
+            notificationId: insertId
         }
 
         const notificationContent = createNotificationContent(
@@ -140,7 +145,7 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
             postStatusAndAccountId.account_id,
             notificationContent.title,
             notificationContent.body,
-            "",
+            // "",
             notificationContent.data
         );
 

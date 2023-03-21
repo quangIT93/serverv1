@@ -52,6 +52,9 @@ const route = (app: Application) => {
       },
       servers: [
         {
+          url: "https://neoworks.vn"
+        },
+        {
             url: "https://aiworks.vn",
         },
         {

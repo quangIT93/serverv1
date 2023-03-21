@@ -7,12 +7,14 @@ import signInWithGoogleController from "./controller.signIn.google";
 import resendPhoneOTPController from "./controller.signIn.resendPhone";
 import signInWithFacebook from "./controller.signIn.facebook";
 import adminSignInController from "./controller.signIn.admin";
+import signInWithAplleIdController from "./controller.signIn.apple";
 
 const signInController = {
     signInWithEmail: signInWithEmailController,
     signInWithFacebook: signInWithFacebook,
     signInWithGoogle: signInWithGoogleController,
     signInWithPhone: signInWithPhoneController,
+    signInWithAppleId: signInWithAplleIdController,
     resendEmail: resendEmailController,
     resendPhoneOTP: resendPhoneOTPController,
     verifyPhoneOtp: verifyPhoneNumberOtpController,

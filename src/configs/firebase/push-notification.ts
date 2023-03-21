@@ -14,6 +14,8 @@ interface NotificationData {
     type_text: string;
     applicationId: number | null;
     postId: number | null;
+    notificationId: number | null;
+    applicationStatus: number | null;
 }
 
 const initializeApp = () => {
@@ -30,7 +32,7 @@ const pushNotification = async (
     accountId: string,
     title: string,
     body: string,
-    imageUrl: string,
+    // imageUrl: string,
     data: NotificationData,
 ) => {
 
@@ -58,6 +60,8 @@ const pushNotification = async (
             "type_text": data.type_text,
             "applicationId": data.applicationId.toString(),
             "postId": data.postId.toString(),
+            "notificationId": data.notificationId.toString(),
+            "applicationStatus": data.applicationStatus.toString(),
         }
     }).then(() => {
         console.log("Firebase-notification: Successfully sent message.",);

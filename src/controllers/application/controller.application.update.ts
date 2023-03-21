@@ -54,7 +54,7 @@ const updateApplicationController = async (req: Request, res: Response, next: Ne
 
         //CREATE NOTIFICATION FOR APPLICANT
         //IGNORE NOTIFICATION IF STATUS IS 3
-        let createNotificationStatus = false;
+        let createNotificationStatus: number | boolean = false;
         if (status !== 3) {
             createNotificationStatus = await notificationService.createNotificationService(
                 postInformation.account_id,
@@ -81,6 +81,7 @@ const updateApplicationController = async (req: Request, res: Response, next: Ne
                 postTitle: postInformation.title,
                 companyName: postInformation.company_name,
                 name: postInformation.name,
+                notificationId: +createNotificationStatus
             }
             const notificationContent = createNotificationContent(
                 content
@@ -91,7 +92,7 @@ const updateApplicationController = async (req: Request, res: Response, next: Ne
                 postInformation.account_id,
                 notificationContent.title,
                 notificationContent.body,
-                "",
+                // "",
                 notificationContent.data
             )
         }

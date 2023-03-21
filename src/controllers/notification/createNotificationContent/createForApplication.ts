@@ -4,6 +4,8 @@ interface NotificationData {
     type_text: string;
     applicationId: number | null;
     postId: number | null;
+    notificationId: number | null;
+    applicationStatus: number | null;
 }
 
 interface NotificationContent {
@@ -14,6 +16,7 @@ interface NotificationContent {
     postTitle: string | null;
     companyName: string | null;
     name: string | null;
+    notificationId: number | null;
 }
 
 const createNotificationContent = (content: NotificationContent) => {
@@ -23,12 +26,16 @@ const createNotificationContent = (content: NotificationContent) => {
         type: 0,
         type_text: "",
         applicationId: null,
-        postId: null
+        postId: null,
+        notificationId: null,
+        applicationStatus: null
     };
 
     
     data.applicationId = content.application_id;
     data.postId = content.post_id;
+    data.applicationStatus = content.applicationStatus;
+    data.notificationId = content.notificationId;
     
     if (content.type === 0) {
         data.type = 0;

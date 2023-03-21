@@ -19,7 +19,7 @@ const createNotificationService = async (
         ];
         // console.log(params);
         const result = await executeQuery(query, params);
-        return result;
+        return result ? Number(result.insertId) : null;;
     } catch (error) {
         logging.error(error);
         return null;
