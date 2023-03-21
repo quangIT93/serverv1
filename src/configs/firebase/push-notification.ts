@@ -58,10 +58,10 @@ const pushNotification = async (
         data: {
             "type": data.type.toString(),
             "type_text": data.type_text,
-            "applicationId": data.applicationId.toString(),
-            "postId": data.postId.toString(),
-            "notificationId": data.notificationId.toString(),
-            "applicationStatus": data.applicationStatus.toString(),
+            "application_id": data.applicationId.toString(),
+            "post_id": data.postId.toString(),
+            "notification_id": data.notificationId.toString(),
+            "application_status": data.applicationStatus.toString(),
         }
     }).then(() => {
         console.log("Firebase-notification: Successfully sent message.",);
