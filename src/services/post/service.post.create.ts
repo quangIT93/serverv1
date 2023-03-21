@@ -49,7 +49,7 @@ const createPost = async (
             "phone_contact, " +
             "money_type, "+
             "is_inhouse_data," +
-            "status" //test
+            "status" + //test 
             ") " +
             "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         const params = [
