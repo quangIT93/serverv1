@@ -15,6 +15,8 @@ import {
     createAccountWithEmailService,
 } from "../../services/account/_service.account";
 import { createProfileWithAccountIdService } from "../../services/profile/_service.profile";
+import readAccountByAppleIdService from '../../services/account/service.account.readByAppleId';
+import createAccountWithAppleIdService from '../../services/account/service.account.createWithAppleId';
 
 const signInWithAplleIdController = async (
     req: Request,
@@ -58,22 +60,24 @@ const signInWithAplleIdController = async (
 
         // console.log("decoded: ", decoded);
 
-        const email = decoded['email'];
+        const email = decoded['email'] ? decoded['email'].toString() : null;
 
-        const sub = decoded['sub'];
+
+
+        const sub: string = decoded['sub'].toString();
 
         // GET ACCOUNT BY EMAIL
-        if (!email) {
+        if (!sub) {
             return next(createError(404, "Invalid email"));
         }
 
-        const account = await readAccountByEmailService(email);
+        const account = await readAccountByAppleIdService(sub);
         let accountId = uuidv4();
         if (!account) {
             // CREATE NEW ACCOUNT
-            const isCreateAccountSuccess = await createAccountWithEmailService(
+            const isCreateAccountSuccess = await createAccountWithAppleIdService(
                 accountId,
-                email
+                sub
             );
             logging.info("isCreateAccountSuccess: ", isCreateAccountSuccess);
             if (!isCreateAccountSuccess) {
@@ -84,7 +88,7 @@ const signInWithAplleIdController = async (
             const isCreateProfileSuccess =
                 await createProfileWithAccountIdService(
                     accountId,
-                    email,
+                    email ? email : null,
                     null,
                     // name
                 );
