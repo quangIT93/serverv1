@@ -32,7 +32,14 @@ components:
             required:
                 - idToken
                 - isIOS
-
+        # APLLE
+        SignInWithAppleForm:
+            type: object
+            properties:
+                identityToken:
+                    type: string
+            required:
+                - identityToken
         # RESPONSE
         # EMAIL & PHONE
         SignInResponse:

@@ -1,3 +1,6 @@
+import jwt from 'jsonwebtoken';
+import { JwksClient } from "jwks-rsa";
+
 import createError from "http-errors";
 import { v4 as uuidv4 } from "uuid";
 import { Request, Response, NextFunction } from "express";
@@ -19,92 +22,97 @@ const signInWithAplleIdController = async (
     next: NextFunction
 ) => {
     try {
-        // logging.info("Sign in with google controller start ...");
-        // // GET DATA
-        // const idToken: string = req.body.idToken
-        //     ? req.body.idToken.toString().trim()
-        //     : "";
-        // const isIOS: boolean = req.body.isIOS;
+        const { identityToken } = req.body;
 
-        // if (!idToken) {
-        //     return next(createError(400, "Invalid id token"));
-        // }
+        if (!identityToken) {
+            return next(createError(400, "Invalid identityToken"));
+        }
+        const json = jwt.decode(identityToken, { complete: true });
 
-        // if (!(isIOS === true || isIOS === false)) {
-        //     return next(createError(400, "Invalid isIOS value"));
-        // }
 
-        // // INIT CLIENT ID
-        // const CLIENT_ID = isIOS
-        //     ? process.env.GOOGLE_CLIENT_ID_FOR_IOS
-        //     : process.env.GOOGLE_CLIENT_ID_FOR_ANDROID;
+        const kid = json.header.kid;
 
-        // // INIT OAUTH2 CLIENT
-        // const client = new OAuth2Client(CLIENT_ID);
+        if (!kid) {
+            return next(createError(400, "Invalid kid"));
+        }
 
-        // // GET TICKET
-        // const ticket = await client.verifyIdToken({
-        //     idToken,
-        //     audience: CLIENT_ID,
-        // });
+        const client = new JwksClient({
+            jwksUri: "https://appleid.apple.com/auth/keys",
+        });
 
-        // // GET DATA OF GOOGLE USER
-        // const payload = ticket.getPayload();
-        // const { sub, name, email, picture } = payload;
+        const appleKeys = await client.getSigningKey(kid);
 
-        // // console.log("payload", payload);
+        if (!appleKeys) {
+            return next(createError(400, "Something went wrong"));
+        }
 
-        // // GET ACCOUNT BY EMAIL
-        // if (!email) {
-        //     return next(createError(404, "Invalid email"));
-        // }
+        const applePublicKey = appleKeys.getPublicKey();
 
-        // const account = await readAccountByEmailService(email);
-        // let accountId = uuidv4();
-        // if (!account) {
-        //     // CREATE NEW ACCOUNT
-        //     const isCreateAccountSuccess = await createAccountWithEmailService(
-        //         accountId,
-        //         email
-        //     );
-        //     logging.info("isCreateAccountSuccess: ", isCreateAccountSuccess);
-        //     if (!isCreateAccountSuccess) {
-        //         return next(createError(500));
-        //     }
+        if (!applePublicKey) {
+            return next(createError(400, "Something went wrong"));
+        }
 
-        //     // CREATE PROFILE
-        //     const isCreateProfileSuccess =
-        //         await createProfileWithAccountIdService(
-        //             accountId,
-        //             email,
-        //             null,
-        //             name
-        //         );
-        //     if (!isCreateProfileSuccess) {
-        //         return next(createError(500));
-        //     }
-        // } else {
-        //     accountId = account.id;
-        // }
+        const decoded = jwt.verify(identityToken, applePublicKey, {
+            algorithms: ["RS256"],
+        });
 
-        // // SIGN ACCESS TOKEN AND REFRESH TOKEN
-        // const accessToken = await signAccessTokenService({
-        //     id: accountId,
-        //     role: 0,
-        // });
-        // const refreshToken = await signRefreshTokenService({
-        //     id: accountId,
-        //     role: 0,
-        // });
+        // console.log("decoded: ", decoded);
+
+        const email = decoded['email'];
+
+        const sub = decoded['sub'];
+
+        // GET ACCOUNT BY EMAIL
+        if (!email) {
+            return next(createError(404, "Invalid email"));
+        }
+
+        const account = await readAccountByEmailService(email);
+        let accountId = uuidv4();
+        if (!account) {
+            // CREATE NEW ACCOUNT
+            const isCreateAccountSuccess = await createAccountWithEmailService(
+                accountId,
+                email
+            );
+            logging.info("isCreateAccountSuccess: ", isCreateAccountSuccess);
+            if (!isCreateAccountSuccess) {
+                return next(createError(500));
+            }
+
+            // CREATE PROFILE
+            const isCreateProfileSuccess =
+                await createProfileWithAccountIdService(
+                    accountId,
+                    email,
+                    null,
+                    // name
+                );
+            if (!isCreateProfileSuccess) {
+                return next(createError(500));
+            }
+        } else {
+            accountId = account.id;
+        }
+
+        // SIGN ACCESS TOKEN AND REFRESH TOKEN
+        const accessToken = await signAccessTokenService({
+            id: accountId,
+            role: 0,
+        });
+        const refreshToken = await signRefreshTokenService({
+            id: accountId,
+            role: 0,
+        });
 
         // SUCCESS
         return res.status(200).json({
             code: 200,
             success: true,
             data: {
-                // accountId,
-                // accessToken,
-                // refreshToken,
+                accountId,
+                accessToken,
+                refreshToken,
             },
         });
     } catch (error) {
