@@ -3,7 +3,7 @@ import { executeQuery } from "../../configs/database";
 
 const readParentCategoryImage = async (parentCategoryId: number) => {
     try {
-        logging.info("Read parent category image service start ...");
+        // logging.info("Read parent category image service start ...");
         const query = "SELECT image FROM parent_categories WHERE id = ?";
         const params = [parentCategoryId];
         const res = await executeQuery(query, params);

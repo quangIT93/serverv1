@@ -1,10 +1,17 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
 
-const readAllParentCategories = async () => {
+const readAllParentCategories = async (lang: string) => {
     try {
-        logging.info("Read all parent categories service start ...");
-        const query = "SELECT * FROM parent_categories";
+        // logging.info("Read all parent categories service start ...");
+        const query = "SELECT " +
+        "id, " +
+        `${lang === "vi" ? "name, " : lang === "en" ? "name_en as name, " : "name_kor as name, "}` +
+        "default_post_image, image " +
+        "FROM parent_categories";
+
+        // console.log(query);
+
         const res = await executeQuery(query);
         return res ? res : null;
     } catch (error) {

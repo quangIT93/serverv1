@@ -11,8 +11,15 @@ const readAllParentCategories = async (
 ) => {
     try {
         logging.info("Read all parent categories controller start ...");
+
+        const { lang = "vi" } = req.query;
+
+        if (lang !== "vi" && lang !== "en" && lang !== "ko") {
+            return next(createError(400, "Invalid lang"));
+        }
+
         const parentCategories =
-            await categoryServices.readAllParentCategories();
+            await categoryServices.readAllParentCategories(lang);
         if (!parentCategories) {
             return next(createError(500));
         }

@@ -13,9 +13,15 @@ const readAllCategoriesController = async (
     try {
         logging.info("Read all categories controller start ...");
 
+        const { lang = "vi" } = req.query;
+
+        if (lang !== "vi" && lang !== "en" && lang !== "ko") {
+            return next(createError(400, "Invalid lang"));
+        }
+
         // READ ALL PARENT CATEGORIES
         const parentCategories =
-            await categoryServices.readAllParentCategories();
+            await categoryServices.readAllParentCategories(lang);
         if (!parentCategories) {
             return next(createError(500));
         }
@@ -29,7 +35,8 @@ const readAllCategoriesController = async (
                 // GET DISTRICTS BY PROVINCE
                 const childCategories =
                     await categoryServices.readChildCategoriesByParentCategoryId(
-                        parentCategory.id
+                        parentCategory.id,
+                        lang
                     );
                 return {
                     parent_category_id: parentCategory.id,
