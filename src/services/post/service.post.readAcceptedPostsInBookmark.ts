@@ -28,7 +28,7 @@ const readAcceptedPostsInBookmark = async (
             "posts.end_time," +
             "posts.salary_min," +
             "posts.salary_max," +
-            "posts.salary_type," +
+            "posts.salary_type as salary_type_id," +
             "posts.money_type," +
             // "posts.description," +
             // "posts.phone_contact," +
@@ -41,6 +41,7 @@ const readAcceptedPostsInBookmark = async (
             "provinces.full_name as province," +
             "provinces.name as province_name," +
             "provinces.id as province_id," +
+            "salary_types.value as salary_type, " +
             "post_images.image AS image " +
             "FROM bookmarks " +
             "LEFT JOIN posts " +
