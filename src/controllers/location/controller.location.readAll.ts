@@ -12,6 +12,14 @@ const readAllLocationsController = async (
   try {
     logging.info('Read all locations controller start ...');
 
+    const {lang =""} = req.query;
+    if(lang.toString().trim()!=""){
+      if ((lang.toString().trim()!='vn'&& lang.toString().trim()!='en'&& lang.toString().trim()!='kor')){
+        logging.warning("Invalid language");
+        return next(createError(400));
+    }
+    }
+
     // READ ALL PROVINCES
     const provinces = await locationServices.readAllProvinces();
     if (!provinces) {
@@ -53,18 +61,48 @@ const readAllLocationsController = async (
         districts = districts.sort((a, b) => a.full_name.localeCompare(b.full_name));
         districts = await Promise.all(
           districts.map(async (district) => {
-            const wards = await locationServices.readWardsByDistrict(
-              district.id
-            );
+            
+            if(lang.toString().trim()=="en"){ 
+
+              // get list wards en
+              const wards = await locationServices.readWardsEnByDistrict(
+                district.id
+              );
             // Sort
             wards.sort((a, b) => a.full_name.localeCompare(b.full_name));
-            return {
-              district_id: district.id,
-              district: district.full_name,
-              wards: wards,
-            };
+           //retrun list wards en
+              return {
+                district_id: district.id,
+                district: district.full_name_en,
+                wards: wards,
+              };
+            }else{
+
+          // get list wards vn
+            const wards = await locationServices.readWardsByDistrict(
+               district.id
+              );
+          // Sort
+            wards.sort((a, b) => a.full_name.localeCompare(b.full_name));
+          //retrun list wards vn
+              return {
+                district_id: district.id,
+                district: district.full_name,
+                wards: wards,
+              };
+            }
+           
           })
         );
+        if(lang.toString().trim()=="en"){
+          // return province with name english
+          return {
+            province_id: province.id,
+            province_fullName: province.full_name_en,
+            province_name: province.name_en,
+            districts: districts,
+          };
+        }
         return {
           province_id: province.id,
           province_fullName: province.full_name,
