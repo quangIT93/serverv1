@@ -49,4 +49,7 @@ export { default as updateInformation } from "./service.post.updateInformation";
 export { default as updateStatus } from "./service.post.updateStatus";
 export { default as updateStatusOfManyPosts } from "./service.post.updateStatusOfManyPosts";
 
+// FITTER
+export { default as filterPostsByAddress } from "./service.post.filterPostByAddress";
+
 // DELETE

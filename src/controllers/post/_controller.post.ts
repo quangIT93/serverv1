@@ -15,6 +15,7 @@ import updateInformationByAdminController from "./controller.post.updateInformat
 import updatePostStatusController from "./controller.post.updateStatus";
 import updateStatusOfManyPostsController from "./controller.post.updateStatusOfManyPosts";
 import readPostByIdByAdminController from "./controller.post.readPostByIdByAdmin";
+import filterPostByAddressController from "./controller.post.filterPostByAddress";
 
 const postController = {
     // READ ALL POSTS
@@ -63,6 +64,9 @@ const postController = {
 
     // UPDATE STATUS OF MANY POSTS
     updateStatusOfManyPosts: updateStatusOfManyPostsController,
+
+    // filter post by address
+    filterPostByAddress: filterPostByAddressController,
 };
 
 export default postController;

@@ -12,12 +12,14 @@ const readAllLocationsController = async (
   try {
     logging.info('Read all locations controller start ...');
 
-    const {lang =""} = req.query;
+    var {lang =""} = req.query;
     if(lang.toString().trim()!=""){
-      if ((lang.toString().trim()!='vn'&& lang.toString().trim()!='en'&& lang.toString().trim()!='kor')){
+      if ((lang.toString().trim()!='vi'&& lang.toString().trim()!='en'&& lang.toString().trim()!='ko')){
         logging.warning("Invalid language");
         return next(createError(400));
     }
+    }else{
+        lang ="vi"
     }
 
     // READ ALL PROVINCES
@@ -55,14 +57,15 @@ const readAllLocationsController = async (
       wantedProvinces.map(async (province) => {
         // GET DISTRICTS BY PROVINCE
         let districts = await locationServices.readDistrictsByProvince(
-          province.id
+          province.id,
+          lang.toString()
         );
         // Sort
         districts = districts.sort((a, b) => a.full_name.localeCompare(b.full_name));
         districts = await Promise.all(
           districts.map(async (district) => {
             
-            if(lang.toString().trim()=="en"){ 
+            if(lang.toString().trim()=="en"|| lang.toString().trim()=="ko"){ 
 
               // get list wards en
               const wards = await locationServices.readWardsEnByDistrict(
@@ -94,7 +97,7 @@ const readAllLocationsController = async (
            
           })
         );
-        if(lang.toString().trim()=="en"){
+        if(lang.toString().trim()=="en"||lang.toString().trim()=="ko"){
           // return province with name english
           return {
             province_id: province.id,
