@@ -5,6 +5,7 @@ import * as chatServices from "../../services/chat/_service.chat";
 import redisClient from "../../configs/redis";
 import MoneyType from "../../enum/money_type.enum";
 import ApplicationStatus from "../../enum/application.enum";
+import { readDefaultPostImageByPostId } from "../../services/category/_service.category";
 
 const getUsersChattedController = async (
     req: Request,
@@ -62,7 +63,7 @@ const getUsersChattedController = async (
                 // Get image
                 if (userChatted.image === null) {
                     const firstParentCategoryImage =
-                        await userChatted.readDefaultPostImageByPostId(
+                        await readDefaultPostImageByPostId(
                             userChatted.post_id
                         );
                     if (firstParentCategoryImage) {
