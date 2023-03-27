@@ -34,7 +34,7 @@ const readAllPostsByThemeController = async (
         // MODIFY
         await Promise.all(
             posts.map(async (post, index: number) => {
-                posts[index] = formatPostBeforeReturn(post);
+                // posts[index] = formatPostBeforeReturn(post);
 
                 if (post.image === null) {
                     const firstParentCategoryImage =

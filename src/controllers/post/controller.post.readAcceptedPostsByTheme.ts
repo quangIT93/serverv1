@@ -57,14 +57,16 @@ const readAcceptedPostsByThemeController = async (
         await Promise.all(
             posts.map(async (post, index: number) => {
                 posts[index] = formatPostBeforeReturn(post);
-                const firstParentCategoryImage =
-                    await categoryServices.readDefaultPostImageByPostId(
-                        post.id
-                    );
-                if (!firstParentCategoryImage) {
-                    post.image = null;
-                } else {
-                    post.image = firstParentCategoryImage.image;
+                if (post.image === null) {
+                    const firstParentCategoryImage =
+                        await categoryServices.readDefaultPostImageByPostId(
+                            post.id
+                        );
+                    if (!firstParentCategoryImage) {
+                        post.image = null;
+                    } else {
+                        post.image = firstParentCategoryImage.image;
+                    }
                 }
             })
         );
