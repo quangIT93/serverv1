@@ -36,17 +36,6 @@ const updateStatusController = async (
             return next(createError(400));
         }
 
-        // Update seen status
-        // const isUpdateSuccess = await chatServices.updateMessagesStatusToSeen(
-        //     chatIds,
-        //     id,
-        //     1
-        // );
-
-        // if (!isUpdateSuccess) {
-        //     return next(createError(500));
-        // }
-
         return res.status(200).json({
             code: 200,
             success: true,

@@ -52,6 +52,10 @@ const readPostByIdController = async (
         // CHANGE TIMESTAMP
         postData = formatPostBeforeReturn(postData[0]);
 
+        postData.avatar_poster = 
+            postData.avatar_poster ? 
+                `${process.env.AWS_BUCKET_IMAGE_URL}/avatar/${postData.avatar_poster}` : null;
+
         // GET CATEGORIES OF POST
         const categories = await postCategoryServices.readCategoriesOfPost(
             postId

@@ -69,7 +69,8 @@ const initQueryReadPost = {
     "provinces.name as province_name," +
     "provinces.id as province_id," +
     "salary_types.value as salary_type, " +
-    "post_images.image AS image " +
+    "post_images.image AS image, " +
+    "profiles.avatar as avatar_poster " +
     "FROM posts " +
     "LEFT JOIN wards " +
     "ON wards.id = posts.ward_id " +
@@ -80,7 +81,9 @@ const initQueryReadPost = {
     "LEFT JOIN post_images " +
     "ON post_images.post_id = posts.id " +
     "LEFT JOIN salary_types " +
-    "ON salary_types.id = posts.salary_type ",
+    "ON salary_types.id = posts.salary_type " +
+    "LEFT JOIN profiles " +
+    "ON profiles.id = posts.account_id "    
 }
 
 export default initQueryReadPost;
