@@ -52,7 +52,7 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
                     a.image = firstParentCategoryImage.image;
                 }
             } else {
-                a.image = `${process.env.AWS_BUCKET_IMAGE_URL}/posts_images/${a.post_id}/` + a.image;
+                a.image = `${process.env.AWS_BUCKET_IMAGE_URL}/posts-images/${a.post_id}/` + a.image;
             }
             return a;
         }));

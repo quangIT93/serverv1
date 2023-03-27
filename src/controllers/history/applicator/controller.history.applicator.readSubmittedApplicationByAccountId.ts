@@ -50,7 +50,7 @@ const readSubmittedApplicationByAccountId = async (req: Request, res: Response, 
                     element.image = firstParentCategoryImage.image;
                 }
             } else {
-                element.image = `${process.env.AWS_BUCKET_IMAGE_URL}/posts_images/${element.post_id}/` + element.image;
+                element.image = `${process.env.AWS_BUCKET_IMAGE_URL}/posts-images/${element.post_id}/` + element.image;
             }
         }));
 

@@ -69,7 +69,7 @@ const getUsersChattedController = async (
                         userChatted.image = firstParentCategoryImage.image;
                     }
                 } else {
-                    userChatted.image = `${process.env.AWS_BUCKET_IMAGE_URL}/posts_images/${userChatted.post_id}/` + userChatted.image;
+                    userChatted.image = `${process.env.AWS_BUCKET_IMAGE_URL}/posts-images/${userChatted.post_id}/` + userChatted.image;
                 }
             })
         );
