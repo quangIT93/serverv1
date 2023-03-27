@@ -57,7 +57,7 @@ const getUsersChattedController = async (
                 }
                 userChatted.is_online = reply ? true : false;
                 if (userChatted.avatar !== null) {
-                    userChatted.avatar = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + userChatted.avatar;
+                    userChatted.avatar = `${process.env.AWS_BUCKET_IMAGE_URL}/avatar/` + userChatted.avatar;
                 }
                 // Get image
                 if (userChatted.image === null) {
@@ -69,7 +69,7 @@ const getUsersChattedController = async (
                         userChatted.image = firstParentCategoryImage.image;
                     }
                 } else {
-                    userChatted.image = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + userChatted.image;
+                    userChatted.image = `${process.env.AWS_BUCKET_IMAGE_URL}/posts_images/${userChatted.post_id}/` + userChatted.image;
                 }
             })
         );

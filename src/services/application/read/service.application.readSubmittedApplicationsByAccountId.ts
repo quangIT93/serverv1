@@ -21,6 +21,7 @@ const readSubmittedApplicationByAccountIdService = async (
             "posts.end_date, " +
             "posts.salary_min, " +
             "posts.salary_max, " +
+            "posts.id as post_id, " +
             "wards.full_name as ward," + 
             "wards.name as ward_name," +
             "districts.id as district_id," +

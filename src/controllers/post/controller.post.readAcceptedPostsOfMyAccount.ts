@@ -3,8 +3,9 @@ import { Request, Response, NextFunction } from "express";
 
 import logging from "../../utils/logging";
 import * as postServices from "../../services/post/_service.post";
-import MoneyType from "../../enum/money_type.enum";
 import { formatPostBeforeReturn } from "./_controller.post.formatPostBeforeReturn";
+import * as categoryServices from "../../services/category/_service.category";
+
 
 const readAcceptedPostsOfMyAccountController = async (
     req: Request,
@@ -32,6 +33,22 @@ const readAcceptedPostsOfMyAccountController = async (
         posts.forEach((post) => {
             post = formatPostBeforeReturn(post);
         });
+
+        await Promise.all(
+            posts.map(async (post, index: number) => {
+                posts[index] = formatPostBeforeReturn(post);
+
+                if (post.image === null) {
+                    const firstParentCategoryImage =
+                        await categoryServices.readDefaultPostImageByPostId(
+                            post.id
+                        );
+                    if (firstParentCategoryImage) {
+                        post.image = firstParentCategoryImage.image;
+                    }
+                }
+            })
+        );
 
         // SUCCESS
         return res.status(200).json({

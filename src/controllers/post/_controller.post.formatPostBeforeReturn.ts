@@ -43,7 +43,7 @@ function formatPostBeforeReturn(post) {
         }
 
         if (post.image !== undefined && post.image !== null) {
-            post.image = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + post.image;
+            post.image = `${process.env.AWS_BUCKET_IMAGE_URL}/posts-images/${post.id}/` + post.image;
         }
 
     }

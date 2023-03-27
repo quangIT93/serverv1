@@ -3,7 +3,6 @@ import { NextFunction, Request, Response } from "express";
 
 import logging from "../../utils/logging";
 import * as postServices from "../../services/post/_service.post";
-import MoneyType from "../../enum/money_type.enum";
 import { formatPostBeforeReturn } from "./_controller.post.formatPostBeforeReturn";
 import readDefaultPostImageByPostId from "../../services/category/service.category.readDefaultPostImageByPostId";
 

@@ -73,7 +73,7 @@ const readPostByIdByAdminController = async (
         }
         
         images.forEach((image) => {
-            image.image = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/` + image.image;
+            image.image = `h${process.env.AWS_BUCKET_IMAGE_URL}/posts-images/${postId}/` + image.image;
         });
 
         // CHECK BOOKMARKED?

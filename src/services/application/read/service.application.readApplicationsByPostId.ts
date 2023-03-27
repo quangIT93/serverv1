@@ -5,6 +5,7 @@ const readApplicationsByPostIdService = async (postId: number, limit: number | n
     try {
         const query = 
         "SELECT " +
+        "applications.account_id, " +
         "applications.id, " +
         "applications.status as application_status, " +
         "applications.name, " +

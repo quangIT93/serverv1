@@ -7,15 +7,17 @@ import logging from "../../utils/logging";
 const uploadImages = async (
     files,
     bucket: ImageBucket = ImageBucket.DEFAULT,
-    postsId: number = null
+    postsId: number = null,
+    name: string = null
 ) => {
     try {
         logging.info("Upload files to aws service start ...");
         const client = new S3Client({ region: process.env.AWS_REGION });
         const params = files.map((file) => ({
             Bucket: process.env.AWS_BUCKET_NAME , // Bucket name
-            Key: `${bucket}${postsId ? "/" + postsId.toString() : ""}/${Date.now()}-${uuidv4()}.jpg`,
+            Key: name ? name : `${bucket}${postsId ? "/" + postsId.toString() : ""}/${Date.now()}-${uuidv4()}.jpg`,
             Body: file.buffer,
+            
         }));
 
         await Promise.all(
@@ -25,7 +27,7 @@ const uploadImages = async (
         return params.map(
             (param) =>
                 // `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/
-                `${param.Key}`
+                `${param.Key.split('/').pop()}`
         );
     } catch (error) {
         logging.error(`Upload files to aws service error: ${error}`);

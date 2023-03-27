@@ -5,9 +5,17 @@ const readAcceptedApplicationsByRecruiterIdService = async (recruiterId: string,
     try {
         logging.info('Read accepted applications by recruiter id service start ...');
         const query = 
-        "SELECT applications.id, applications.status, applications.name, "+ 
-        "applications.birthday, applications.address, applications.gender, applications.created_at, " +
-        "provinces.name as province, applications.avatar, posts.id as post_id " + 
+        "SELECT applications.id, " +
+        "applications.status, " +
+        "applications.name, " +
+        "applications.account_id, "+ 
+        "applications.birthday, " + 
+        "applications.address, " + 
+        "applications.gender, " + 
+        "applications.created_at, " +
+        "provinces.name as province, " +
+        "applications.avatar, " +
+        "posts.id as post_id " + 
         "FROM applications " +
         "LEFT JOIN provinces ON applications.address = provinces.id " +
         "LEFT JOIN posts ON applications.post_id = posts.id " +

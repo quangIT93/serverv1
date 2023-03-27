@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import createError from "http-errors";
 import logging from "../../utils/logging";
 import * as bannerServices from "../../services/banner/_service.banner";
+import { formatBannerResponse } from "./handler/formatBannerResponse";
 
 const readAllBannersController = async (
     req: Request,
@@ -16,6 +17,10 @@ const readAllBannersController = async (
         if (!banners) {
             return next(createError(500));
         }
+
+        banners.forEach((banner) => {
+            banner = formatBannerResponse(banner);
+        });        
 
         // SUCCESS
         return res.status(200).json({
