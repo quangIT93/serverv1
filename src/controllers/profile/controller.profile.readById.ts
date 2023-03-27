@@ -42,7 +42,7 @@ const readProfileByIdController = async (
 
         profileData.birthday = +profileData.birthday;
 
-        profileData.avatar = `${process.env.AWS_BUCKET_IMAGE_URL}/avatar/` + profileData.avatar;
+        profileData.avatar = profileData.avatar ? `${process.env.AWS_BUCKET_IMAGE_URL}/avatar/` + profileData.avatar : null;
 
         delete profileData.province_id;
 

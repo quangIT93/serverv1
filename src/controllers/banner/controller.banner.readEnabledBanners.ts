@@ -25,7 +25,7 @@ const readEnabledBannersController = async (
         }
 
         banners.forEach((banner) => {
-            banner = formatBannerResponse(banner);
+            banner.image = `${process.env.AWS_BUCKET_IMAGE_URL}/banners/` + banner.image;
         });
 
         // SUCCESS
