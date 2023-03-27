@@ -49,8 +49,6 @@ const readQuantityApplicationOfAllPostsController = async (req: Request, res: Re
                 } else {
                     a.image = firstParentCategoryImage.image;
                 }
-            } else {
-                a.image = `${process.env.AWS_BUCKET_IMAGE_URL}/posts-images/${a.id}/` + a.image;
             }
             return a;
         }));
