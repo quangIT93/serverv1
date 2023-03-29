@@ -78,4 +78,7 @@ router.put(
 // UPDATE POST STATUS
 router.put("/sta", verifyAccessToken, postController.updateStatus);
 
+//
+router.get("/filter/post", postController.filterPostByAddress);
+
 export default router;

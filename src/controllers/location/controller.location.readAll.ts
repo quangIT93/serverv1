@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import logging from '../../utils/logging';
 import * as locationServices from '../../services/location/_service.location';
+import { sortDistrict } from './handleResponse/sortDistrict';
 
 const readAllLocationsController = async (
   req: Request,
@@ -11,6 +12,16 @@ const readAllLocationsController = async (
 ) => {
   try {
     logging.info('Read all locations controller start ...');
+
+    var {lang =""} = req.query;
+    if(lang.toString().trim()!=""){
+      if ((lang.toString().trim()!='vi'&& lang.toString().trim()!='en'&& lang.toString().trim()!='ko')){
+        logging.warning("Invalid language");
+        return next(createError(400));
+    }
+    }else{
+        lang ="vi"
+    }
 
     // READ ALL PROVINCES
     const provinces = await locationServices.readAllProvinces();
@@ -47,24 +58,55 @@ const readAllLocationsController = async (
       wantedProvinces.map(async (province) => {
         // GET DISTRICTS BY PROVINCE
         let districts = await locationServices.readDistrictsByProvince(
-          province.id
+          province.id,
+          lang.toString()
         );
         // Sort
-        districts = districts.sort((a, b) => a.full_name.localeCompare(b.full_name));
+        districts = sortDistrict(districts);
         districts = await Promise.all(
           districts.map(async (district) => {
-            const wards = await locationServices.readWardsByDistrict(
-              district.id
-            );
+            
+            if(lang.toString().trim()=="en"|| lang.toString().trim()=="ko"){ 
+
+              // get list wards en
+              const wards = await locationServices.readWardsEnByDistrict(
+                district.id
+              );
             // Sort
             wards.sort((a, b) => a.full_name.localeCompare(b.full_name));
-            return {
-              district_id: district.id,
-              district: district.full_name,
-              wards: wards,
-            };
+           //return list wards en
+              return {
+                district_id: district.id,
+                district: district.full_name_en,
+                wards: wards,
+              };
+            }else{
+
+          // get list wards vn
+            const wards = await locationServices.readWardsByDistrict(
+               district.id
+              );
+          // Sort
+            wards.sort((a, b) => a.full_name.localeCompare(b.full_name));
+          //retrun list wards vn
+              return {
+                district_id: district.id,
+                district: district.full_name,
+                wards: wards,
+              };
+            }
+           
           })
         );
+        if(lang.toString().trim()=="en"||lang.toString().trim()=="ko"){
+          // return province with name english
+          return {
+            province_id: province.id,
+            province_fullName: province.full_name_en,
+            province_name: province.name_en,
+            districts: districts,
+          };
+        }
         return {
           province_id: province.id,
           province_fullName: province.full_name,
