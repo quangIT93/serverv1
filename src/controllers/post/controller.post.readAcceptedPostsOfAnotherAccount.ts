@@ -12,7 +12,7 @@ const readAcceptedPostsOfAnotherAccountController = async (
     next: NextFunction
 ) => {
     try {
-        logging.info("Read posts of another account controller start ...");
+        // logging.info("Read posts of another account controller start ...");
 
         const accountId = req.query.aid
             ? req.query.aid.toString().trim()

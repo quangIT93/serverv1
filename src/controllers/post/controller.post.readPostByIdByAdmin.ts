@@ -23,7 +23,7 @@ const readPostByIdByAdminController = async (
     next: NextFunction
 ) => {
     try {
-        logging.info("Read post by id controller start ...");
+        // logging.info("Read poste by id controller start ...");
 
         const { role, id } = req.user;
 

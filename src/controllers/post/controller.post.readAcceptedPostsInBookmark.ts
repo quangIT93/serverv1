@@ -15,7 +15,7 @@ const readAcceptedPostsInBookmarkController = async (
     const { limit, threshold } = req.query;
 
     try {
-        logging.info("Read accepted posts in bookmark start ...");
+        // logging.info("Read accepted posts in bookmark start ...");
         
         if (limit === "" || (limit && (Number.isNaN(+limit) || +limit <= 0))) {
             logging.warning("Invalid limit value");

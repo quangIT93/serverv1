@@ -24,7 +24,7 @@ const readPostByIdController = async (
 ) => {
     try {
         
-        logging.info("Read post by id controller start ...");
+        // logging.info("Read post by id controller start ...");
 
         // GET POST ID
         const postId = req.params.id ? +req.params.id : null;

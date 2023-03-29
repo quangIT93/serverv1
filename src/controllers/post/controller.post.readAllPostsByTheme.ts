@@ -12,7 +12,7 @@ const readAllPostsByThemeController = async (
     next: NextFunction
 ) => {
     try {
-        logging.info("Read all posts by theme controller start ...");
+        // logging.info("Read all posts by theme controller start ...");
 
         const themeId = +req.query.tid;
         if (!Number.isInteger(themeId) || themeId <= 0) {

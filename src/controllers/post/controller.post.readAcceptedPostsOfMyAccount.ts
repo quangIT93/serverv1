@@ -13,7 +13,7 @@ const readAcceptedPostsOfMyAccountController = async (
     next: NextFunction
 ) => {
     try {
-        logging.info("Read posts of my account controller start ...");
+        // logging.info("Read posts of my account controller start ...");
 
         if (!req.user || !req.user.id) {
             return next(createError(401));

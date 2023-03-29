@@ -13,7 +13,7 @@ const readNearbyAcceptedPostsController = async (
     next: NextFunction
     ) => {
     try {
-        logging.info("Read nearby accepted posts controller start ...");
+        // logging.info("Read nearby accepted posts controller start ...");
         
         // CHECK AUTHORIZE
         if (!req.user) {

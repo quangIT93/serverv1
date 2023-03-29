@@ -19,7 +19,7 @@ const readNewestAcceptedPostsController = async (
     next: NextFunction
 ) => {
     try {
-        logging.info("Read newest accepted posts controller start ...");
+        // logging.info("Read newest accepted posts controller start ...");
 
         // GET QUERY PARAMETERS
         const parentCategoryId = req.query.pcid;

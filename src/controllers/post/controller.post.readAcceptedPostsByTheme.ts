@@ -20,7 +20,7 @@ const readAcceptedPostsByThemeController = async (
     next: NextFunction
 ) => {
     try {
-        logging.info("Read accepted posts by theme controller start ...");
+        // logging.info("Read accepted posts by theme controller start ...");
 
         const themeId = +req.query.tid;
         const limit = req.query.limit;

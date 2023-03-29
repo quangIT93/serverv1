@@ -10,7 +10,7 @@ const readPostsByAdminController = async (
     next: NextFunction
 ) => {
     try {
-        logging.info("Read posts by admin controller start ...");
+        // logging.info("Read posts by admin controller start ...");
 
         if (!req.user || !req.user.id) {
             return next(createError(401));

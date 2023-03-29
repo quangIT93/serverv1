@@ -4,7 +4,6 @@ import { executeQuery } from "../../configs/database";
 const readAllPostsByAdminId = async (accountId) => {
     try {
         logging.info("Read posts service start ...");
-        logging.info(accountId);
         const query =
             "SELECT id, status, account_id, title, company_name, created_at " +
             "FROM posts " +
