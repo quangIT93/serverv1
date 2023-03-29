@@ -5,3 +5,4 @@ dist
 build
 src-built
 package-lock.json
+_images

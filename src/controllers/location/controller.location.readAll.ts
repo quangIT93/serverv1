@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import logging from '../../utils/logging';
 import * as locationServices from '../../services/location/_service.location';
+import { sortDistrict } from './handleResponse/sortDistrict';
 
 const readAllLocationsController = async (
   req: Request,
@@ -61,7 +62,7 @@ const readAllLocationsController = async (
           lang.toString()
         );
         // Sort
-        districts = districts.sort((a, b) => a.full_name.localeCompare(b.full_name));
+        districts = sortDistrict(districts);
         districts = await Promise.all(
           districts.map(async (district) => {
             
@@ -73,7 +74,7 @@ const readAllLocationsController = async (
               );
             // Sort
             wards.sort((a, b) => a.full_name.localeCompare(b.full_name));
-           //retrun list wards en
+           //return list wards en
               return {
                 district_id: district.id,
                 district: district.full_name_en,
