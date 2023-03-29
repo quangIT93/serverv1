@@ -12,6 +12,7 @@ const readAllPostsByAdmin = async () => {
             "posts.company_name, " +
             "posts.created_at, " +
             "profiles.name as poster, " +
+            "posts.address, " +
             "posts.ward_id, " +
             "wards.full_name as ward," + 
             "wards.name as ward_name," +
