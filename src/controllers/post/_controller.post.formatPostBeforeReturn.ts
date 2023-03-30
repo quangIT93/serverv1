@@ -61,37 +61,37 @@ async function formatPostBeforeReturn (post, lang = "vi") {
             case "en":
                 switch (post.salary_type_id) {
                     case 1:
-                        post.salary_type_text = "Hourly";
+                        post.salary_type = "Hourly";
                         break;
                     case 2:
-                        post.salary_type_text = "Daily";
+                        post.salary_type = "Daily";
                         break;
                     case 3:
-                        post.salary_type_text = "Weekly";
+                        post.salary_type = "Weekly";
                         break;
                     case 4:
-                        post.salary_type_text = "Monthly";
+                        post.salary_type = "Monthly";
                         break;
                     case 5:
-                        post.salary_type_text = "Job";
+                        post.salary_type = "Job";
                 }
                 break;
             case "ko":
                 switch (post.salary_type_id) {
                     case 1:
-                        post.salary_type_text = "시급";
+                        post.salary_type = "시급";
                         break;
                     case 2:
-                        post.salary_type_text = "일급";
+                        post.salary_type = "일급";
                         break;
                     case 3:
-                        post.salary_type_text = "주급";
+                        post.salary_type = "주급";
                         break;
                     case 4:
-                        post.salary_type_text = "월급";
+                        post.salary_type = "월급";
                         break;
                     case 5:
-                        post.salary_type_text = "일자리";
+                        post.salary_type = "일자리";
                 }
         }
     }

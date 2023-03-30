@@ -4,7 +4,7 @@ import { executeQuery } from "../../configs/database";
 const readAllByProfileId = async (
     profileId: string,
     lang: string = "vi"
-    ) => {
+) => {
     try {
         logging.info("Read all locations by profile id service start ...");
         const query =

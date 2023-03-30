@@ -56,6 +56,10 @@ const updateExperienceOfProfileController = async (
             return next(createError(400));
         }
 
+        if (startDateForUpdate > endDateForUpdate) {
+            return next(createError(400));
+        }
+
         // HANDLE UPDATE
         const isUpdateSuccess =
             await profileExperienceServices.updateExperienceOfProfile(

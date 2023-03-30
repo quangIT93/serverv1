@@ -20,6 +20,11 @@ const readProfileByIdController = async (
 
         const { lang = "vi" } = req.query;
 
+        if (lang !== "vi" && lang !== "en" && lang !== "ko") {
+            logging.warning("Invalid lang");
+            return next(createError(400));
+        }
+
         // GET PROFILE ID
         const id = req.query.id
             ? req.query.id.toString().trim()

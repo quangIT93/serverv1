@@ -19,7 +19,12 @@ const readNewestAcceptedPostsController = async (
 ) => {
     try {
         // logging.info("Read newest accepted posts controller start ...");
+        const { lang = "vi" } = req.query;
 
+        if (lang !== "vi" && lang !== "en" && lang !== "ko") {
+            logging.warning("Invalid lang");
+            return next(createError(400));
+        }
         // GET QUERY PARAMETERS
         const parentCategoryId = req.query.pcid;
         const childCategoryIds = req.query.ccid;
@@ -166,17 +171,8 @@ const readNewestAcceptedPostsController = async (
         // MODIFY
         await Promise.all(
             posts.map(async (post, index: number) => {
-                posts[index] = await formatPostBeforeReturn(post);
+                posts[index] = await formatPostBeforeReturn(post, lang);
 
-                // if (post.image === null) {
-                //     const firstParentCategoryImage =
-                //         await categoryServices.readDefaultPostImageByPostId(
-                //             post.id
-                //         );
-                //     if (firstParentCategoryImage) {
-                //         post.image = firstParentCategoryImage.image;
-                //     }
-                // }
             })
         );
 
