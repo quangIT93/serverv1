@@ -155,10 +155,10 @@ const configSocket = (server) => {
                   );
                 } else {
                   // EMIT TO SENDER
-                  console.log('urlsUploaded: ' + [urlsUploaded].toString());
+                  // console.log('urlsUploaded: ' + [urlsUploaded].toString());
                   socket.emit('server-send-message-was-sent', {
                     id: chatIdInserted,
-                    image: urlsUploaded.toString(),
+                    image: `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.CHAT_IMAGES}/${urlsUploaded[0]}`,
                     created_at: createdAt,
                     type: 'image',
                   });
