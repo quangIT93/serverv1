@@ -57,7 +57,7 @@ const updateExperienceOfProfileController = async (
         }
 
         if (startDateForUpdate > endDateForUpdate) {
-            return next(createError(400));
+            return next(createError(400, "Invalid date range"));
         }
 
         // HANDLE UPDATE
