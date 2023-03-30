@@ -18,6 +18,8 @@ const readProfileByIdController = async (
     try {
         logging.info("Read profile by id controller start ...");
 
+        const { lang = "vi" } = req.query;
+
         // GET PROFILE ID
         const id = req.query.id
             ? req.query.id.toString().trim()
@@ -51,7 +53,7 @@ const readProfileByIdController = async (
         const categories = await profileCategoryServices.readAllByProfileId(id);
 
         // GET LOCATIONS OF PROFILE
-        const locations = await profileLocationServices.readAllByProfileId(id);
+        const locations = await profileLocationServices.readAllByProfileId(id, lang.toString());
 
         // GET EDUCATIONS OF PROFILE
         const educations = await profileEducationServices.readAllByProfileId(
