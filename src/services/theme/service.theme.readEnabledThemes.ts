@@ -2,11 +2,10 @@ import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
 
 const readEnabledThemes = async (
-    account_id: string = null,
+    provinces: string[] = [],
 ) => {
     try {
         logging.info("Read enabled themes service start ...");
-        console.log(account_id)
         let query = 
             "SELECT themes.id, " +
             "themes.title, " +
@@ -21,13 +20,12 @@ const readEnabledThemes = async (
             "LEFT JOIN districts " +
             "ON districts.id = themes.district_id " +
             "WHERE themes.status = ? AND posts.status = 1 " +
-            `${account_id ? "AND districts.province_id IN " + 
-            "(SELECT province_id FROM profiles_locations JOIN districts ON profiles_locations.location_id = districts.id " + 
-            "WHERE profiles_locations.account_id = ?) " : ""}` +
+            `${provinces.length > 0 ? "AND districts.province_id IN " + 
+            "(" + provinces.map((_) => "?").join(", ") + ")" : ""}` +
             "GROUP BY themes.id";
-        let params = [1, account_id];
+        let params = [1, ...provinces];
 
-        console.log(query)
+        // console.log(query)
 
         const res = await executeQuery(query, params);
         return res ? res : null;

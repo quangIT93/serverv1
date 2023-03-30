@@ -5,6 +5,7 @@ import { NextFunction, Request, Response } from "express";
 import logging from "../../utils/logging";
 import * as themeServices from "../../services/theme/_service.theme";
 import ImageBucket from "../../enum/imageBucket.enum";
+import readAllByProfileId from '../../services/profileLocation/service.profileLocation.readAllByProfileId';
 
 const readEnabledThemesController = async (
     req: Request,
@@ -15,6 +16,7 @@ const readEnabledThemesController = async (
         logging.info("Read enabled themes controller start ...");
 
         let account_id: string = null;
+        let provinces_locations: string[] = [];
 
         if (req.headers.authorization) {
             const headerAuthorization = req.headers.authorization;
@@ -47,12 +49,14 @@ const readEnabledThemesController = async (
 
                     // VERIFY SUCCESS
                     account_id = payload.id;
+                    let profiles_locations = await readAllByProfileId(account_id);
+                    provinces_locations = profiles_locations.map((location) => location.province_id);
                 }
             );
         }
-
+        
+        const themes = await themeServices.readEnabledThemes(provinces_locations);
         // GET THEMES
-        const themes = await themeServices.readEnabledThemes(account_id);
         if (!themes) {
             return next(createError(500));
         }

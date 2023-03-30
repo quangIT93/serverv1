@@ -6,6 +6,7 @@ import logging from '../../utils/logging';
 import {formatPostBeforeReturn} from '../post/_controller.post.formatPostBeforeReturn';
 import MoneyType from '../../enum/money_type.enum';
 import { readDefaultPostImageByPostId } from '../../services/category/_service.category';
+import ImageBucket from '../../enum/imageBucket.enum';
 
 const readAllByAccountId = async (req: Request, res: Response, next: NextFunction) => {
     logging.info('Read All by account id controller start ...');
@@ -48,6 +49,8 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
                     } else {
                         a.image = firstParentCategoryImage.image;
                     }
+                } else {
+                    a.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${a.post_id}/` + a.image;
                 }
             }
             return a;
