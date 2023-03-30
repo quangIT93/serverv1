@@ -171,7 +171,7 @@ const configSocket = (server) => {
                       io.to(reply).emit('server-send-message-to-receiver', {
                         id: chatIdInserted,
                         sender_id: senderId,
-                        image: urlsUploaded.toString(),
+                        image: `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.CHAT_IMAGES}/${urlsUploaded[0]}`,
                         type: 'image',
                         created_at: createdAt,
                       });
