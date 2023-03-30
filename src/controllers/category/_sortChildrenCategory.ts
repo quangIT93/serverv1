@@ -7,7 +7,7 @@ const sortChildrenCategory = (listChildrenCategory: {name: string, id: number}[]
     for (let i = 0; i < newList.length; i++) {
         if (newList[i].name === "Khác" || newList[i].name === "Others" || newList[i].name === "기타") {
             newList.push(newList[i]);
-            newList = newList.splice(i, 1);
+            newList.splice(i, 1);
             break;
         }
     }
