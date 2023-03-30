@@ -1,15 +1,5 @@
-SELECT themes.id, 
-themes.title, 
-themes.image, 
-themes.district_id, 
-COUNT(themes_posts.post_id) AS number_of_posts 
-FROM themes 
-LEFT JOIN themes_posts 
-ON themes_posts.theme_id = themes.id 
-LEFT JOIN posts 
-ON posts.id = themes_posts.post_id 
-LEFT JOIN districts 
-ON districts.id = themes.district_id 
-WHERE themes.status = 1 AND posts.status = 1
-AND districts.province_id IN ("79") 
-GROUP BY themes.id
+SELECT DATE_FORMAT(created_at, 'DD-MM-YYYY') as date, COUNT(*) as quantity 
+FROM posts 
+WHERE account_id = "4d207f7c-d443-476b-af9a-b59da47560a9"
+GROUP BY DAY(created_at) 
+ORDER BY date ASC;
