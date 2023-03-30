@@ -4,8 +4,8 @@ import ApplicationStatus from '../../enum/application.enum';
 import applicationService from '../../services/application/_service.application';
 import logging from '../../utils/logging';
 import {formatPostBeforeReturn} from '../post/_controller.post.formatPostBeforeReturn';
-import * as categoryServices from '../../services/category/_service.category';
 import MoneyType from '../../enum/money_type.enum';
+import { readDefaultPostImageByPostId } from '../../services/category/_service.category';
 
 const readAllByAccountId = async (req: Request, res: Response, next: NextFunction) => {
     logging.info('Read All by account id controller start ...');
@@ -37,22 +37,18 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
                 a.start_date = +a.start_date || null;
                 a.end_date = +a.end_date || null;
 
-                // if (a.money_type !== undefined) {
-                // }
                 delete a.num_of_application;
-            }
-            if (a.image === null) {
-                const firstParentCategoryImage =
-                    await categoryServices.readDefaultPostImageByPostId(
-                        a.post_id
-                    );
-                if (!firstParentCategoryImage) {
-                    a.image = null;
-                } else {
-                    a.image = firstParentCategoryImage.image;
+                if (a.image === null) {
+                    const firstParentCategoryImage =
+                        await readDefaultPostImageByPostId(
+                            a.post_id
+                        );
+                    if (!firstParentCategoryImage) {
+                        a.image = null;
+                    } else {
+                        a.image = firstParentCategoryImage.image;
+                    }
                 }
-            } else {
-                a.image = `${process.env.AWS_BUCKET_IMAGE_URL}/posts-images/${a.post_id}/` + a.image;
             }
             return a;
         }));

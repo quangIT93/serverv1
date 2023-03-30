@@ -9,8 +9,8 @@ import * as postImageServices from "../../services/postImage/_service.postImage"
 import * as bookmarkServices from "../../services/bookmark/_service.bookmark";
 import applicationServices from "../../services/application/_service.application";
 import ApplicationStatus from "../../enum/application.enum";
-import MoneyType from "../../enum/money_type.enum";
 import { formatPostBeforeReturn } from "./_controller.post.formatPostBeforeReturn";
+import ImageBucket from "../../enum/imageBucket.enum";
 
 interface Payload {
     id: string;
@@ -50,11 +50,11 @@ const readPostByIdController = async (
         }
 
         // CHANGE TIMESTAMP
-        postData = formatPostBeforeReturn(postData[0]);
+        postData = await formatPostBeforeReturn(postData[0]);
 
         postData.avatar_poster = 
             postData.avatar_poster ? 
-                `${process.env.AWS_BUCKET_IMAGE_URL}/avatar/${postData.avatar_poster}` : null;
+                `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.AVATAR_IMAGES}/${postData.avatar_poster}` : null;
 
         // GET CATEGORIES OF POST
         const categories = await postCategoryServices.readCategoriesOfPost(
@@ -71,7 +71,7 @@ const readPostByIdController = async (
         }
 
         images.forEach((image) => {
-            image.image = `${process.env.AWS_BUCKET_IMAGE_URL}/posts-images/${postId}/` + image.image;
+            image.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${postId}/` + image.image;
         });
 
         // CHECK BOOKMARKED?

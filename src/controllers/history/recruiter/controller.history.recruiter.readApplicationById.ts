@@ -3,6 +3,7 @@ import logging from '../../../utils/logging';
 import createError from 'http-errors';
 import applicationService from '../../../services/application/_service.application';
 import ApplicationStatus from '../../../enum/application.enum';
+import ImageBucket from '../../../enum/imageBucket.enum';
 
 const readApplicationByIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -39,7 +40,7 @@ const readApplicationByIdController = async (req: Request, res: Response, next: 
 
         // FORMAT AVATAR
         applicationProfile.avatar = applicationProfile.avatar ?
-            `${process.env.AWS_BUCKET_IMAGE_URL}/avatar/` + applicationProfile.avatar : null;
+            `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.AVATAR_IMAGES}/` + applicationProfile.avatar : null;
         // CONVERT BIRTHDAY TO TIMESTAMP
         applicationProfile.birthday = applicationProfile.birthday ? +applicationProfile.birthday : null;
 

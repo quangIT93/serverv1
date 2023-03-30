@@ -6,6 +6,7 @@ import redisClient from "../../configs/redis";
 import MoneyType from "../../enum/money_type.enum";
 import ApplicationStatus from "../../enum/application.enum";
 import { readDefaultPostImageByPostId } from "../../services/category/_service.category";
+import ImageBucket from "../../enum/imageBucket.enum";
 
 const getUsersChattedController = async (
     req: Request,
@@ -58,7 +59,7 @@ const getUsersChattedController = async (
                 }
                 userChatted.is_online = reply ? true : false;
                 if (userChatted.avatar !== null) {
-                    userChatted.avatar = `${process.env.AWS_BUCKET_IMAGE_URL}/avatar/` + userChatted.avatar;
+                    userChatted.avatar = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.AVATAR_IMAGES}/` + userChatted.avatar;
                 }
                 // Get image
                 if (userChatted.image === null) {
@@ -70,7 +71,7 @@ const getUsersChattedController = async (
                         userChatted.image = firstParentCategoryImage.image;
                     }
                 } else {
-                    userChatted.image = `${process.env.AWS_BUCKET_IMAGE_URL}/posts-images/${userChatted.post_id}/` + userChatted.image;
+                    userChatted.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${userChatted.post_id}/` + userChatted.image;
                 }
             })
         );

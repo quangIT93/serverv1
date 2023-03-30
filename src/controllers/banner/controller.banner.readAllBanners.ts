@@ -3,6 +3,7 @@ import createError from "http-errors";
 import logging from "../../utils/logging";
 import * as bannerServices from "../../services/banner/_service.banner";
 import { formatBannerResponse } from "./handler/formatBannerResponse";
+import ImageBucket from "../../enum/imageBucket.enum";
 
 const readAllBannersController = async (
     req: Request,
@@ -19,7 +20,7 @@ const readAllBannersController = async (
         }
 
         banners.forEach((banner) => {
-            banner.image = `${process.env.AWS_BUCKET_IMAGE_URL}/banners/` + banner.image;
+            banner.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.BANNER_IMAGES}/` + banner.image;
         });        
 
         // SUCCESS

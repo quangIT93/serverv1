@@ -4,6 +4,7 @@ import { NextFunction, Request, Response } from "express";
 import logging from "../../utils/logging";
 import * as themeServices from "../../services/theme/_service.theme";
 import * as themeLocationServices from "../../services/themeLocation/_service.themeLocation";
+import ImageBucket from "../../enum/imageBucket.enum";
 
 const readAllThemesController = async (
     req: Request,
@@ -20,7 +21,7 @@ const readAllThemesController = async (
         }
 
         themes.forEach((theme) => {
-            theme.image = `${process.env.AWS_BUCKET_IMAGE_URL}/themes/` + theme.image;
+            theme.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.THEME_IMAGES}/` + theme.image;
         });
 
         // GET THEME LOCATIONS

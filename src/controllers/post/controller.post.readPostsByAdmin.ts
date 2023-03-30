@@ -2,7 +2,7 @@ import createError from "http-errors";
 import { NextFunction, Request, Response } from "express";
 import logging from "../../utils/logging";
 import * as postServices from "../../services/post/_service.post";
-import MoneyType from "../../enum/money_type.enum";
+// import MoneyType from "../../enum/money_type.enum";
 
 const readPostsByAdminController = async (
     req: Request,

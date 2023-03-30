@@ -12,7 +12,7 @@ const readNewestAcceptedPostsByProvinces = async (
         logging.info(
             "Read newest accepted posts by provinces service start ..."
         );
-        console.log(accountId)
+        // console.log(accountId)
 
         let query =
             initQueryReadPost.q1 +
@@ -43,6 +43,9 @@ const readNewestAcceptedPostsByProvinces = async (
         if (limit && limit > 0) {
             params = [...params, limit];
         }
+
+        // console.log(query)
+        // console.log(params)
         
         const res = await executeQuery(query, params);
         return res ? res : null;

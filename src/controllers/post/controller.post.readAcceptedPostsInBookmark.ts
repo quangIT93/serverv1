@@ -43,23 +43,9 @@ const readAcceptedPostsInBookmarkController = async (
         }
         
 
-        posts.forEach((post) => {
-            post = formatPostBeforeReturn(post);
-        });
-
-        const data = await Promise.all(posts.map(async (a) => {
-            if (a.image === null) {
-                const firstParentCategoryImage =
-                    await readDefaultPostImageByPostId(
-                        a.id
-                    );
-                if (!firstParentCategoryImage) {
-                    a.image = null;
-                } else {
-                    a.image = firstParentCategoryImage.image;
-                }
-            }
-            return a;
+        const data = await Promise.all(posts.map(async (post) => {
+            post = await formatPostBeforeReturn(post);
+            return post;
         }));
 
         let isOver = false;

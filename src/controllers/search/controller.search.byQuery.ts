@@ -8,6 +8,7 @@ import * as bookmarkServices from "../../services/bookmark/_service.bookmark";
 // import * as categoryServices from "../../services/category/_service.category";
 import MoneyType from '../../enum/money_type.enum';
 import readDefaultPostImageByPostId from '../../services/category/service.category.readDefaultPostImageByPostId';
+import ImageBucket from '../../enum/imageBucket.enum';
 interface Payload {
     id: string;
     role: number;
@@ -295,7 +296,7 @@ const searchByQueryController = async (req: Request, res: Response, next: NextFu
                                 element.image = firstParentCategoryImage.image;
                             }
                         } else {
-                            element.image = `${process.env.AWS_BUCKET_IMAGE_URL}/posts-images/${element.id}/` + element.image;
+                            element.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${element.id}/` + element.image;
                         }
                     }));
 

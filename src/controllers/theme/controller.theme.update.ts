@@ -19,6 +19,8 @@ const updateThemeController = async (
         const title = req.body.title ? req.body.title.toString().trim() : null;
         const districtIds = req.body.districtIds ? req.body.districtIds : null;
 
+        console.log(req.body);
+
         // VALIDATION
         if (!Number.isInteger(themeId)) {
             logging.warning("Invalid theme id");
@@ -41,7 +43,7 @@ const updateThemeController = async (
                     : null;
         } else {
             imageUrl = req.body.imageUrl
-                ? req.body.imageUrl.toString().trim()
+                ? req.body.imageUrl.toString().trim().split("/").pop()
                 : null;
         }
 
@@ -54,7 +56,8 @@ const updateThemeController = async (
         const isUpdateThemeWithImageSuccess = await themeServices.update(
             themeId,
             title,
-            imageUrl
+            imageUrl,
+            districtIds
         );
         if (!isUpdateThemeWithImageSuccess) {
             return next(createError(500));

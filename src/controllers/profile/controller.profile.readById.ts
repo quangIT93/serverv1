@@ -8,6 +8,7 @@ import * as profileLocationServices from "../../services/profileLocation/_servic
 import * as profileEducationServices from "../../services/profileEducation/_service.profileEducation";
 import * as profileExperienceServices from "../../services/profileExperience/_service.profileExperience";
 import * as profileSocialServices from "../../services/profileSocial/_service.profileSocial";
+import ImageBucket from "../../enum/imageBucket.enum";
 
 const readProfileByIdController = async (
     req: Request,
@@ -42,7 +43,7 @@ const readProfileByIdController = async (
 
         profileData.birthday = +profileData.birthday;
 
-        profileData.avatar = profileData.avatar ? `${process.env.AWS_BUCKET_IMAGE_URL}/avatar/` + profileData.avatar : null;
+        profileData.avatar = profileData.avatar ? `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.AVATAR_IMAGES}/` + profileData.avatar : null;
 
         delete profileData.province_id;
 

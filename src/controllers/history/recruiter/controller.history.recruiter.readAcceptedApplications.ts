@@ -1,5 +1,6 @@
 import {Request, Response, NextFunction} from 'express';
 import createError from 'http-errors';
+import ImageBucket from '../../../enum/imageBucket.enum';
 import applicationService from '../../../services/application/_service.application';
 import logging from '../../../utils/logging';
 
@@ -32,7 +33,7 @@ const readAcceptedApplicationsByRecruiterId = async (req: Request, res: Response
             a.birthday = a.birthday ? +a.birthday : null;
             a.categories = await applicationService.read.readCategoriesById(a.id);
             a.avatar = a.avatar ? 
-                `${process.env.AWS_BUCKET_IMAGE_URL}/avatar/` + a.avatar : null;
+                `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.AVATAR_IMAGES}/` + a.avatar : null;
             return a;
         }));
         

@@ -4,7 +4,7 @@ import logging from "../../utils/logging";
 import * as postServices from "../../services/post/_service.post";
 import * as locationServices from "../../services/location/_service.location";
 // import MoneyType from "../../enum/money_type.enum";
-import { formatPostBeforeReturn } from "./_controller.post.formatPostBeforeReturn";
+// import { formatPostBeforeReturn } from "./_controller.post.formatPostBeforeReturn";
 
 const filterPostbyAddress = async (
     req: Request,

@@ -5,6 +5,7 @@ import logging from '../../../utils/logging';
 import applicationService from '../../../services/application/_service.application';
 import * as postService from '../../../services/post/_service.post';
 import ApplicationStatus from '../../../enum/application.enum';
+import ImageBucket from '../../../enum/imageBucket.enum';
 // import MoneyType from '../../../enum/money_type.enum';
 
 const readApplicationsByPostIdController = async (req: Request, res: Response, next: NextFunction) => {
@@ -63,7 +64,7 @@ const readApplicationsByPostIdController = async (req: Request, res: Response, n
             a.liked = +a.liked;
             a.liked_value = a.liked === 0 ? null : a.liked === 1 ? true : false;
             a.avatar = a.avatar ? 
-                `${process.env.AWS_BUCKET_IMAGE_URL}/avatar/` + a.avatar : null;
+                `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.AVATAR_IMAGES}/` + a.avatar : null;
             return a;
         }));        
 

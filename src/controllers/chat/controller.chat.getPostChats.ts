@@ -3,6 +3,7 @@ import createError from "http-errors";
 import logging from "../../utils/logging";
 import * as chatServices from "../../services/chat/_service.chat";
 import * as chatImageServices from "../../services/chatImage/_service.chatImage";
+import ImageBucket from "../../enum/imageBucket.enum";
 
 const getPostChatsController = async (
     req: Request,
@@ -41,7 +42,7 @@ const getPostChatsController = async (
                     const image = await chatImageServices.readChatImages(
                         chat.id
                     );
-                    chat.image = image && image[0] ? `${process.env.AWS_BUCKET_IMAGE_URL}/chats_image/` + image[0].image : null ;
+                    chat.image = image && image[0] ? `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.CHAT_IMAGES}/` + image[0].image : null ;
                 } else {
                     chat.image = null;
                 }

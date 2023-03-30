@@ -1,9 +1,11 @@
 import {Request, Response, NextFunction} from 'express';
 import createError from 'http-errors';
-import MoneyType from '../../../enum/money_type.enum';
+// import ImageBucket from '../../../enum/imageBucket.enum';
+// import MoneyType from '../../../enum/money_type.enum';
 import applicationService from '../../../services/application/_service.application';
-import { readDefaultPostImageByPostId } from '../../../services/category/_service.category';
+// import { readDefaultPostImageByPostId } from '../../../services/category/_service.category';
 import logging from '../../../utils/logging';
+import { formatPostBeforeReturn } from '../../post/_controller.post.formatPostBeforeReturn';
 
 
 const readSubmittedApplicationByAccountId = async (req: Request, res: Response, next: NextFunction) => {
@@ -24,34 +26,36 @@ const readSubmittedApplicationByAccountId = async (req: Request, res: Response, 
                 logging.warning("Invalid threshold value");
                 return next(createError(400));
             }
-        const applications = await applicationService.read.readSubmittedApplicationByAccountId(accountId, +limit, +threshold);
+        let applications = await applicationService.read.readSubmittedApplicationByAccountId(accountId, +limit, +threshold);
             
         if (!applications) {
             return next(createError(404, "Not found any applications"));
         }
 
         applications.forEach(element => {
-            element.start_date = +element.start_date || null;
-            element.end_date = +element.end_date || null;
+            // element.start_date = +element.start_date || null;
+            // element.end_date = +element.end_date || null;
             element.created_at = new Date(element.created_at).getTime();
-            element.money_type = +element.money_type;
-            element.money_type_text = MoneyType[element.money_type];
-            element.salary_type_id = +element.salary_type_id;
+            // element.money_type = +element.money_type;
+            // element.money_type_text = MoneyType[element.money_type];
+            // element.salary_type_id = +element.salary_type_id;
         })
-        await Promise.all(applications.map(async (element) => {
-            if (element.image === null) {
-                const firstParentCategoryImage =
-                    await readDefaultPostImageByPostId(
-                        element.post_id
-                    );
-                if (!firstParentCategoryImage) {
-                    element.image = null;
-                } else {
-                    element.image = firstParentCategoryImage.image;
-                }
-            } else {
-                element.image = `${process.env.AWS_BUCKET_IMAGE_URL}/posts-images/${element.post_id}/` + element.image;
-            }
+        applications = await Promise.all(applications.map(async (post) => {
+            post = await formatPostBeforeReturn(post);
+            // if (element.image === null) {
+            //     const firstParentCategoryImage =
+            //         await readDefaultPostImageByPostId(
+            //             element.post_id
+            //         );
+            //     if (!firstParentCategoryImage) {
+            //         element.image = null;
+            //     } else {
+            //         element.image = firstParentCategoryImage.image;
+            //     }
+            // } else {
+            //     element.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${element.post_id}/` + element.image;
+            // }
+            return post;
         }));
 
         let isOver: boolean = false;

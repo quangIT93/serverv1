@@ -56,18 +56,18 @@ const readAcceptedPostsByThemeController = async (
 
         await Promise.all(
             posts.map(async (post, index: number) => {
-                posts[index] = formatPostBeforeReturn(post);
-                if (post.image === null) {
-                    const firstParentCategoryImage =
-                        await categoryServices.readDefaultPostImageByPostId(
-                            post.id
-                        );
-                    if (!firstParentCategoryImage) {
-                        post.image = null;
-                    } else {
-                        post.image = firstParentCategoryImage.image;
-                    }
-                }
+                posts[index] = await formatPostBeforeReturn(post);
+                // if (post.image === null) {
+                //     const firstParentCategoryImage =
+                //         await categoryServices.readDefaultPostImageByPostId(
+                //             post.id
+                //         );
+                //     if (!firstParentCategoryImage) {
+                //         post.image = null;
+                //     } else {
+                //         post.image = firstParentCategoryImage.image;
+                //     }
+                // }
             })
         );
 
@@ -148,8 +148,8 @@ const readAcceptedPostsByThemeController = async (
                     posts: posts.map((post) => ({
                         ...post,
                         bookmarked: null,
-                        money_type_text: MoneyType[post.money_type],
-                        money_type: +post.money_type
+                        // money_type_text: MoneyType[post.money_type],
+                        // money_type: +post.money_type
 
                     })),
                     is_over:

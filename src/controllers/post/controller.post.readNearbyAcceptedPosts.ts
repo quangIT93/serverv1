@@ -3,7 +3,6 @@ import { NextFunction, Request, Response } from "express";
 import logging from "../../utils/logging";
 import * as postServices from "../../services/post/_service.post";
 import * as bookmarkServices from "../../services/bookmark/_service.bookmark";
-import * as categoryServices from "../../services/category/_service.category";
 // import MoneyType from "../../enum/money_type.enum";
 import { formatPostBeforeReturn } from "./_controller.post.formatPostBeforeReturn";
 
@@ -136,19 +135,19 @@ const readNearbyAcceptedPostsController = async (
         // MODIFY
         await Promise.all(
             posts.map(async (post, index) => {
-                posts[index] = formatPostBeforeReturn(post);
+                posts[index] = await formatPostBeforeReturn(post);
 
-                if (post.image === null) {
-                    const firstParentCategoryImage =
-                        await categoryServices.readDefaultPostImageByPostId(
-                            post.id
-                        );
-                    if (!firstParentCategoryImage) {
-                        post.image = null;
-                    } else {
-                        post.image = firstParentCategoryImage.image;
-                    }
-                }
+                // if (post.image === null) {
+                //     const firstParentCategoryImage =
+                //         await categoryServices.readDefaultPostImageByPostId(
+                //             post.id
+                //         );
+                //     if (!firstParentCategoryImage) {
+                //         post.image = null;
+                //     } else {
+                //         post.image = firstParentCategoryImage.image;
+                //     }
+                // }
             })
         );
 

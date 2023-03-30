@@ -13,14 +13,14 @@ const readAllLocationsController = async (
   try {
     logging.info('Read all locations controller start ...');
 
-    var {lang =""} = req.query;
-    if(lang.toString().trim()!=""){
-      if ((lang.toString().trim()!='vi'&& lang.toString().trim()!='en'&& lang.toString().trim()!='ko')){
+    var { lang = "" } = req.query;
+    if (lang.toString().trim() != "") {
+      if ((lang.toString().trim() != 'vi' && lang.toString().trim() != 'en' && lang.toString().trim() != 'ko')) {
         logging.warning("Invalid language");
         return next(createError(400));
-    }
-    }else{
-        lang ="vi"
+      }
+    } else {
+      lang = "vi"
     }
 
     // READ ALL PROVINCES
@@ -65,40 +65,40 @@ const readAllLocationsController = async (
         districts = sortDistrict(districts);
         districts = await Promise.all(
           districts.map(async (district) => {
-            
-            if(lang.toString().trim()=="en"|| lang.toString().trim()=="ko"){ 
+
+            if (lang.toString().trim() == "en" || lang.toString().trim() == "ko") {
 
               // get list wards en
               const wards = await locationServices.readWardsEnByDistrict(
                 district.id
               );
-            // Sort
-            wards.sort((a, b) => a.full_name.localeCompare(b.full_name));
-           //return list wards en
+              // Sort
+              wards.sort((a, b) => a.full_name.localeCompare(b.full_name));
+              //return list wards en
               return {
                 district_id: district.id,
                 district: district.full_name_en,
                 wards: wards,
               };
-            }else{
+            } else {
 
-          // get list wards vn
-            const wards = await locationServices.readWardsByDistrict(
-               district.id
+              // get list wards vn
+              const wards = await locationServices.readWardsByDistrict(
+                district.id
               );
-          // Sort
-            wards.sort((a, b) => a.full_name.localeCompare(b.full_name));
-          //retrun list wards vn
+              // Sort
+              wards.sort((a, b) => a.full_name.localeCompare(b.full_name));
+              //retrun list wards vn
               return {
                 district_id: district.id,
                 district: district.full_name,
                 wards: wards,
               };
             }
-           
+
           })
         );
-        if(lang.toString().trim()=="en"||lang.toString().trim()=="ko"){
+        if (lang.toString().trim() == "en" || lang.toString().trim() == "ko") {
           // return province with name english
           return {
             province_id: province.id,

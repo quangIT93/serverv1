@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import logging from "../../utils/logging";
 import * as bannerServices from "../../services/banner/_service.banner";
 import { formatBannerResponse } from "./handler/formatBannerResponse";
+import ImageBucket from "../../enum/imageBucket.enum";
 
 const readEnabledBannersController = async (
     req: Request,
@@ -25,7 +26,7 @@ const readEnabledBannersController = async (
         }
 
         banners.forEach((banner) => {
-            banner.image = `${process.env.AWS_BUCKET_IMAGE_URL}/banners/` + banner.image;
+            banner.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.BANNER_IMAGES}/` + banner.image;
         });
 
         // SUCCESS

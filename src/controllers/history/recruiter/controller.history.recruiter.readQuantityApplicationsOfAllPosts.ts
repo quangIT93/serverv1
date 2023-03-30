@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import logging from '../../../utils/logging';
 import createError from 'http-errors';
 import applicationService from '../../../services/application/_service.application';
-import MoneyType from '../../../enum/money_type.enum';
+// import MoneyType from '../../../enum/money_type.enum';
 import { formatPostBeforeReturn } from '../../post/_controller.post.formatPostBeforeReturn';
-import readDefaultPostImageByPostId from '../../../services/category/service.category.readDefaultPostImageByPostId';
+// import readDefaultPostImageByPostId from '../../../services/category/service.category.readDefaultPostImageByPostId';
 
 const readQuantityApplicationOfAllPostsController = async (req: Request, res: Response, next: NextFunction) => {
     const { id: recruiterId } = req.user;
@@ -34,23 +34,23 @@ const readQuantityApplicationOfAllPostsController = async (req: Request, res: Re
         }
 
         titles.forEach(element => { 
-            element = formatPostBeforeReturn(element);
-            element.num_of_application = Number(element.num_of_application);
         })
-
-        const data = await Promise.all(titles.map(async (a) => {
-            if (a.image === null) {
-                const firstParentCategoryImage =
-                    await readDefaultPostImageByPostId(
-                        a.id
-                    );
-                if (!firstParentCategoryImage) {
-                    a.image = null;
-                } else {
-                    a.image = firstParentCategoryImage.image;
-                }
-            }
-            return a;
+        
+        const data = await Promise.all(titles.map(async (post) => {
+            post = await formatPostBeforeReturn(post);
+            post.num_of_application = Number(post.num_of_application);
+            // if (a.image === null) {
+            //     const firstParentCategoryImage =
+            //         await readDefaultPostImageByPostId(
+            //             a.id
+            //         );
+            //     if (!firstParentCategoryImage) {
+            //         a.image = null;
+            //     } else {
+            //         a.image = firstParentCategoryImage.image;
+            //     }
+            // }
+            return post;
         }));
 
         let isOver: boolean = false;

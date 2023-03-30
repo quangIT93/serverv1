@@ -1,25 +1,33 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
 
-const readEnabledThemes = async () => {
+const readEnabledThemes = async (
+    account_id: string = null,
+) => {
     try {
         logging.info("Read enabled themes service start ...");
-        // let query =
-        //     "SELECT themes.id, themes.title, themes.image, COUNT(themes_posts.post_id) AS number_of_posts " +
-        //     "FROM themes " +
-        //     "LEFT JOIN themes_posts " +
-        //     "ON themes_posts.theme_id = themes.id " +
-        //     "WHERE themes.status = ? GROUP BY themes.id";
-
+        console.log(account_id)
         let query = 
-            "SELECT themes.id, themes.title, themes.image, COUNT(themes_posts.post_id) AS number_of_posts " +
+            "SELECT themes.id, " +
+            "themes.title, " +
+            "themes.image, " +
+            "themes.district_id, " +
+            "COUNT(themes_posts.post_id) AS number_of_posts " +
             "FROM themes " +
             "LEFT JOIN themes_posts " +
             "ON themes_posts.theme_id = themes.id " +
             "LEFT JOIN posts " +
             "ON posts.id = themes_posts.post_id " +
-            "WHERE themes.status = ?  AND posts.status = 1 GROUP BY themes.id";
-        let params = [1];
+            "LEFT JOIN districts " +
+            "ON districts.id = themes.district_id " +
+            "WHERE themes.status = ? AND posts.status = 1 " +
+            `${account_id ? "AND districts.province_id IN " + 
+            "(SELECT province_id FROM profiles_locations JOIN districts ON profiles_locations.location_id = districts.id " + 
+            "WHERE profiles_locations.account_id = ?) " : ""}` +
+            "GROUP BY themes.id";
+        let params = [1, account_id];
+
+        console.log(query)
 
         const res = await executeQuery(query, params);
         return res ? res : null;

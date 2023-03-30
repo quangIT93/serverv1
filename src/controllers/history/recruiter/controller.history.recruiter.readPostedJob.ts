@@ -2,7 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import logging from '../../../utils/logging';
 import createError from 'http-errors';
 import * as postService from '../../../services/post/_service.post';
-import readDefaultPostImageByPostId from '../../../services/category/service.category.readDefaultPostImageByPostId';
+// import readDefaultPostImageByPostId from '../../../services/category/service.category.readDefaultPostImageByPostId';
+// import ImageBucket from '../../../enum/imageBucket.enum';
+import { formatPostBeforeReturn } from '../../post/_controller.post.formatPostBeforeReturn';
 
 const readPostedJobByRecruiterIdController = async (req: Request, res: Response, next: NextFunction) => {
     const { id: recruiterId } = req.user;
@@ -30,29 +32,30 @@ const readPostedJobByRecruiterIdController = async (req: Request, res: Response,
 
 
 
-        posts.forEach(element => {
-            element.start_date = +element.start_date || null;
-            element.end_date = +element.end_date || null;
-            element.start_time = +element.start_time || null;
-            element.end_time = +element.end_time || null;
-            element.created_at = new Date(element.created_at).getTime();
-            posts.image = posts.image ? 
-                `${process.env.AWS_BUCKET_IMAGE_URL}/posts-images/${element.id}/` + posts.image : null;
-        })
+        // posts.forEach(element => {
+        //     element.start_date = +element.start_date || null;
+        //     element.end_date = +element.end_date || null;
+        //     element.start_time = +element.start_time || null;
+        //     element.end_time = +element.end_time || null;
+        //     element.created_at = new Date(element.created_at).getTime();
+        //     posts.image = posts.image ? 
+        //         `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${element.id}/` + posts.image : null;
+        // })
 
-        const data = await Promise.all(posts.map(async (a) => {
-            if (a.image === null) {
-                const firstParentCategoryImage =
-                    await readDefaultPostImageByPostId(
-                        a.id
-                    );
-                if (!firstParentCategoryImage) {
-                    a.image = null;
-                } else {
-                    a.image = firstParentCategoryImage.image;
-                }
-            }
-            return a;
+        const data = await Promise.all(posts.map(async (post) => {
+            post = await formatPostBeforeReturn(post);
+            // if (a.image === null) {
+            //     const firstParentCategoryImage =
+            //         await readDefaultPostImageByPostId(
+            //             a.id
+            //         );
+            //     if (!firstParentCategoryImage) {
+            //         a.image = null;
+            //     } else {
+            //         a.image = firstParentCategoryImage.image;
+            //     }
+            // }
+            return post;
         }));
 
         let isOver: boolean = false;
