@@ -19,7 +19,7 @@ const updateThemeController = async (
         const title = req.body.title ? req.body.title.toString().trim() : null;
         const districtIds = req.body.districtIds ? req.body.districtIds : null;
 
-        console.log(req.body);
+        // console.log(req.body);
 
         // VALIDATION
         if (!Number.isInteger(themeId)) {
@@ -121,7 +121,7 @@ const updateThemeController = async (
             code: 200,
             success: true,
             data: {
-                image: imageUrl,
+                image: `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.THEME_IMAGES}/${imageUrl}`,
             },
             message: "Successfully",
         });
