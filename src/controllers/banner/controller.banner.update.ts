@@ -41,7 +41,7 @@ const updateBannerController = async (
 
         //
         let imageUrl: string;
-        if (req.files && req.files.length > 0) {
+        if (req.files && req.files.length as number > 0) {
             // UPLOAD FILE TO AWS
             const urlsUploaded = await awsServices.uploadImages(req.files, ImageBucket.BANNER_IMAGES);
             imageUrl =
@@ -52,8 +52,12 @@ const updateBannerController = async (
             imageUrl = req.body.imageUrl
                 ? req.body.imageUrl.toString().trim()
                 : null;
-        }
 
+        }
+            
+        if (imageUrl.startsWith(process.env.AWS_BUCKET_IMAGE_URL)) {
+            imageUrl = imageUrl.split("/").pop();
+        }
         if (!imageUrl) {
             logging.warning("Invalid image url");
             return next(createError(400));
@@ -76,7 +80,7 @@ const updateBannerController = async (
             code: 200,
             success: true,
             data: {
-                image: imageUrl,
+                image: `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.BANNER_IMAGES}/` + imageUrl,
             },
             message: "Successfully",
         });
