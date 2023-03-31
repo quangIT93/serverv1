@@ -32,8 +32,7 @@ const updatePostInformationController = async (
             }
 
             const urlsUploaded =
-                req.files && req.files.length > 0
-                    ? await awsServices.uploadImages(req.files, ImageBucket.POST_IMAGES, postId)
+                req.files && req.files.length > 0 ? await awsServices.uploadImages(req.files, ImageBucket.POST_IMAGES, postId)
                     : [];
 
             // GET BODY DATA
@@ -165,6 +164,9 @@ const updatePostInformationController = async (
             }
 
             const helper = new Helper()
+
+            // remove char + at head of phone number
+            phoneNumber = phoneNumber.replace(/^\+/, '');
 
             if (phoneNumber && !helper.checkPhoneNumberFormat(phoneNumber)) {
                 logging.warning("Invalid phone number format");
