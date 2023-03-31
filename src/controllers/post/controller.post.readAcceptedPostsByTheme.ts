@@ -1,3 +1,4 @@
+import { lang } from 'moment';
 import createError from "http-errors";
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
@@ -25,6 +26,13 @@ const readAcceptedPostsByThemeController = async (
         const themeId = +req.query.tid;
         const limit = req.query.limit;
         const threshold = req.query.threshold;
+
+        const { lang = "vi" } = req.query;
+
+        if (lang !== "vi" && lang !== "en" && lang !== "ko") {
+            logging.warning("Invalid language");
+            return next(createError(400));
+        }
 
         if (!Number.isInteger(themeId) || themeId <= 0) {
             logging.warning("Invalid theme id");
@@ -57,17 +65,6 @@ const readAcceptedPostsByThemeController = async (
         await Promise.all(
             posts.map(async (post, index: number) => {
                 posts[index] = await formatPostBeforeReturn(post);
-                // if (post.image === null) {
-                //     const firstParentCategoryImage =
-                //         await categoryServices.readDefaultPostImageByPostId(
-                //             post.id
-                //         );
-                //     if (!firstParentCategoryImage) {
-                //         post.image = null;
-                //     } else {
-                //         post.image = firstParentCategoryImage.image;
-                //     }
-                // }
             })
         );
 

@@ -32,7 +32,7 @@ const updatePostInformationController = async (
             }
 
             const urlsUploaded =
-                req.files && req.files.length > 0 ? await awsServices.uploadImages(req.files, ImageBucket.POST_IMAGES, postId)
+                req.files && req.files.length as number > 0 ? await awsServices.uploadImages(req.files, ImageBucket.POST_IMAGES, postId)
                     : [];
 
             // GET BODY DATA

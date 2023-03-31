@@ -11,19 +11,15 @@ const readAcceptedPostsByTheme = async (
         logging.info("Read accepted posts by theme service start ...");
         let query =
             initQueryReadPost.q1 +
-            "WHERE posts.status = ? AND posts.salary_type = salary_types.id " +
-            "AND posts.id IN (SELECT post_id FROM themes_posts WHERE theme_id = ?) ";
+            "INNER JOIN themes ON themes.id = ? " +
+            "WHERE posts.status = ? " +
+            // "AND posts.id IN (SELECT post_id FROM themes_posts WHERE theme_id = ?) ";
+            "AND districts.id = themes.district_id " +
+            `${threshold && threshold > 0 ? "AND posts.id < ? " : " "}` +
+            "GROUP BY posts.id ORDER BY posts.id DESC LIMIT ?";
 
-        let params = [1, themeId];
-
-        query += threshold && threshold > 0 ? "AND posts.id < ? " : " ";
-        params =
-            threshold && threshold > 0 ? [...params, threshold] : [...params];
-
-        query +=
-            limit && limit > 0
-                ? "GROUP BY posts.id ORDER BY posts.id DESC LIMIT ?"
-                : "GROUP BY posts.id ORDER BY posts.id DESC";
+        let params = [themeId, 1]
+        params = threshold && threshold > 0 ? [...params, threshold] : [...params];
         params = limit && limit > 0 ? [...params, limit] : [...params];
 
         const res = await executeQuery(query, params);

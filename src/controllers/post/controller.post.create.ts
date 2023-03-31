@@ -280,7 +280,7 @@ const createPostController = async (
                 return next(createError(500));
             }
 
-            if (req.files && req.files.length > 0) {
+            if (req.files && req.files.length as number > 0) {
                 // UPLOAD IMAGES TO AWS
                 const urlsUploaded = await awsServices.uploadImages(req.files, ImageBucket.POST_IMAGES, postIdCreated);
 
