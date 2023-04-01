@@ -4,6 +4,7 @@ import logging from "../../utils/logging";
 import * as bannerServices from "../../services/banner/_service.banner";
 import { formatBannerResponse } from "./handler/formatBannerResponse";
 import ImageBucket from "../../enum/imageBucket.enum";
+import shuffle from "../../utils/shuffleArray";
 
 const readEnabledBannersController = async (
     req: Request,
@@ -20,7 +21,7 @@ const readEnabledBannersController = async (
         }
 
         // GET BANNERS
-        const banners = await bannerServices.readEnabledBanners(version);
+        let banners = await bannerServices.readEnabledBanners(version);
         if (!banners) {
             return next(createError(500));
         }
@@ -28,6 +29,8 @@ const readEnabledBannersController = async (
         banners.forEach((banner) => {
             banner.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.BANNER_IMAGES}/` + banner.image;
         });
+
+        banners = shuffle(banners);
 
         // SUCCESS
         return res.status(200).json({

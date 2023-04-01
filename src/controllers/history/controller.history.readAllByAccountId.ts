@@ -9,7 +9,7 @@ import { readDefaultPostImageByPostId } from '../../services/category/_service.c
 import ImageBucket from '../../enum/imageBucket.enum';
 
 const readAllByAccountId = async (req: Request, res: Response, next: NextFunction) => {
-    logging.info('Read All by account id controller start ...');
+    logging.info('Read all by account id controller start ...');
     const {id: accountId} = req.user;
     const {page = ""} = req.query;
     try {
@@ -26,7 +26,7 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
 
         const data = await Promise.all(result.map(async (a) => {
             if (a.type === 'post') {
-                a = formatPostBeforeReturn(a);
+                a = await formatPostBeforeReturn(a);
                 a.num_of_application = Number(a.num_of_application);
             }
             if (a.type === 'application') {
