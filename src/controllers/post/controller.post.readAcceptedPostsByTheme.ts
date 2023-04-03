@@ -31,19 +31,6 @@ const readAcceptedPostsByThemeController = async (
             return next(createError(400));
         }
 
-        if (limit === "" || (limit && (Number.isNaN(+limit) || +limit <= 0))) {
-            logging.warning("Invalid limit value");
-            return next(createError(400));
-        }
-
-        if (
-            threshold === "" ||
-            (threshold && (Number.isNaN(+threshold) || +threshold <= 0))
-        ) {
-            logging.warning("Invalid limit value");
-            return next(createError(400));
-        }
-
         // READ ACCEPTED POSTS BY THEME
         const posts = await postServices.readAcceptedPostsByTheme(
             themeId,

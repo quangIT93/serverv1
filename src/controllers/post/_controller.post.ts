@@ -4,8 +4,8 @@ import readAcceptedPostsOfAnotherAccountController from "./controller.post.readA
 import readAcceptedPostsInBookmarkController from "./controller.post.readAcceptedPostsInBookmark";
 import readAcceptedPostsByThemeController from "./controller.post.readAcceptedPostsByTheme";
 import readPostsByAdminController from "./controller.post.readPostsByAdmin";
-import readNewestAcceptedPostsController from "./controller.post.readNewestAcceptedPosts";
-import readNearbyAcceptedPostsController from "./controller.post.readNearbyAcceptedPosts";
+import readNewestAcceptedPostsController from "./readPost/handler/controller.post.readNewestAcceptedPosts";
+import readNearbyAcceptedPostsController from "./readPost/handler/controller.post.readNearbyAcceptedPosts";
 import readAllPostsByThemeController from "./controller.post.readAllPostsByTheme";
 import countPostQuantityByAdminController from "./controller.post.countPostQuantityByAdmin";
 

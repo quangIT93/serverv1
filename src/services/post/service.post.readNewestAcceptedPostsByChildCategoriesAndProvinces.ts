@@ -5,7 +5,7 @@ import initQueryReadPost from "./_service.post.initQuery";
 const readNewestAcceptedPostsByChildCategoriesAndProvinces = async (
     accountId: string,
     childCategoryIds: number[],
-    provinceIds: number[],
+    provinceIds: string[],
     limit: number | null,
     threshold: number | null
 ) => {
@@ -24,13 +24,10 @@ const readNewestAcceptedPostsByChildCategoriesAndProvinces = async (
             "AND provinces.id IN " +
             `(${provinceIds.map(() => "?").join(", ")}) ` +
             `${threshold ? "AND posts.id < ? " : ""} ` +
-            "UNION " +
             "GROUP BY posts.id " +
             `${provinceIds.length > 1 ? "ORDER BY FIELD(provinces.id, " + 
             provinceIds.map((_) => "?").join(", ") + ") " : ""}` +
             `${limit ? "LIMIT ?" : ""}`;
-
-        // console.log(query);
 
         const params = [
             1,

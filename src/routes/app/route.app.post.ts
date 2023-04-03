@@ -1,6 +1,7 @@
 import express from "express";
 import postController from "../../controllers/post/_controller.post";
 import verifyAccessToken from "../../middlewares/middleware.verifyAccessToken";
+import { checkLimitAndThresholdParams } from "../../middlewares/utils/midleware.checkUtilsParams";
 
 const router = express.Router();
 
@@ -21,22 +22,32 @@ router.get(
 router.get("/acc", postController.readAcceptedPostsOfAnotherAccount);
 
 // READ NEWEST ACCEPTED POSTS
-router.get("/newest", postController.readNewestAcceptedPosts);
+router.get(
+    "/newest", 
+    checkLimitAndThresholdParams,
+    postController.readNewestAcceptedPosts
+);
 
 // READ NEARBY ACCEPTED POSTS
 router.get(
     "/nearby",
     verifyAccessToken,
+    checkLimitAndThresholdParams,
     postController.readNearbyAcceptedPosts
 );
 
 // READ ACCEPTED POSTS BY THEME
-router.get("/theme", postController.readAcceptedPostsByTheme);
+router.get(
+    "/theme", 
+    checkLimitAndThresholdParams,
+    postController.readAcceptedPostsByTheme
+);
 
 // READ ACCEPTED POSTS IN BOOKMARK
 router.get(
     "/bookmark",
     verifyAccessToken,
+    checkLimitAndThresholdParams,
     postController.readAcceptedPostsInBookmark
 );
 

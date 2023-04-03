@@ -1,101 +1,100 @@
 import ImageBucket from "../../enum/imageBucket.enum";
 import MoneyType from "../../enum/money_type.enum";
+import {PostService, PostResponse} from "../../interface/Post";
 import { readDefaultPostImageByPostId } from "../../services/category/_service.category";
 
 
-async function formatPostBeforeReturn (post, lang = "vi") {
-    if (post) {
-        if (post.start_date !== undefined) {
-            post.start_date = +post.start_date || null;
-        }
-        if (post.end_date !== undefined) {
-            post.end_date = +post.end_date || null;
-        }
-        if (post.start_time !== undefined) {
-            post.start_time = +post.start_time || null;
-        }
-        if (post.end_time !== undefined) {
-            post.end_time = +post.end_time || null;
-        }
-        if (post.created_at !== undefined) {
-            post.created_at = new Date(post.created_at).getTime();
-        }
-        if (post.money_type !== undefined) {
-            post.money_type = +post.money_type;
-            post.money_type_text = MoneyType[post.money_type];
-        }
-        if (post.latitude !== undefined) {
-            post.latitude = parseFloat(post.latitude) || null;
-        }
-        if (post.longitude !== undefined) {
-            post.longitude = parseFloat(post.longitude) || null;
-        }
+async function formatPostBeforeReturn (post: PostService, lang = "vi") {
+    const postResponse: PostResponse = {
+        id: post.id,
+        account_id: post.account_id,
+        title: post.title,
+        company_name: post.company_name,
+        address: post.address,
+        salary_type: post.salary_type,
+        salary_type_id: post.salary_type_id,
+        image: post.image,
+        description: post.description,
+        phone_contact: post.phone_contact,
+        is_date_period: post.is_date_period,
+        is_working_weekend: post.is_working_weekend,
+        is_remotely: +post.is_remotely,
+        is_inhouse_data: +post.is_inhouse_data,
+        created_at: new Date(post.created_at).getTime(),
+        money_type: +post.money_type,
+        money_type_text: MoneyType[post.money_type],
+        status: post.status,
+        start_date: post.start_date ? +post.start_date : null,
+        end_date: post.end_date ? +post.end_date : null,
+        start_time: +post.start_time,
+        end_time: +post.end_time,
+        salary_min: post.salary_min,
+        salary_max: post.salary_max,
+        ward_id: post.ward_id,
+        ward: post.ward,
+        district_id: post.district_id,
+        district: post.district,
+        district_name: post.district_name,
+        province_id: post.province_id,
+        province: post.province,
+        province_name: post.province_name,
+        latitude: post.latitude,
+        longitude: post.longitude,
+        updated_at: post.updated_at ? new Date(post.updated_at).getTime() : null,
+    };
+    if (postResponse.image !== undefined && postResponse.image !== null) {
+        postResponse.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${postResponse.post_id || postResponse.id}/` + postResponse.image;
+    } else {
+            const firstParentCategoryImage =
+                await readDefaultPostImageByPostId(
+                    postResponse.post_id || postResponse.id,
+                );
+            if (!firstParentCategoryImage) {
+                postResponse.image = null;
+            } else {
+                postResponse.image = firstParentCategoryImage.image;
+            }
+    }       
 
-        if (post.is_remotely !== undefined) {
-            post.is_remotely = +post.is_remotely;
-        }
-
-        if (post.is_inhouse_data !== undefined) {
-            post.is_inhouse_data = +post.is_inhouse_data;
-        }
-
-        if (post.phone_contact !== undefined) {
-            post.phone_contact = "+" + post.phone_contact || null;
-        }
-
-        if (post.image !== undefined && post.image !== null) {
-            post.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${post.post_id || post.id}/` + post.image;
-        } else {
-                const firstParentCategoryImage =
-                    await readDefaultPostImageByPostId(
-                        post.post_id || post.id,
-                    );
-                if (!firstParentCategoryImage) {
-                    post.image = null;
-                } else {
-                    post.image = firstParentCategoryImage.image;
-                }
-        }       
-
-        switch (lang) {
-            case "en":
-                switch (post.salary_type_id) {
-                    case 1:
-                        post.salary_type_text = "Hourly";
-                        break;
-                    case 2:
-                        post.salary_type_text = "Daily";
-                        break;
-                    case 3:
-                        post.salary_type_text = "Weekly";
-                        break;
-                    case 4:
-                        post.salary_type_text = "Monthly";
-                        break;
-                    case 5:
-                        post.salary_type_text = "Job";
-                }
-                break;
-            case "ko":
-                switch (post.salary_type_id) {
-                    case 1:
-                        post.salary_type_text = "시급";
-                        break;
-                    case 2:
-                        post.salary_type_text = "일급";
-                        break;
-                    case 3:
-                        post.salary_type_text = "주급";
-                        break;
-                    case 4:
-                        post.salary_type_text = "월급";
-                        break;
-                    case 5:
-                        post.salary_type_text = "일자리";
-                }
-        }
-    }
-    return post;
+    //     switch (lang) {
+    //         case "en":
+    //             switch (postResponse.salary_type_id) {
+    //                 case 1:
+    //                     post.salary_type_text = "Hourly";
+    //                     break;
+    //                 case 2:
+    //                     post.salary_type_text = "Daily";
+    //                     break;
+    //                 case 3:
+    //                     post.salary_type_text = "Weekly";
+    //                     break;
+    //                 case 4:
+    //                     post.salary_type_text = "Monthly";
+    //                     break;
+    //                 case 5:
+    //                     post.salary_type_text = "Job";
+    //             }
+    //             break;
+    //         case "ko":
+    //             switch (post.salary_type_id) {
+    //                 case 1:
+    //                     post.salary_type_text = "시급";
+    //                     break;
+    //                 case 2:
+    //                     post.salary_type_text = "일급";
+    //                     break;
+    //                 case 3:
+    //                     post.salary_type_text = "주급";
+    //                     break;
+    //                 case 4:
+    //                     post.salary_type_text = "월급";
+    //                     break;
+    //                 case 5:
+    //                     post.salary_type_text = "일자리";
+    //             }
+    //     }
+    // }
+    return postResponse;
 }
 
 export { formatPostBeforeReturn };

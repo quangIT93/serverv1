@@ -16,20 +16,7 @@ const readAcceptedPostsInBookmarkController = async (
 
     try {
         // logging.info("Read accepted posts in bookmark start ...");
-        
-        if (limit === "" || (limit && (Number.isNaN(+limit) || +limit <= 0))) {
-            logging.warning("Invalid limit value");
-            return next(createError(400));
-        }
-
-        // THRESHOLD
-        if (
-            (threshold && (Number.isNaN(+threshold) || +threshold <= 0))
-        ) {
-            logging.warning("Invalid threshold value");
-            return next(createError(400));
-        }
-
+    
         if (!req.user || !req.user.id) {
             return next(createError(401));
         }
