@@ -20,7 +20,7 @@ const updatePostInformationController = async (
         multerUploadImages(req, res, async (err) => {
             if (err) {
                 logging.error("Multer error");
-                return next(createError(500));
+                return next(createError(400, "You can only upload 5 images"));
             }
 
             // UPLOAD IMAGES TO AWS
