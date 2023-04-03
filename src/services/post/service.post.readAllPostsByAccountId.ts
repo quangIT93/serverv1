@@ -1,8 +1,9 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import initQueryReadPost from "./_service.post.initQuery";
+import { initQueryReadPost } from "./_service.post.initQuery";
 
 const readAllPostsByAccountIdService = async (
+    lang: string = "vi",
     accountId: string,
     threshold: number | null,
     limit: number | null
@@ -10,7 +11,7 @@ const readAllPostsByAccountIdService = async (
     try {
         logging.info("Read all posts by account id service start ...");
         const query = 
-        initQueryReadPost.q1 +
+        initQueryReadPost(lang) +
         "WHERE posts.account_id = ? " +
         `${threshold ? "AND posts.id < ? " : ""}` +
         "GROUP BY posts.id " +

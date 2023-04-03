@@ -2,12 +2,11 @@ import createError from "http-errors";
 import { NextFunction, Request, Response } from "express";
 import logging from "../../../../utils/logging";
 import * as postServices from "../../../../services/post/_service.post";
-import * as bookmarkServices from "../../../../services/bookmark/_service.bookmark";
-// import MoneyType from "../../enum/money_type.enum";
 import { formatPostBeforeReturn } from "../../_controller.post.formatPostBeforeReturn";
 import { isArrayNumber, isNumber } from "../../../../helpers/checkData/checkTypeOfData";
 import { formatToArrayNumber, formatToStringNumberArray } from "../../../../helpers/formatData/formatArray";
 import {PostResponse, PostService} from "../../../../interface/Post";
+import { checkBookmark } from "../formatResponse/checkBookmark";
 
 const readNearbyAcceptedPostsController = async (
     req: Request,
@@ -23,6 +22,8 @@ const readNearbyAcceptedPostsController = async (
         const provinceIds = req.query.pvid;
         const limit = req.query.limit;
         const threshold = req.query.threshold;
+
+        console.log("lang", req.query.lang.toString())
         // PROVINCE IDS
         if (!provinceIds) {
             logging.warning("Invalid province id value");
@@ -57,6 +58,7 @@ const readNearbyAcceptedPostsController = async (
             // );
             posts =
                 await postServices.readNewestAcceptedPostsByChildCategoriesAndProvinces(
+                    req.query.lang.toString() || "vi",
                     req.user.id,
                     formatToArrayNumber(childCategoryIds),
                     formatToStringNumberArray(provinceIds),
@@ -69,6 +71,7 @@ const readNearbyAcceptedPostsController = async (
             // );
             posts =
                 await postServices.readNewestAcceptedPostsByParentCategoryAndProvinces(
+                    req.query.lang.toString() || "vi",
                     req.user.id,
                     +parentCategoryId,
                     formatToStringNumberArray(provinceIds),
@@ -78,6 +81,7 @@ const readNearbyAcceptedPostsController = async (
         } else {
             // logging.info("Read nearby accepted posts by provinces");
             posts = await postServices.readNewestAcceptedPostsByProvinces(
+                req.query.lang.toString() || "vi",
                 req.user.id,
                 formatToStringNumberArray(provinceIds),
                 +limit + 1,
@@ -96,28 +100,16 @@ const readNearbyAcceptedPostsController = async (
             })
         );
 
-
-        // GET BOOKMARKS OF ACCOUNT
-        const bookmarks = await bookmarkServices.readByAccountId(req.user.id);
-        if (!bookmarks) {
-            return next(createError(500));
-        }
-
-        const postIdsOnBookmark = bookmarks.map((bookmark) => bookmark.post_id);
+        // CHECK BOOKMARKED
+        const data = await checkBookmark(postResponse, req, next);
 
         // SUCCESS
         return res.status(200).json({
             code: 200,
             success: true,
             data: {
-                posts: postResponse.map((post) => ({
-                    ...post,
-                    bookmarked: postIdsOnBookmark.includes(post.id),
-                })),
-                is_over:
-                    +limit > 0
-                        ? postResponse.length <= +limit
-                        : true,
+                posts: data,
+                is_over: postResponse.length <= +limit ? true : false,
             },
             message: "Successfully",
         });

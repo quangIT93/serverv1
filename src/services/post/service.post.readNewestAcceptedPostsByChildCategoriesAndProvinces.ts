@@ -1,8 +1,9 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import initQueryReadPost from "./_service.post.initQuery";
+import { initQueryReadPost } from "./_service.post.initQuery";
 
 const readNewestAcceptedPostsByChildCategoriesAndProvinces = async (
+    lang: string,
     accountId: string,
     childCategoryIds: number[],
     provinceIds: string[],
@@ -15,7 +16,7 @@ const readNewestAcceptedPostsByChildCategoriesAndProvinces = async (
         );
 
         let query =
-            initQueryReadPost.q1 +
+            initQueryReadPost(lang) +
             "WHERE posts.status = ? AND wards.district_id = districts.id " +
             "AND district_id NOT IN (SELECT location_id FROM profiles_locations WHERE account_id = ?) " +
             "AND posts.id IN " +

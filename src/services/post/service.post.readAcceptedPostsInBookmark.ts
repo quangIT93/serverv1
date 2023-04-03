@@ -2,6 +2,7 @@ import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
 
 const readAcceptedPostsInBookmark = async (
+    lang: string = "vi",
     accountId: string,
     limit: number | null,
     threshold: number | null
@@ -17,8 +18,6 @@ const readAcceptedPostsInBookmark = async (
             "posts.title," +
             "posts.company_name," +
             "posts.address," +
-            // "posts.latitude," +
-            // "posts.longitude," +
             "posts.ward_id," +
             "posts.is_date_period," +
             "posts.is_working_weekend," +
@@ -30,18 +29,18 @@ const readAcceptedPostsInBookmark = async (
             "posts.salary_max," +
             "posts.salary_type as salary_type_id," +
             "posts.money_type," +
-            // "posts.description," +
-            // "posts.phone_contact," +
             "posts.created_at," +
-            "wards.full_name as ward," + 
+            lang === "vi" ? "wards.full_name" : "wards.full_name_en" + " as ward," +
             "wards.name as ward_name," +
             "districts.id as district_id," +
-            "districts.full_name as district," + 
+            lang === "vi" ? "districts.full_name" : "districts.full_name_en" + " as district," + 
             "districts.name as district_name," +
-            "provinces.full_name as province," +
+            lang === "vi" ? "provinces.full_name" : "provinces.full_name_en" + " as province," +
             "provinces.name as province_name," +
             "provinces.id as province_id," +
-            "salary_types.value as salary_type, " +
+            lang === "vi" ? "salary_types.value" 
+                : lang === "en" ? "salary_types.value_en" : "salary_types.value_ko" +
+            " as salary_type," +
             "post_images.image AS image " +
             "FROM bookmarks " +
             "LEFT JOIN posts " +

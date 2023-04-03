@@ -189,7 +189,7 @@ const updatePostInformationByAdminController = async (
             const newCategoryIds = categoryIds.map((cateId) => +cateId);
             // GET ALL CATEGORIES OF POST
             const categoriesOfPost =
-                await postCategoryServices.readCategoriesOfPost(postId);
+                await postCategoryServices.readCategoriesOfPost("vi", postId);
             if (categoriesOfPost) {
                 const categoryIdsOfPost = categoriesOfPost.map(
                     (category) => category.child_category_id

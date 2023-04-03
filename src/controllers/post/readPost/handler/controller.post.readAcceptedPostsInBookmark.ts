@@ -1,10 +1,10 @@
 import createError from "http-errors";
 import { NextFunction, Request, Response } from "express";
 
-import logging from "../../utils/logging";
-import * as postServices from "../../services/post/_service.post";
-import { formatPostBeforeReturn } from "./_controller.post.formatPostBeforeReturn";
-import readDefaultPostImageByPostId from "../../services/category/service.category.readDefaultPostImageByPostId";
+import logging from "../../../../utils/logging";
+import * as postServices from "../../../../services/post/_service.post";
+import { formatPostBeforeReturn } from "../../_controller.post.formatPostBeforeReturn";
+import readDefaultPostImageByPostId from "../../../../services/category/service.category.readDefaultPostImageByPostId";
 
 const readAcceptedPostsInBookmarkController = async (
     req: Request,
@@ -23,9 +23,13 @@ const readAcceptedPostsInBookmarkController = async (
 
         const accountId = req.user.id;
 
-        const posts = await postServices.readAcceptedPostsInBookmark(accountId, +limit, +threshold);
+        const posts = await postServices.readAcceptedPostsInBookmark(
+            req.query.lang.toString(),
+            accountId, 
+            +limit, 
+            +threshold
+        );
         if (!posts) {
-            
             throw new Error("Posts not found");
         }
         

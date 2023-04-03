@@ -5,10 +5,20 @@ const readApplicationProfileByIdService = async (applicationId: number) => {
     try {
         logging.info("Read application profile by id service start ...");
         const query = 
-            "SELECT applications.account_id, applications.name, applications.birthday, applications.liked, " +
-            "provinces.id as province_id, provinces.name as address, applications.status as application_status, " +
-            "applications.gender, applications.introduction, applications.phone, " +
-            "applications.email, applications.avatar, applications.facebook, applications.linkedin " +
+            "SELECT applications.account_id, " +
+            "applications.name, " +
+            "applications.birthday, " +
+            "applications.liked, " +
+            "provinces.id as province_id, " +
+            "provinces.name as address, " +
+            "applications.status as application_status, " +
+            "applications.gender, " +
+            "applications.introduction, " +
+            "applications.phone, " +
+            "applications.email, " +
+            "applications.avatar, " +
+            "applications.facebook, " +
+            "applications.linkedin " +
             "FROM applications " +
             "LEFT JOIN provinces " +
             "ON provinces.id = applications.address " +

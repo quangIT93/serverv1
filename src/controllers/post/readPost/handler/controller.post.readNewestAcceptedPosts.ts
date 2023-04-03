@@ -73,9 +73,10 @@ const readNewestAcceptedPostsController = async (
             // );
             posts =
                 await postServices.readNewestAcceptedPostsByChildCategoriesAndDistricts(
+                    req.query.lang.toString(),
                     formatToArrayNumber(childCategoryIds),
                     formatToStringNumberArray(districtIds),
-                    +limit,
+                    +limit + 1,
                     threshold ? +threshold : null
                 );
         } else if (parentCategoryId && districtIds) {
@@ -84,14 +85,16 @@ const readNewestAcceptedPostsController = async (
             );
             posts =
                 await postServices.readNewestAcceptedPostsByParentCategoryAndDistricts(
+                    req.query.lang.toString(),
                     +parentCategoryId,
                     formatToStringNumberArray(districtIds),
-                    +limit,
+                    +limit + 1,
                     threshold ? +threshold : null
                 );
         } else if (districtIds) {
             logging.info("Read newest accepted posts by districts");
             posts = await postServices.readNewestAcceptedPostsByDistricts(
+                req.query.lang.toString(),
                 formatToStringNumberArray(districtIds),
                 +limit + 1,
                threshold ? +threshold : null
@@ -99,21 +102,24 @@ const readNewestAcceptedPostsController = async (
         } else if (childCategoryIds) {
             logging.info("Read newest accepted posts by child categories");
             posts = await postServices.readNewestAcceptedPostsByChildCategories(
+                req.query.lang.toString(),
                 formatToArrayNumber(childCategoryIds),
-                +limit,
+                +limit + 1,
                 threshold ? +threshold : null
             );
         } else if (parentCategoryId) {
             logging.info("Read newest accepted posts by parent category");
             posts = await postServices.readNewestAcceptedPostsByParentCategory(
+                req.query.lang.toString(),
                 +parentCategoryId,
-                +limit,
+                +limit + 1,
                 threshold ? +threshold : null
             );
         } else {
             logging.info("Read newest accepted posts");
             posts = await postServices.readNewestAcceptedPosts(
-               +limit,
+                req.query.lang.toString(),  
+               +limit + 1,
                 threshold ? +threshold : null
             );
         }
@@ -123,22 +129,22 @@ const readNewestAcceptedPostsController = async (
         }
 
         // MODIFY
-        let postResponses: PostResponse[] | void = await Promise.all(
+        let postResponses: PostResponse[] = await Promise.all(
             posts.map(async (post) => {
                 return await formatPostBeforeReturn(post);
             })
         );
 
-        console.log("postResponses ctl", postResponses);
 
         // CHECK BOOKMARK
-        console.log(">>>> postResponses ctl res", await checkBookmark(postResponses, req, next));
-        postResponses = await checkBookmark(postResponses, req, next);
+        const data = await checkBookmark(postResponses, req, next);
     
-
         return res.status(200).json({
             success: true,
-            data: postResponses,
+            data: {
+                posts: data,
+                is_over: posts.length <= +limit ? true : false,
+            },
             message: "Read newest accepted posts successfully",
             status: 200,
         });

@@ -20,7 +20,7 @@ const readAllPostsByThemeController = async (
         }
 
         // GET POSTS
-        const posts = await postServices.readAllPostsByTheme(themeId);
+        const posts = await postServices.readAllPostsByTheme(themeId, req.query.lang.toString(),);
         if (!posts) {
             return next(createError(500));
         }
@@ -34,16 +34,6 @@ const readAllPostsByThemeController = async (
         await Promise.all(
             posts.map(async (post, index: number) => {
                 posts[index] = await formatPostBeforeReturn(post);
-
-                // if (post.image === null) {
-                //     const firstParentCategoryImage =
-                //         await categoryServices.readDefaultPostImageByPostId(
-                //             post.id
-                //         );
-                //     if (firstParentCategoryImage) {
-                //         post.image = firstParentCategoryImage.image;
-                //     }
-                // }
             })
         );
 

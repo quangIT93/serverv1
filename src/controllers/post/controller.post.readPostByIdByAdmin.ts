@@ -61,6 +61,7 @@ const readPostByIdByAdminController = async (
 
         // GET CATEGORIES OF POST
         const categories = await postCategoryServices.readCategoriesOfPost(
+            "vi",
             postId
         );
         if (!categories) {

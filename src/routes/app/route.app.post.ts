@@ -2,6 +2,7 @@ import express from "express";
 import postController from "../../controllers/post/_controller.post";
 import verifyAccessToken from "../../middlewares/middleware.verifyAccessToken";
 import { checkLimitAndThresholdParams } from "../../middlewares/utils/midleware.checkUtilsParams";
+import { checkLanguageParams } from "../../middlewares/utils/midleware.checkLanguageParams";
 
 const router = express.Router();
 
@@ -25,6 +26,7 @@ router.get("/acc", postController.readAcceptedPostsOfAnotherAccount);
 router.get(
     "/newest", 
     checkLimitAndThresholdParams,
+    checkLanguageParams,
     postController.readNewestAcceptedPosts
 );
 
@@ -33,6 +35,7 @@ router.get(
     "/nearby",
     verifyAccessToken,
     checkLimitAndThresholdParams,
+    checkLanguageParams,
     postController.readNearbyAcceptedPosts
 );
 
@@ -40,6 +43,7 @@ router.get(
 router.get(
     "/theme", 
     checkLimitAndThresholdParams,
+    checkLanguageParams,
     postController.readAcceptedPostsByTheme
 );
 
@@ -48,11 +52,16 @@ router.get(
     "/bookmark",
     verifyAccessToken,
     checkLimitAndThresholdParams,
+    checkLanguageParams,
     postController.readAcceptedPostsInBookmark
 );
 
 // READ POST BY ID
-router.get("/:id", postController.readPostById);
+router.get(
+    "/:id", 
+    checkLanguageParams,
+    postController.readPostById
+);
 
 router.get(
     "/by-admin/count-quantity",

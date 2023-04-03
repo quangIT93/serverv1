@@ -31,7 +31,10 @@ const readApplicationByIdController = async (req: Request, res: Response, next: 
             `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.AVATAR_IMAGES}/` + applicationProfile.avatar : null;
 
         // READ APPLICATION CATEGORY
-        const applicationCategories = await applicationService.read.readCategoriesById(+applicationId);
+        const applicationCategories = await applicationService.read.readCategoriesById(
+            req.query.lang.toString(),
+            +applicationId
+        );
         if (applicationCategories === null) {
             return next(createError(404, "Application categories not found"));
         }

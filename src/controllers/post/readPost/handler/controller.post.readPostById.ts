@@ -2,15 +2,15 @@ import createError from "http-errors";
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
-import logging from "../../utils/logging";
-import * as postServices from "../../services/post/_service.post";
-import * as postCategoryServices from "../../services/postCategory/_service.postCategory";
-import * as postImageServices from "../../services/postImage/_service.postImage";
-import * as bookmarkServices from "../../services/bookmark/_service.bookmark";
-import applicationServices from "../../services/application/_service.application";
-import ApplicationStatus from "../../enum/application.enum";
-import { formatPostBeforeReturn } from "./_controller.post.formatPostBeforeReturn";
-import ImageBucket from "../../enum/imageBucket.enum";
+import logging from "../../../../utils/logging";
+import * as postServices from "../../../../services/post/_service.post";
+import * as postCategoryServices from "../../../../services/postCategory/_service.postCategory";
+import * as postImageServices from "../../../../services/postImage/_service.postImage";
+import * as bookmarkServices from "../../../../services/bookmark/_service.bookmark";
+import applicationServices from "../../../../services/application/_service.application";
+import ApplicationStatus from "../../../../enum/application.enum";
+import { formatPostBeforeReturn } from "../../_controller.post.formatPostBeforeReturn";
+import ImageBucket from "../../../../enum/imageBucket.enum";
 
 interface Payload {
     id: string;
@@ -37,7 +37,7 @@ const readPostByIdController = async (
 
         // GET DATA
         // GET POST DATA
-        let postData = await postServices.readPostById(postId);
+        let postData = await postServices.readPostById(postId, req.query.lang.toString());
 
         // console.log(postData);
 
@@ -58,6 +58,7 @@ const readPostByIdController = async (
 
         // GET CATEGORIES OF POST
         const categories = await postCategoryServices.readCategoriesOfPost(
+            req.query.lang.toString(),
             postId
         );
         if (!categories) {

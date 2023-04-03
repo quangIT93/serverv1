@@ -32,7 +32,7 @@ const updatePostInformationController = async (
             }
 
             const urlsUploaded =
-                req.files && req.files.length > 0
+                req.files && req.files.length as number > 0
                     ? await awsServices.uploadImages(req.files, ImageBucket.POST_IMAGES, postId)
                     : [];
 
@@ -268,7 +268,7 @@ const updatePostInformationController = async (
                 const newCategoryIds = categoryIds.map((cateId) => +cateId);
                 // GET ALL CATEGORIES OF POST
                 const categoriesOfPost =
-                    await postCategoryServices.readCategoriesOfPost(postId);
+                    await postCategoryServices.readCategoriesOfPost("vi", postId);
                 if (categoriesOfPost) {
                     const categoryIdsOfPost = categoriesOfPost.map(
                         (category) => category.child_category_id

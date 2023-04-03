@@ -1,8 +1,9 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import initQueryReadPost from "./_service.post.initQuery";
+import { initQueryReadPost } from "./_service.post.initQuery";
 
 const readNewestAcceptedPostsByDistricts = async (
+    lang: string = "vi",
     districtIds: string[],
     limit: number | null,
     threshold: number | null
@@ -13,7 +14,7 @@ const readNewestAcceptedPostsByDistricts = async (
         );
 
         let query =
-            initQueryReadPost.q1 +
+            initQueryReadPost(lang) +
             "WHERE posts.status = ? AND posts.salary_type = salary_types.id" +
             `AND posts.district_id IN (${districtIds ? districtIds.join(",") : ""})`
 

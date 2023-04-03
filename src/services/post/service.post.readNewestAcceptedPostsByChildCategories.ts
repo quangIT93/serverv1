@@ -1,8 +1,9 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import initQueryReadPost from "./_service.post.initQuery";
+import { initQueryReadPost } from "./_service.post.initQuery";
 
 const readNewestAcceptedPostsByChildCategories = async (
+    lang: string = "vi",
     chilCategoryIds: number[],
     limit: number | null,
     threshold: number | null
@@ -12,7 +13,7 @@ const readNewestAcceptedPostsByChildCategories = async (
             "Read newest accepted posts by child categories service start ..."
         );
         let query =
-            initQueryReadPost.q1 +
+            initQueryReadPost(lang) +
             "LEFT JOIN posts_categories " +
             "ON posts.id = posts_categories.post_id " +
             "WHERE posts.status = ? AND posts_categories.category_id IN ";
