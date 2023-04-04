@@ -75,7 +75,7 @@ const readPostByIdByAdminController = async (
         }
         
         images.forEach((image) => {
-            image.image = `h${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${postId}/` + image.image;
+            image.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${postId}/` + image.image;
         });
 
         // CHECK BOOKMARKED?

@@ -9,6 +9,7 @@ import * as postImageServices from "../../services/postImage/_service.postImage"
 import * as postCategoryServices from "../../services/postCategory/_service.postCategory";
 import Helper from "../../helpers/helper.class";
 import ImageBucket from "../../enum/imageBucket.enum";
+import countPostQuantityByDayByAccountId from "../../services/post/service.post.countPostQuantityByDayByAccountId";
 
 const createPostController = async (
     req: Request,
@@ -20,7 +21,7 @@ const createPostController = async (
         multerUploadImages(req, res, async (err) => {
             if (err) {
                 logging.error("Multer error");
-                return next(createError(500));
+                return next(createError(400, "You can only upload 5 images"));
             }
 
             if (!req.user && !req.user.id) {
@@ -29,6 +30,18 @@ const createPostController = async (
 
             // GET ROLE OF USER
             const { role } = req.user;
+
+            if (role === 0) {
+                // CHECK LIMITATION OF POST QUANTITY
+                const postQuantity = await countPostQuantityByDayByAccountId(
+                    req.user.id
+                );
+
+                if (parseInt(postQuantity[0].quantity) >= 3 && role === 0) {
+                    logging.warning("Post quantity limit");
+                    return next(createError(400, "You only can post 3 jobs/day"));
+                }
+            }
 
             // GET DATA
             const accountId = req.user.id;
@@ -229,7 +242,7 @@ const createPostController = async (
                 }
             });
             if (!isValidCategoryId) {
-                return next(createError(400));
+                return next(createError(400, "Invalid categoryIds"));
             }
 
             // HANDLE CREATE
@@ -267,7 +280,7 @@ const createPostController = async (
                 return next(createError(500));
             }
 
-            if (req.files && req.files.length > 0) {
+            if (req.files && req.files.length as number > 0) {
                 // UPLOAD IMAGES TO AWS
                 const urlsUploaded = await awsServices.uploadImages(req.files, ImageBucket.POST_IMAGES, postIdCreated);
 

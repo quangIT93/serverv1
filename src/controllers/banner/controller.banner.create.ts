@@ -37,18 +37,24 @@ const createBannerController = async (
             return next(createError(400));
         }
 
-        if (files && files.length > 0) {
+        if (files && (files.length as number) > 0) {
             // UPLOAD FILE TO AWS AND CREATE BANNER
             // UPLOAD FILE TO AWS
-            const urlsUploaded = await awsServices.uploadImages(files, ImageBucket.BANNER_IMAGES);
-            const imageUrl =
-                urlsUploaded && urlsUploaded.length > 0
-                    ? urlsUploaded[0]
-                    : null;
+            const urlsUploaded = await awsServices.uploadImages(
+                files,
+                ImageBucket.BANNER_IMAGES
+            );
+            let imageUrl =
+                urlsUploaded && urlsUploaded.length > 0 ? urlsUploaded[0] : null;
             if (!imageUrl) {
                 return next(createError(500));
             }
 
+            if (!imageUrl.startsWith(process.env.AWS_BUCKET_IMAGE_URL)) {
+                return next(createError(400, "Please upload image to AWS S3"));
+            }
+            
+            imageUrl = imageUrl.split("/").pop();
             // CREATE BANNER
             const bannerIdCreated = await bannerServices.create(
                 imageUrl,
@@ -101,7 +107,7 @@ const createBannerController = async (
                 success: true,
                 data: {
                     id: bannerIdCreated,
-                    image: imageUrl,
+                    image: `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.BANNER_IMAGES}/` + imageUrl,
                     redirect_url: redirectUrl,
                     type,
                     version,

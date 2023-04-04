@@ -32,10 +32,10 @@ const updateContactInformationController = async (
             : null;
 
         // VALIDATION
-        if (!phone || !email) {
-            logging.warning("Invalid phone or email");
-            return next(createError(400));
-        }
+        // if (!phone || !email) {
+        //     logging.warning("Invalid phone or email");
+        //     return next(createError(400));
+        // }
 
         // UPDATE
         const isUpdatePhoneAndEmailSuccess =

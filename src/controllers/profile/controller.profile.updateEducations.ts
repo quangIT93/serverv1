@@ -69,6 +69,11 @@ const updateEducationsOfProfileController = async (
                     return next(createError(400));
                 }
 
+                if (startDateForCreate > endDateForCreate) {
+                    logging.warning("Invalid date range");
+                    return next(createError(400, "Invalid date range"));
+                }
+
                 // HANDLE CREATE
                 const isCreateSuccess =
                     await profileEducationServices.createEducationOfProfile(
@@ -122,6 +127,11 @@ const updateEducationsOfProfileController = async (
                 ) {
                     logging.warning("Invalid date value");
                     return next(createError(400));
+                }
+
+                if (startDateForUpdate > endDateForUpdate) {
+                    logging.warning("Invalid date range");
+                    return next(createError(400, "Invalid date range"));
                 }
 
                 // HANDLE UPDATE

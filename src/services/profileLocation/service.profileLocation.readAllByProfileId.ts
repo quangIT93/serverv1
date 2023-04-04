@@ -22,7 +22,7 @@ const readAllByProfileId = async (
         return executeQuery(query, params);
     } catch (error) {
         logging.error(
-            `Read all locations by profile id servive has error: ${error}`
+            `Read all locations by profile id service has error: ${error}`
         );
         throw error;
     }

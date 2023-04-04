@@ -17,7 +17,7 @@ const readEnabledThemesController = async (
 
         let account_id: string = null;
         let provinces_locations: string[] = [];
-
+        let themes = null;
         if (req.headers.authorization) {
             const headerAuthorization = req.headers.authorization;
             // GET ACCESS TOKEN
@@ -51,30 +51,52 @@ const readEnabledThemesController = async (
                     account_id = payload.id;
                     let profiles_locations = await readAllByProfileId(req.query.lang.toString(), account_id);
                     provinces_locations = profiles_locations.map((location) => location.province_id);
+                    themes = await themeServices.readEnabledThemes(provinces_locations);
+
+                    // GET THEMES
+                    if (!themes) {
+                        return next(createError(400, "No themes found"));
+                    }
+
+                    themes.forEach((theme) => {
+                        theme.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.THEME_IMAGES}/` + theme.image;
+                    });
+
+                    // SUCCESS
+                    return res.status(200).json({
+                        code: 200,
+                        success: true,
+                        data: themes.map((theme) => ({
+                            ...theme,
+                            number_of_posts: Number(theme.number_of_posts),
+                        })),
+                        message: "Successfully",
+                    });
                 }
             );
-        }
-        
-        const themes = await themeServices.readEnabledThemes(provinces_locations);
-        // GET THEMES
-        if (!themes) {
-            return next(createError(500));
-        }
+        } else {
+            themes = await themeServices.readEnabledThemes();
 
-        themes.forEach((theme) => {
-            theme.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.THEME_IMAGES}/` + theme.image;
-        });
+            // GET THEMES
+            if (!themes) {
+                return next(createError(400, "No themes found"));
+            }
 
-        // SUCCESS
-        return res.status(200).json({
-            code: 200,
-            success: true,
-            data: themes.map((theme) => ({
-                ...theme,
-                number_of_posts: Number(theme.number_of_posts),
-            })),
-            message: "Successfully",
-        });
+            themes.forEach((theme) => {
+                theme.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.THEME_IMAGES}/` + theme.image;
+            });
+
+            // SUCCESS
+            return res.status(200).json({
+                code: 200,
+                success: true,
+                data: themes.map((theme) => ({
+                    ...theme,
+                    number_of_posts: Number(theme.number_of_posts),
+                })),
+                message: "Successfully",
+            });
+        }
     } catch (error) {
         logging.error("Read enabled themes controller has error: ", error);
         return next(createError(500));

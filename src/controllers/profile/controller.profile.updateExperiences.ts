@@ -68,6 +68,11 @@ const updateExperiencesOfProfileController = async (
                     return next(createError(400));
                 }
 
+                if (startDateForCreate > endDateForCreate) {
+                    logging.warning("Invalid date range");
+                    return next(createError(400, "Invalid date range"));
+                }
+
                 // HANDLE CREATE
                 const isCreateSuccess =
                     await profileExperienceServices.createExperienceOfProfile(
@@ -119,8 +124,11 @@ const updateExperiencesOfProfileController = async (
                         "Invalid Date" ||
                     new Date(endDateForUpdate).toString() === "Invalid Date"
                 ) {
-                    logging.warning("Invalid data");
                     return next(createError(400));
+                }
+
+                if (startDateForUpdate > endDateForUpdate) {
+                    return next(createError(400, "Invalid date range"));
                 }
 
                 // HANDLE UPDATE
