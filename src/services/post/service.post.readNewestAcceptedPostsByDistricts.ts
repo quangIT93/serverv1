@@ -17,21 +17,14 @@ const readNewestAcceptedPostsByDistricts = async (
         let query =
             initQueryReadPost(lang) +
             "WHERE posts.status = ? AND posts.salary_type = salary_types.id " +
-            `AND posts.district_id IN (${districtIds ? districtIds.join(",") : ""})`
+            `AND districts.id IN (${districtIds.map((_) => `?`).join(", ")}) ` +
+            `${threshold && threshold > 0 ? "AND posts.id < ? " : " "}` +
+            "GROUP BY posts.id ORDER BY posts.id DESC " +
+            `${limit && limit > 0 ? "LIMIT ?" : ""}`;
 
-        let params = [1, ...districtIds];
-        
-        query += threshold && threshold > 0 ? " AND posts.id < ? " : " ";
-        params =
-            threshold && threshold > 0 ? [...params, threshold] : [...params];
-
-        query +=
-            limit && limit > 0
-                ? "GROUP BY posts.id ORDER BY posts.id DESC LIMIT ?"
-                : "GROUP BY posts.id ORDER BY posts.id DESC";
-        params = limit && limit > 0 ? [...params, limit] : [...params];
-
-        console.log(query);
+        let params = [1, ...districtIds]
+            .concat(threshold && threshold > 0 ? [threshold] : [])
+            .concat(limit && limit > 0 ? [limit] : []);
 
         const res = await executeQuery(query, params);
         return res ? res : null;
