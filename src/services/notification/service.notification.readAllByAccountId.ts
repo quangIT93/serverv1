@@ -7,9 +7,15 @@ const readAllNotificationsByAccountIdService = async (
 ) => {
     try {
         const query =
-            "SELECT notifications.id, notifications.application_id, notifications.is_read, " +
-            "notifications.type, notifications.created_at, notifications.application_status, " +
-            "applications.name, posts.title as post_title, posts.company_name, posts.id as post_id " +
+            "SELECT notifications.id, " +
+            "notifications.application_id, " +
+            "notifications.is_read, " +
+            "notifications.type, " +
+            "notifications.created_at, " +
+            "notifications.application_status, " +
+            "applications.name, " +
+            "posts.title as post_title, " +
+            "posts.company_name, posts.id as post_id " +
             // "COUNT (notifications.id) as total " +
             "FROM notifications " +
             "LEFT JOIN applications ON applications.id = notifications.application_id " +

@@ -84,6 +84,7 @@ const updateApplicationController = async (req: Request, res: Response, next: Ne
                 notificationId: +createNotificationStatus
             }
             const notificationContent = createNotificationContent(
+                req.query.lang.toString(),
                 content
             )
 

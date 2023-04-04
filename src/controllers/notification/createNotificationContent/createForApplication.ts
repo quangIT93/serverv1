@@ -19,7 +19,10 @@ interface NotificationContent {
     notificationId: number | null;
 }
 
-const createNotificationContent = (content: NotificationContent) => {
+const createNotificationContent = (
+    lang: string,
+    content: NotificationContent
+) => {
     let title = "";
     let body = "";
     let data: NotificationData = {
@@ -41,17 +44,35 @@ const createNotificationContent = (content: NotificationContent) => {
         data.type = 0;
         data.type_text = "applicator";
         if (content.applicationStatus === 2) {
-            title = "Đơn ứng tuyển đã được duyệt!";
-            body = `Đơn ứng tuyển vị trí ${content.postTitle} cho ${content.companyName} của bạn đã được nhà tuyển dụng duyệt.`;
+            title = lang === "vi" ? "Đơn ứng tuyển đã được duyệt"
+                : lang === "en" ? "Application has been approved" : "지원서가 승인되었다";
+                // Đơn ứng tuyển vị trí phục vụ bàn nhà hàng cho Nhà hàng Ai Works của bạn đã được nhà tuyển dụng duyệt!
+                //"당신의 ...사의 ... 포지션 지원서가 고용주에 의해 승인되었습니다!
+            body = 
+                lang === "vi" ? `Đơn ứng tuyển vị trí ${content.postTitle} cho ${content.companyName} của bạn đã được nhà tuyển dụng duyệt!.`
+                : lang === "en" ? `Your application for the position of ${content.postTitle} for ${content.companyName} has been approved`
+                : `당신의 ${content.companyName} 사의 ${content.postTitle} 포지션 지원서가 고용주에 의해 승인되었습니다!`;
         } else if (content.applicationStatus === 4) {
-            title = "Chúc mừng";
-            body = `Chúc mừng bạn đã được chọn cho công việc ${content.postTitle} tại ${content.companyName}.`;
+            title = lang === "vi" ? "Bạn đã được tuyển!"
+                : lang === "en" ? "You have been recruited!" : "채용되었습니다!";
+                //Chúc mừng bạn! Bạn đã được nhà tuyển dụng xác nhận tuyển cho vị trí Phục vụ bàn nhà hàng cho Nhà hàng Ai Works
+                //Congratulation! You have been confirmed by the employer for the position of Restaurant Waiter for Ai Works Restaurant
+                // 축하드립니다! ...에서 ...로 채용이 확정되었습니다.
+            body = lang === "vi" ? `Chúc mừng bạn! Bạn đã được nhà tuyển dụng xác nhận tuyển cho vị trí ${content.postTitle} cho ${content.companyName}.`
+                : lang === "en" ? `Congratulation! You have been confirmed by the employer for the position of ${content.postTitle} for ${content.companyName}.`
+                : `축하드립니다 ${content.companyName} 에서 ${content.postTitle} 로 채용이 확정되었습니다!`;
         }
     } else if (content.type === 1) {
         data.type = 1;
         data.type_text = "recruiter";
-        title = "Ứng viên mới đã nộp hồ sơ";
-        body = `Ứng viên ${content.name} đã ứng tuyển vào công việc ${content.postTitle}.`;
+        title = lang === "vi" ? "Ứng viên mới đã nộp hồ sơ"
+            : lang === "en" ? "New candidate have applied" : "새로운 지원자가 지원서를 제출했습니다.";
+        //Ứng viên Nguyễn Văn An vừa nộp hồ sơ ứng tuyển vị trí Phục vụ bàn nhà hàng cho Nhà hàng Ai Works của bạn
+        //Candidate Nguyen Van An has just applied for the position of ...... for your .....
+        //...후보자는 방금 당신의 ...회사에 ... 포지션 지원서를 제출했습니다.
+        body = lang === "vi" ? `Ứng viên ${content.name} vừa nộp hồ sơ ứng tuyển vị trí ${content.postTitle} cho ${content.companyName} của bạn.`
+            : lang === "en" ? `Candidate ${content.name} has just applied for the position of ${content.postTitle} for your ${content.companyName}.`
+            : `${content.name} 후보자는 방금 당신의 ${content.companyName} 회사에 ${content.postTitle} 포지션 지원서를 제출했습니다.`;
     }
     return {
         title,

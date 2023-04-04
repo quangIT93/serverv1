@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import createHttpError from 'http-errors';
 import * as notificationService from '../../services/notification/_service.notification';
 import logging from '../../utils/logging';
+import { createNotificationContent, NotificationContent } from './createNotificationContent/createForApplication';
 
 const readAllNotificationsByAccountIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -26,28 +27,33 @@ const readAllNotificationsByAccountIdController = async (req: Request, res: Resp
         }
         // console.log(result);
 
-        result.forEach(async (notification) => {
-            // type 0 is notification for application
-            if (notification.type === "0") {
-                notification.type_text = "applicator"
-                if (+notification.application_status === 2) {
-                    notification.title = "Đơn ứng tuyển đã được duyệt!";
-                    notification.content = `Đơn ứng tuyển vị trí ${notification.post_title} cho ${notification.company_name} của bạn đã được nhà tuyển dụng duyệt.`;
-                } else if (+notification.application_status === 4) {
-                    notification.title = "Chúc mừng";
-                    notification.content = `Chúc mừng bạn đã được chọn cho công việc ${notification.post_title} tại ${notification.company_name}.`;
-                }
-            } else if (notification.type === "1") {
-                // if (notification.application_status === ) {
-                // }
-                notification.type_text = "recruiter"
-                notification.title = "Ứng viên mới đã nộp hồ sơ";
-                notification.content = `Ứng viên ${notification.name} đã ứng tuyển vào công việc ${notification.post_title}.`;
-            }   
+        const data = result.map((notification) => {
+            const notificationContent: NotificationContent = {
+                application_id: notification.application_id,
+                post_id: notification.post_id,
+                type: +notification.type,
+                applicationStatus: +notification.application_status,
+                postTitle: notification.post_title,
+                companyName: notification.company_name,
+                name: notification.name,
+                notificationId: notification.notification_id
+            }
+            
+            const content = createNotificationContent(
+                req.query.lang.toString(),
+                notificationContent
+            );
             notification.created_at = new Date(notification.created_at).getTime();
             notification.is_read_value = notification.is_read === "1" ? true : false;
             notification.type = +notification.type;
             notification.is_read = +notification.is_read;
+            notification.type_text = +notification.type === 0 ? "applicator" : "recruiter"
+
+            return {
+                ...notification,
+                title: content.title,
+                content: content.body,
+            }
         })
 
         // console.log(result[0]);
@@ -57,7 +63,7 @@ const readAllNotificationsByAccountIdController = async (req: Request, res: Resp
             message: "Read all notifications by account id successfully",
             data: {
                 total: result.total,
-                notifications: result
+                notifications: data
             }
         });
     } catch (error) {
