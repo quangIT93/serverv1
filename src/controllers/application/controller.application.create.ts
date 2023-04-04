@@ -138,6 +138,7 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
         }
 
         const notificationContent = createNotificationContent(
+            req.query.lang.toString(),
             content
         );
 
