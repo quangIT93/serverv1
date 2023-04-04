@@ -1,5 +1,5 @@
 #!/bin/bash
-
+sudo git pull
 sudo rm -r src-built
 sudo mkdir -p build 
 sudo npx tsc
