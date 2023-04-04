@@ -245,6 +245,7 @@ const searchByQueryController = async (req: Request, res: Response, next: NextFu
                     //GET DATA
                     posts =
                         await searchService.searchByQuery(
+                            req.query.lang.toString(),
                             q as string,
                             parseInt(page as string) || 1,
                             districtIds,
@@ -322,6 +323,7 @@ const searchByQueryController = async (req: Request, res: Response, next: NextFu
             //GET DATA
 
             posts = await searchService.searchByQuery(
+                req.query.lang.toString(),
                 q as string,
                 parseInt(page as string) || 1,
                 districtIds,

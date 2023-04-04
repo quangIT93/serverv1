@@ -2,6 +2,7 @@ import { executeQuery } from './../../configs/database';
 import logging from './../../utils/logging';
 
 const searchByQueryService = async (
+    lang: string,
     q: string,
     page: number | null,
     districtIds: string[] | undefined | null,
@@ -37,18 +38,20 @@ const searchByQueryService = async (
             "posts.end_time," +
             "posts.salary_min," +
             "posts.salary_max," +
-            "salary_types.value as salary_type," +
+            `${lang === "vi" ? "salary_types.value " : 
+                lang === "en" ? "salary_types.value_en " : "salary_types.value_ko "}` +
+            "AS salary_type, " +
             "posts.created_at, " +
             "post_images.image AS image, " +
             "posts.description, " +
             "posts.address, " +
             "posts.ward_id, " +
-            "wards.full_name as ward," + 
+            `${lang === "vi" ? "wards.full_name as ward, " : "wards.full_name_en as ward, "}` +
             "wards.name as ward_name," +
             "districts.id as district_id," +
-            "districts.full_name as district, " + 
+            `${lang === "vi" ? "districts.full_name as district, " : "districts.full_name_en as district, "}` +
             "districts.name as district_name, " +
-            "provinces.full_name as province, " +
+            `${lang === "vi" ? "provinces.full_name as province, " : "provinces.full_name_en as province, "}` +
             "provinces.name as province_name, " +
             "posts.salary_type as salary_type_id, " +
             "posts.money_type, " +
@@ -83,16 +86,7 @@ const searchByQueryService = async (
             `${endDate !== null ? "AND posts.end_date <= ? " : ""}` +
             "AND (title LIKE ? OR " +
             "company_name LIKE ?) " +
-            // "description LIKE ? ) " +
-            // "MATCH (title, company_name, description) AGAINST (? IN BOOLEAN MODE) AND " +
-            // "MATCH (title, company_name, description) AGAINST (? IN NATURAL LANGUAGE MODE) AND " +
-            // "MATCH (title, company_name, description) AGAINST (? WITH QUERY EXPANSION) " +
             "GROUP BY posts.id " + 
-            // "ORDER BY " +
-            // "MATCH (title, company_name, description) AGAINST (? IN BOOLEAN MODE) DESC, " +
-            // "MATCH (title, company_name, description) AGAINST (? IN NATURAL LANGUAGE MODE) DESC, " +
-            // "MATCH (title, company_name, description) AGAINST (? WITH QUERY EXPANSION) DESC "
-            // }` +
             "ORDER BY posts.created_at DESC " +
             "LIMIT 20 " +
             `OFFSET ${page ? (page - 1) * 20 : 0}`;
