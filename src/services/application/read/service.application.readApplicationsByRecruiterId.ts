@@ -59,7 +59,7 @@ const readApplicationsByRecruiterIdService = async (
         const params = threshold
             ? [recruiterId, threshold, limit]
             : [recruiterId, limit];
-        console.log(query);
+        // console.log(query);
         const res = await executeQuery(query, params);
         return res ? res : null;
     } catch (error) {

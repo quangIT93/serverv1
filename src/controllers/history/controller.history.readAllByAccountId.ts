@@ -22,7 +22,7 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
             req.query.lang.toString(), accountId, +page
         );
 
-        console.log(result);
+        // console.log(result);
         
         if (!result) {
             return next(createError(404, 'Applications not found'));

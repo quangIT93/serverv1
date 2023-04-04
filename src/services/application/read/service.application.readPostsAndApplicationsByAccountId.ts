@@ -78,7 +78,7 @@ const readPostsAndApplicationsBYAccountIdService = async (
         LIMIT ? OFFSET ?
         `;
 
-        console.log("query: ", query);
+        // console.log("query: ", query);
         
         const params = [accountId, accountId, 10, page * 10];
         const res = await executeQuery(query, params);

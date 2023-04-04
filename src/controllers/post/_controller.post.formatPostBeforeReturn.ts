@@ -1,10 +1,9 @@
 import ImageBucket from "../../enum/imageBucket.enum";
 import MoneyType from "../../enum/money_type.enum";
-import {PostService, PostResponse} from "../../interface/Post";
+import { PostService, PostResponse } from "../../interface/Post";
 import { readDefaultPostImageByPostId } from "../../services/category/_service.category";
 
-
-async function formatPostBeforeReturn (post: PostService, lang = "vi") {
+async function formatPostBeforeReturn(post: PostService) {
     const postResponse: PostResponse = {
         id: post.id,
         account_id: post.account_id,
@@ -42,19 +41,20 @@ async function formatPostBeforeReturn (post: PostService, lang = "vi") {
         longitude: post.longitude,
         updated_at: post.updated_at ? new Date(post.updated_at).getTime() : null,
     };
-    if (postResponse.image !== undefined && postResponse.image !== null) {
-        postResponse.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${postResponse.post_id || postResponse.id}/` + postResponse.image;
+    if (post.image !== undefined && post.image !== null) {
+        postResponse.image =
+            `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${post.post_id ? post.post_id : postResponse.id
+            }/` + post.image;
     } else {
-            const firstParentCategoryImage =
-                await readDefaultPostImageByPostId(
-                    postResponse.post_id || postResponse.id,
-                );
-            if (!firstParentCategoryImage) {
-                postResponse.image = null;
-            } else {
-                postResponse.image = firstParentCategoryImage.image;
-            }
-    }       
+        const firstParentCategoryImage = await readDefaultPostImageByPostId(
+            post.post_id || post.id
+        );
+        if (!firstParentCategoryImage) {
+            postResponse.image = null;
+        } else {
+            postResponse.image = firstParentCategoryImage.image;
+        }
+    }
 
     return postResponse;
 }

@@ -16,7 +16,6 @@ const readEnabledBannersController = async (
 
         const version = +req.query.v;
         if (!Number.isInteger(version)) {
-            console.log("Invalid banner version");
             return next(createError(400));
         }
 

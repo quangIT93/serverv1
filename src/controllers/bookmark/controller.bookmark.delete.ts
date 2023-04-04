@@ -30,7 +30,7 @@ const deleteBookmarkController = async (
             postId
         );
         if (!isDeleteSuccess) {
-            console.log("Delete bookmark controller has error");
+            // console.log("Delete bookmark controller has error");
             return next(createError(500));
         }
 

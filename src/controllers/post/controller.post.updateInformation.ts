@@ -236,7 +236,7 @@ const updatePostInformationController = async (
 
             // }
             if (!isUpdateSuccess) {
-                console.log("Update post information failed");
+                // console.log("Update post information failed");
                 return next(createError(500));
             }
 

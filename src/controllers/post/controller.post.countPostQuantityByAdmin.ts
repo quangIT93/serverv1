@@ -15,11 +15,11 @@ const countPostQuantityByAdminController = async (
         const aid = req.query.aid;
         let quatityPerDays, quantityPerMonths;
 
-        console.log(isOwn, aid);
+        // console.log(isOwn, aid);
 
         if (isOwn === "true") {
             if (!req.user || !req.user.id) {
-                console.log(req.user);
+                // console.log(req.user);
                 return next(createError(401));
             }
             quatityPerDays =

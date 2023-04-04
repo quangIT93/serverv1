@@ -19,7 +19,7 @@ const updatePersonalInformationService = async (
             "WHERE id = ?";
         const params = [name, birthday, gender, address, introduction, id];
         const res = await executeQuery(query, params);
-        console.log(res);
+        // console.log(res);
         return res ? res.affectedRows === 1 : false;
     } catch (error) {
         logging.error(

@@ -68,17 +68,17 @@ const getImageFromS3 = async (req: Request, res: Response) => {
             // UPLOAD IMAGE TO NEW S3
             const isSuccess = await uploadImages([files], null, null, imageNameToUpload);
 
-            console.log(isSuccess);
+            // console.log(isSuccess);
 
             // await uploadImages([files], image.post_id, null, 'test');
         } else {
-            console.log('Image is null');
+            // console.log('Image is null');
         }
 
     }))
 
     // console.log(image.buffer);
-    console.log('Done');
+    // console.log('Done');
 
     // // UPLOAD IMAGE TO NEW S3
     // const isSuccess = await uploadImages([image], null, null, 'test');

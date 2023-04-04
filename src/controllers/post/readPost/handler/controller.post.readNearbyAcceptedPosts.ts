@@ -23,7 +23,7 @@ const readNearbyAcceptedPostsController = async (
         const limit = req.query.limit;
         const threshold = req.query.threshold;
 
-        console.log("lang", req.query.lang.toString())
+        // console.log("lang", req.query.lang.toString())
         // PROVINCE IDS
         if (!provinceIds) {
             logging.warning("Invalid province id value");

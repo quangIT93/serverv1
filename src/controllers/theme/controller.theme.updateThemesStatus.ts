@@ -14,7 +14,7 @@ const updateThemesStatusController = async (
 
         // GET BODY DATA
         const themes = req.body.themes;
-        console.log(">>> themes: ", themes);
+        // console.log(">>> themes: ", themes);
         if (!Array.isArray(themes) || themes.length <= 0) {
             logging.warning("Invalid themes data");
             return next(createError(400));
@@ -36,27 +36,27 @@ const updateThemesStatusController = async (
                 ) < 0
             );
         });
-        console.log(">>> themesWillBeUpdated: ", themesWillBeUpdated);
+        // console.log(">>> themesWillBeUpdated: ", themesWillBeUpdated);
 
         // GET ENABLE THEME IDS
         const enableThemeIdsWillBeUpdated = themesWillBeUpdated
             .filter((theme) => theme.status === 1)
             .map((theme) => theme.id);
 
-        console.log(
-            ">>> enableThemeIdsWillBeUpdated: ",
-            enableThemeIdsWillBeUpdated
-        );
+        // console.log(
+        //     ">>> enableThemeIdsWillBeUpdated: ",
+        //     enableThemeIdsWillBeUpdated
+        // );
 
         // GET DISABLE THEME IDS
         const disableThemeIdsWillBeUpdated = themesWillBeUpdated
             .filter((theme) => theme.status === 0)
             .map((theme) => theme.id);
 
-        console.log(
-            ">>> disableThemeIdsWillBeUpdated: ",
-            disableThemeIdsWillBeUpdated
-        );
+        // console.log(
+        //     ">>> disableThemeIdsWillBeUpdated: ",
+        //     disableThemeIdsWillBeUpdated
+        // );
 
         // HANDLE UPDATE THEMES STATUS
         if (enableThemeIdsWillBeUpdated.length > 0) {

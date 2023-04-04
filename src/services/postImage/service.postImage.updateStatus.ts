@@ -11,7 +11,7 @@ const updateStatus = async (imageIds: Array<number>, status: number) => {
             params.push(imageId);
         });
         query += ")";
-        console.log(query);
+        // console.log(query);
         await executeQuery(query, params);
     } catch (error) {
         logging.error(

@@ -8,7 +8,7 @@ const deleteFcmTokenService = async (
   try {
     const query = 'DELETE FROM fcm_tokens WHERE account_id = ? AND token = ?';
     const res = await executeQuery(query, [accountId, fcmToken]);
-    console.log(res);
+    // console.log(res);
     return res ? res : null;
   } catch (error) {
     logging.error('Read all provinces has error: ', error);

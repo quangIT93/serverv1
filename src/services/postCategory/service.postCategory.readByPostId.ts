@@ -22,7 +22,7 @@ const readCategoriesOfPost = async (lang: string | null = "vi", postId: number) 
             WHERE posts_categories.post_id = ?
         `
         const params = [postId];
-        console.log("query: ", query);
+        // console.log("query: ", query);
         const res = await executeQuery(query, params);
         return res ? res : null;
     } catch (error) {

@@ -42,8 +42,6 @@ const updateLikeStatusApplicationController = async (req: Request, res: Response
             return next(createError(406, "You are not allowed to access this resource"));
         }
 
-        console.log(postInformation.liked, liked);
-
         if (+postInformation.liked === liked) {
             return res.status(200).json({
                 code: 200,
