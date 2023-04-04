@@ -1,6 +1,7 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
 import { initQueryReadPost } from "./_service.post.initQuery";
+import { query } from "express";
 
 const readNewestAcceptedPostsByDistricts = async (
     lang: string = "vi",
@@ -15,7 +16,7 @@ const readNewestAcceptedPostsByDistricts = async (
 
         let query =
             initQueryReadPost(lang) +
-            "WHERE posts.status = ? AND posts.salary_type = salary_types.id" +
+            "WHERE posts.status = ? AND posts.salary_type = salary_types.id " +
             `AND posts.district_id IN (${districtIds ? districtIds.join(",") : ""})`
 
         let params = [1, ...districtIds];
@@ -37,6 +38,7 @@ const readNewestAcceptedPostsByDistricts = async (
             "Read newest accepted posts by parent category and districts service has error: ",
             error
         );
+        console.log(query);
         throw error;
     }
 };
