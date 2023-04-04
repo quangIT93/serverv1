@@ -1,16 +1,20 @@
+import { Response } from 'express';
 import jwt from 'jsonwebtoken';
 import createError from 'http-errors';
 import { NextFunction } from 'express';
 import { Request } from 'express';
-import { PostResponse, PostService } from "../../../../interface/Post";
-import logging from '../../../../utils/logging';
-import { readByAccountId } from '../../../../services/bookmark/_service.bookmark';
+import { PostResponse, PostService } from "../interface/Post";
+import logging from '../utils/logging';
+import { readByAccountId } from '../services/bookmark/_service.bookmark';
 
 const checkBookmark = async (
-    posts: PostResponse[],
     req: Request,
+    res: Response,
     next: NextFunction
-): Promise<PostResponse[] | void> => {
+) => {
+
+    const posts = res.locals.posts;
+    
     if (req.headers.authorization) {
         const headerAuthorization = req.headers.authorization;
         // GET ACCESS TOKEN
@@ -42,10 +46,20 @@ const checkBookmark = async (
 
 
             // SUCCESS
-            return posts.map((post) => ({
-                ...post,
-                bookmarked: postIdsOnBookmark.includes(post.id),
-            }));
+            return res.status(200).json({
+                success: true,
+                data: {
+                    posts: posts.map(
+                        (post: PostResponse) => {
+                            return {
+                                ...post,
+                                bookmarked: postIdsOnBookmark.includes(post.id) ? true : false
+                            }
+                        }
+                    ),
+                    is_over: posts.length < +req.query.limit ? true : false,
+                }
+            });
 
 
         } catch (error) {
@@ -54,10 +68,20 @@ const checkBookmark = async (
                 logging.error("Token expired");
                 return next(createError(403));
             }
+            if (error.name === "JsonWebTokenError") {
+                logging.error("Invalid token");
+                return next(createError(401));
+            }
         }
     } else {
         // SUCCESS
-        return posts;
+        return res.status(200).json({
+            success: true,
+            data: {
+                posts: posts,
+                is_over: posts.length <= +req.query.limit ? true : false,
+            }
+        });
     }
 }
 

@@ -1,13 +1,16 @@
 import logging from "../../../utils/logging";
 import { executeQuery } from "../../../configs/database";
 
-const readApplicationLocationsByIdService = async (applicationId: number) => {
+const readApplicationLocationsByIdService = async (
+    lang: string,
+    applicationId: number
+) => {
     try {
         logging.info("Read application locations service start ...");
         const query = "SELECT applications_locations.location_id as district_id, " +
-        "districts.full_name as district," + 
+        `${lang === "vi" ? "districts.full_name" : "districts.full_name_en"} as district, ` +
         "districts.name as district_name," +
-        "provinces.full_name as province," +
+        `${lang === "vi" ? "provinces.full_name" : "provinces.full_name_en"} as province, ` +
         "provinces.name as province_name," +
         "provinces.id as province_id " +
         "FROM applications_locations " +

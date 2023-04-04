@@ -29,7 +29,7 @@ const readSubmittedApplicationByAccountId = async (req: Request, res: Response, 
         let applications = await applicationService.read.readSubmittedApplicationByAccountId(
             req.query.lang.toString(),
             accountId,
-            +limit,
+            +limit + 1,
             +threshold
         );
             
@@ -37,9 +37,7 @@ const readSubmittedApplicationByAccountId = async (req: Request, res: Response, 
             return next(createError(404, "Not found any applications"));
         }
 
-        // applications.forEach(element => {
-        //     element.created_at = new Date(element.created_at).getTime();
-        // })
+
         applications = await Promise.all(applications.map(async (post) => {
             post = await formatPostBeforeReturn(post);
             return post;
@@ -48,7 +46,7 @@ const readSubmittedApplicationByAccountId = async (req: Request, res: Response, 
         let isOver: boolean = false;
 
         if (limit) {
-            if (applications.length < +limit) {
+            if (applications.length < +limit + 1) {
                 isOver = true;
             }
         } else {

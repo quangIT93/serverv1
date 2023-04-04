@@ -9,7 +9,7 @@ import { formatPostBeforeReturn } from "../../_controller.post.formatPostBeforeR
 import { isArrayNumber, isNumber } from "../../../../helpers/checkData/checkTypeOfData";
 import { PostResponse, PostService } from "../../../../interface/Post";
 import { formatToArrayNumber, formatToStringNumberArray } from "../../../../helpers/formatData/formatArray";
-import { checkBookmark } from "../formatResponse/checkBookmark";
+import { checkBookmark } from "../../../../middlewares/checkBookmark";
 
 interface Payload {
     id: string;
@@ -134,20 +134,9 @@ const readNewestAcceptedPostsController = async (
                 return await formatPostBeforeReturn(post);
             })
         );
-
-
-        // CHECK BOOKMARK
-        const data = await checkBookmark(postResponses, req, next);
+        res.locals.posts = postResponses;
+        next();
     
-        return res.status(200).json({
-            success: true,
-            data: {
-                posts: data,
-                is_over: posts.length <= +limit ? true : false,
-            },
-            message: "Read newest accepted posts successfully",
-            status: 200,
-        });
     } catch (error) {
         logging.error(
             "Read newest accepted posts controller has error: ",

@@ -2,7 +2,6 @@ import { Router } from "express";
 import historyRecruiterController from "../../controllers/history/recruiter/_controller.history.recruiter";
 import verifyAccessToken from "../../middlewares/middleware.verifyAccessToken";
 import { checkLimitAndThresholdParams } from "../../middlewares/utils/midleware.checkUtilsParams";
-import { checkLanguageParams } from "../../middlewares/utils/midleware.checkLanguageParams";
 
 const router = Router();
 
@@ -11,7 +10,6 @@ router.get(
     "/applications",
     verifyAccessToken,
     checkLimitAndThresholdParams,
-    checkLanguageParams,
     historyRecruiterController.readQuantityApplicationsOfAllPosts
 ); // read all post and quantity of applications
 
@@ -19,7 +17,6 @@ router.get(
     "/posts",
     verifyAccessToken,
     checkLimitAndThresholdParams,
-    checkLanguageParams,
     historyRecruiterController.readAllPostedJobs
 ); // read all posted jobs
 
@@ -32,6 +29,7 @@ router.get(
 router.get(
     "/:post_id/applications",
     verifyAccessToken,
+    checkLimitAndThresholdParams,
     historyRecruiterController.readApplicationByPostId
 ); // read all applications by post id
 

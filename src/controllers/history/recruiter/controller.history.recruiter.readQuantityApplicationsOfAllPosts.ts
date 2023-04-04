@@ -14,7 +14,7 @@ const readQuantityApplicationOfAllPostsController = async (req: Request, res: Re
         const titles = await applicationService.read.readByRecruiterId(
             req.query.lang.toString(),
             recruiterId,
-            Number.isInteger(+limit) ? +limit : null,
+            +limit + 1,
             Number.isInteger(+threshold) ? +threshold : null
         );
 
@@ -27,14 +27,14 @@ const readQuantityApplicationOfAllPostsController = async (req: Request, res: Re
         
         const data = await Promise.all(titles.map(async (post) => {
             post = await formatPostBeforeReturn(post);
-            post.num_of_application = Number(post.num_of_application);
+            post.num_of_application = Number(post.num_of_application) || 0;
             return post;
         }));
 
         let isOver: boolean = false;
 
         if (limit) {
-            if (titles.length < +limit) {
+            if (titles.length <= +limit) {
                 isOver = true;
             }
         } else {

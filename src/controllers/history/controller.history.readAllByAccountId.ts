@@ -21,6 +21,8 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
         const result = await applicationService.read.readPostsAndApplicationsBYAccountId(
             req.query.lang.toString(), accountId, +page
         );
+
+        console.log(result);
         
         if (!result) {
             return next(createError(404, 'Applications not found'));
@@ -39,7 +41,6 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
                 a.money_type_text = MoneyType[a.money_type];
                 a.start_date = +a.start_date || null;
                 a.end_date = +a.end_date || null;
-
                 delete a.num_of_application;
                 if (a.image === null) {
                     const firstParentCategoryImage =

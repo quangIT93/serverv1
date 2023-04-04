@@ -56,44 +56,6 @@ async function formatPostBeforeReturn (post: PostService, lang = "vi") {
             }
     }       
 
-    //     switch (lang) {
-    //         case "en":
-    //             switch (postResponse.salary_type_id) {
-    //                 case 1:
-    //                     post.salary_type_text = "Hourly";
-    //                     break;
-    //                 case 2:
-    //                     post.salary_type_text = "Daily";
-    //                     break;
-    //                 case 3:
-    //                     post.salary_type_text = "Weekly";
-    //                     break;
-    //                 case 4:
-    //                     post.salary_type_text = "Monthly";
-    //                     break;
-    //                 case 5:
-    //                     post.salary_type_text = "Job";
-    //             }
-    //             break;
-    //         case "ko":
-    //             switch (post.salary_type_id) {
-    //                 case 1:
-    //                     post.salary_type_text = "시급";
-    //                     break;
-    //                 case 2:
-    //                     post.salary_type_text = "일급";
-    //                     break;
-    //                 case 3:
-    //                     post.salary_type_text = "주급";
-    //                     break;
-    //                 case 4:
-    //                     post.salary_type_text = "월급";
-    //                     break;
-    //                 case 5:
-    //                     post.salary_type_text = "일자리";
-    //             }
-    //     }
-    // }
     return postResponse;
 }
 

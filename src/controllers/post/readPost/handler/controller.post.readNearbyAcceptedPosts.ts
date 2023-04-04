@@ -6,7 +6,7 @@ import { formatPostBeforeReturn } from "../../_controller.post.formatPostBeforeR
 import { isArrayNumber, isNumber } from "../../../../helpers/checkData/checkTypeOfData";
 import { formatToArrayNumber, formatToStringNumberArray } from "../../../../helpers/formatData/formatArray";
 import {PostResponse, PostService} from "../../../../interface/Post";
-import { checkBookmark } from "../formatResponse/checkBookmark";
+import { checkBookmark } from "../../../../middlewares/checkBookmark";
 
 const readNearbyAcceptedPostsController = async (
     req: Request,
@@ -100,19 +100,9 @@ const readNearbyAcceptedPostsController = async (
             })
         );
 
-        // CHECK BOOKMARKED
-        const data = await checkBookmark(postResponse, req, next);
-
-        // SUCCESS
-        return res.status(200).json({
-            code: 200,
-            success: true,
-            data: {
-                posts: data,
-                is_over: postResponse.length <= +limit ? true : false,
-            },
-            message: "Successfully",
-        });
+        res.locals.posts = postResponse;
+        next();
+        
     } catch (error) {
         logging.error(
             "Read nearby accepted posts controller has error: ",

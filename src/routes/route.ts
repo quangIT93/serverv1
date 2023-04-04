@@ -32,6 +32,7 @@ import appSearchRouter from './app/route.app.search';
 import appNotificationRouter from './app/route.app.notification';
 import chatRouter from './app/route.app.chat';
 import fcmRouter from './app/route.app.fcm-token';
+import { checkLanguageParams } from '../middlewares/utils/midleware.checkLanguageParams';
 
 const route = (app: Application) => {
   app.all('/', (req: Request, res: Response, next: NextFunction) => {
@@ -70,6 +71,8 @@ const route = (app: Application) => {
     ],
   };
   const swaggerDocs = swaggerJSDoc(swaggerOptions);
+
+  app.use(checkLanguageParams);
 
   app.use('/api/v1/apis-doc', serve, setup(swaggerDocs));
 

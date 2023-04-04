@@ -22,7 +22,10 @@ const getUsersChattedController = async (
         const id = req.user.id;
 
         // Get users chatted
-        const usersChatted = await chatServices.getUsersChatted(id);
+        const usersChatted = await chatServices.getUsersChatted(
+            req.query.lang.toString(),
+            id
+        );
         if (!usersChatted) {
             return next(createError(500));
         }

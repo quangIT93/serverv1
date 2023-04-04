@@ -9,7 +9,7 @@ import * as categoryServices from "../../../../services/category/_service.catego
 import MoneyType from "../../../../enum/money_type.enum";
 import { formatPostBeforeReturn } from "../../_controller.post.formatPostBeforeReturn";
 import { PostResponse, PostService } from "../../../../interface/Post";
-import { checkBookmark } from "../formatResponse/checkBookmark";
+import { checkBookmark } from "../../../../middlewares/checkBookmark";
 
 interface Payload {
     id: string;
@@ -37,32 +37,21 @@ const readAcceptedPostsByThemeController = async (
         const posts: PostService[] = await postServices.readAcceptedPostsByTheme(
             req.query.lang.toString(),
             themeId,
-            +limit,
+            +limit + 1,
           threshold ? +threshold : null
         );
         if (!posts) {
             return next(createError(500));
         }
 
-        const postsResponse: PostResponse[] = await Promise.all(
+        const postResponse: PostResponse[] = await Promise.all(
             posts.map(async (post) => {
                 return await formatPostBeforeReturn(post);
             })
         );
 
-        // CHECK BOOKMARK
-        const data = await checkBookmark(postsResponse, req, next);
-        // SUCCESS
-        return res.status(200).json({
-            code: 200,
-            success: true,
-            data: {
-                posts: data,
-                is_over:
-                    posts.length < +limit ? true : false,
-            },
-            message: "Successfully",
-        });
+        res.locals.posts = postResponse;
+        next();
         
     } catch (error) {
         logging.error(

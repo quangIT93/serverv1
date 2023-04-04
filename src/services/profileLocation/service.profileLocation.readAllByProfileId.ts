@@ -1,14 +1,17 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
 
-const readAllByProfileId = async (profileId: string) => {
+const readAllByProfileId = async (
+    lang: string,
+    profileId: string
+) => {
     try {
         logging.info("Read all locations by profile id service start ...");
         const query =
             "SELECT profiles_locations.location_id as district_id, " +
-            "districts.full_name as district," + 
+            `${lang === "vi" ? "districts.full_name" : "districts.full_name_en"} as district,` +
             "districts.name as district_name," +
-            "provinces.full_name as province," +
+            `${lang === "vi" ? "provinces.full_name" : "provinces.full_name_en"} as province,` +
             "provinces.name as province_name," +
             "provinces.id as province_id " +
             "FROM profiles_locations " +

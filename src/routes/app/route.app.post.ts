@@ -2,7 +2,7 @@ import express from "express";
 import postController from "../../controllers/post/_controller.post";
 import verifyAccessToken from "../../middlewares/middleware.verifyAccessToken";
 import { checkLimitAndThresholdParams } from "../../middlewares/utils/midleware.checkUtilsParams";
-import { checkLanguageParams } from "../../middlewares/utils/midleware.checkLanguageParams";
+import { checkBookmark } from "../../middlewares/checkBookmark";
 
 const router = express.Router();
 
@@ -24,10 +24,10 @@ router.get("/acc", postController.readAcceptedPostsOfAnotherAccount);
 
 // READ NEWEST ACCEPTED POSTS
 router.get(
-    "/newest", 
+    "/newest",
     checkLimitAndThresholdParams,
-    checkLanguageParams,
-    postController.readNewestAcceptedPosts
+    postController.readNewestAcceptedPosts,
+    checkBookmark
 );
 
 // READ NEARBY ACCEPTED POSTS
@@ -35,16 +35,16 @@ router.get(
     "/nearby",
     verifyAccessToken,
     checkLimitAndThresholdParams,
-    checkLanguageParams,
-    postController.readNearbyAcceptedPosts
+    postController.readNearbyAcceptedPosts,
+    checkBookmark
 );
 
 // READ ACCEPTED POSTS BY THEME
 router.get(
-    "/theme", 
+    "/theme",
     checkLimitAndThresholdParams,
-    checkLanguageParams,
-    postController.readAcceptedPostsByTheme
+    postController.readAcceptedPostsByTheme,
+    checkBookmark,
 );
 
 // READ ACCEPTED POSTS IN BOOKMARK
@@ -52,14 +52,12 @@ router.get(
     "/bookmark",
     verifyAccessToken,
     checkLimitAndThresholdParams,
-    checkLanguageParams,
-    postController.readAcceptedPostsInBookmark
+    postController.readAcceptedPostsInBookmark,
 );
 
 // READ POST BY ID
 router.get(
     "/:id", 
-    checkLanguageParams,
     postController.readPostById
 );
 

@@ -22,7 +22,6 @@ const updateCategoriesController = async (
         // GET BODY DATA
 
         const categoryIds = req.body.categoryIds ? req.body.categoryIds : null;
-        console.log(">>> categoryIds: ", categoryIds);
 
         // VALIDATION
         if (!categoryIds || typeof categoryIds !== "object") {
@@ -34,7 +33,7 @@ const updateCategoriesController = async (
         const categoryIdsWillBeDeleted = [];
         const categoryIdsWillBeCreated = [...categoryIds];
         const currentCategoriesOfProfile =
-            await profileCategoryService.readAllByProfileId(id);
+            await profileCategoryService.readAllByProfileId("vi", id);
         // The result is an array of object with each item has format: [{category_id: 1, ...}]
         // So, we need to map the array to get category_id only
         const currentCategoryIds = currentCategoriesOfProfile.map(

@@ -20,7 +20,10 @@ const readApplicationByIdController = async (req: Request, res: Response, next: 
         }
 
         // READ APPLICATION PROFILE ...
-        const applicationProfile = await applicationService.read.readProfileById(+applicationId);
+        const applicationProfile = await applicationService.read.readProfileById(
+            req.query.lang.toString(),
+            +applicationId
+        );
 
         if (applicationProfile === null) {
             return next(createError(404, "Application profile not found"));
@@ -53,7 +56,10 @@ const readApplicationByIdController = async (req: Request, res: Response, next: 
         }
 
         // READ APPLICATION LOCATION
-        const applicationLocations = await applicationService.read.readLocationsById(+applicationId);
+        const applicationLocations = await applicationService.read.readLocationsById(
+            req.query.lang.toString(),
+            +applicationId
+        );
         if (applicationLocations === null) {
             return next(createError(404, "Application location not found"));
         }
