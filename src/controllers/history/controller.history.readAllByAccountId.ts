@@ -30,8 +30,10 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
 
         const data = await Promise.all(result.map(async (a) => {
             if (a.type === 'post') {
+                const n = a.num_of_application;
                 a = await formatPostBeforeReturn(a);
-                a.num_of_application = Number(a.num_of_application) || 0;
+                a.num_of_application = Number(n) || 0;
+                a.type = 'post';
             }
             if (a.type === 'application') {
                 a.created_at = new Date(a.created_at).getTime();
@@ -55,6 +57,7 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
                 } else {
                     a.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${a.post_id}/` + a.image;
                 }
+                a.type = 'application';
             }
             return a;
         }));
