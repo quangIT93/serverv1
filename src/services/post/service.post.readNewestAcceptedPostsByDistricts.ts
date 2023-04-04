@@ -11,7 +11,7 @@ const readNewestAcceptedPostsByDistricts = async (
 ) => {
     try {
         logging.info(
-            "Read newest accepted posts by parent category and districts service start ..."
+            "Read newest accepted posts by districts service start ..."
         );
 
         let query =
@@ -30,6 +30,8 @@ const readNewestAcceptedPostsByDistricts = async (
                 ? "GROUP BY posts.id ORDER BY posts.id DESC LIMIT ?"
                 : "GROUP BY posts.id ORDER BY posts.id DESC";
         params = limit && limit > 0 ? [...params, limit] : [...params];
+
+        console.log(query);
 
         const res = await executeQuery(query, params);
         return res ? res : null;

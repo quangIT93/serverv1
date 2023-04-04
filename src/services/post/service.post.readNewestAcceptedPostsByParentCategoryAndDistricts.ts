@@ -29,6 +29,8 @@ const readNewestAcceptedPostsByParentCategoryAndDistricts = async (
         let params = [1, parentCategoryId, ...districtIds]
         .concat(threshold && threshold > 0 ? [threshold] : [])
         .concat(limit && limit > 0 ? [limit] : []);
+
+        console.log(query);
             
         const res = await executeQuery(query, params);
         return res ? res : null;
