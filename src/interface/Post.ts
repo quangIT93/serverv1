@@ -19,6 +19,7 @@ interface PostService {
     created_at: string;
     ward_id: string;
     ward: string;
+    ward_name: string;
     district_id: string;
     district: string;
     district_name: string;
@@ -67,6 +68,7 @@ interface PostResponse {
     updated_at?: number;
     ward_id: string;
     ward: string;
+    ward_name: string;
     district_id: string;
     district: string;
     district_name: string;

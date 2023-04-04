@@ -31,14 +31,15 @@ async function formatPostBeforeReturn(post: PostService) {
         salary_max: post.salary_max,
         ward_id: post.ward_id,
         ward: post.ward,
+        ward_name: post.ward_name,
         district_id: post.district_id,
         district: post.district,
         district_name: post.district_name,
         province_id: post.province_id,
         province: post.province,
         province_name: post.province_name,
-        latitude: post.latitude,
-        longitude: post.longitude,
+        latitude: post.latitude ? Number(post.latitude) : null, // Number(null) = 0 (not null
+        longitude: post.longitude ? Number(post.longitude) : null,
         updated_at: post.updated_at ? new Date(post.updated_at).getTime() : null,
     };
     if (post.image !== undefined && post.image !== null) {
