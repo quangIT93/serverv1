@@ -20,7 +20,7 @@ const readNewestAcceptedPostsByDistricts = async (
 
         let params = [1, ...districtIds];
         
-        query += threshold && threshold > 0 ? ") AND posts.id < ? " : ") ";
+        query += threshold && threshold > 0 ? " AND posts.id < ? " : " ";
         params =
             threshold && threshold > 0 ? [...params, threshold] : [...params];
 
