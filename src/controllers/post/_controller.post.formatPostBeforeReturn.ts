@@ -6,6 +6,7 @@ import { readDefaultPostImageByPostId } from "../../services/category/_service.c
 async function formatPostBeforeReturn(post: PostService) {
     const postResponse: PostResponse = {
         id: post.id,
+        post_id: post.post_id ? post.post_id : post.id,
         account_id: post.account_id,
         title: post.title,
         company_name: post.company_name,

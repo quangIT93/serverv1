@@ -31,7 +31,7 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
         const data = await Promise.all(result.map(async (a) => {
             if (a.type === 'post') {
                 a = await formatPostBeforeReturn(a);
-                a.num_of_application = Number(a.num_of_application);
+                a.num_of_application = Number(a.num_of_application) || 0;
             }
             if (a.type === 'application') {
                 a.created_at = new Date(a.created_at).getTime();
