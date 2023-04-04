@@ -30,16 +30,16 @@ const readAcceptedPostsInBookmark = async (
             "posts.salary_type as salary_type_id," +
             "posts.money_type," +
             "posts.created_at," +
-            lang === "vi" ? "wards.full_name" : "wards.full_name_en" + " as ward," +
+            `${lang === "vi" ? "wards.full_name" : "wards.full_name_en"}` + " as ward," +
             "wards.name as ward_name," +
             "districts.id as district_id," +
-            lang === "vi" ? "districts.full_name" : "districts.full_name_en" + " as district," + 
+            `${lang === "vi" ? "districts.full_name" : "districts.full_name_en"}` + " as district," + 
             "districts.name as district_name," +
-            lang === "vi" ? "provinces.full_name" : "provinces.full_name_en" + " as province," +
+            `${lang === "vi" ? "provinces.full_name" : "provinces.full_name_en" }` + " as province," +
             "provinces.name as province_name," +
             "provinces.id as province_id," +
-            lang === "vi" ? "salary_types.value" 
-                : lang === "en" ? "salary_types.value_en" : "salary_types.value_ko" +
+            `${lang === "vi" ? "salary_types.value" 
+                : lang === "en" ? "salary_types.value_en" : "salary_types.value_ko"}` +
             " as salary_type," +
             "post_images.image AS image " +
             "FROM bookmarks " +
