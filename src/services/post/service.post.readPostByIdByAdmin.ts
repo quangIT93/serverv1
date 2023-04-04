@@ -1,12 +1,12 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import initQueryReadPost from "./_service.post.initQuery";
+import { initQueryReadDetailPost } from "./_service.post.initQuery";
 
-const readPostByIdByAdminService = async (postId: number) => {
+const readPostByIdByAdminService = async (postId: number, lang: string = "vi",) => {
     try {
         logging.info("Read post by id service start ...");
         const query =
-            initQueryReadPost.q2 +
+            initQueryReadDetailPost(lang) +
             "WHERE posts.id = ?";
         const params = [postId];
         const res = await executeQuery(query, params);

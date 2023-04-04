@@ -9,16 +9,20 @@ import { readDefaultPostImageByPostId } from '../../services/category/_service.c
 import ImageBucket from '../../enum/imageBucket.enum';
 
 const readAllByAccountId = async (req: Request, res: Response, next: NextFunction) => {
-    logging.info('Read all by account id controller start ...');
-    const {id: accountId} = req.user;
-    const {page = ""} = req.query;
+    logging.info('Read All by account id controller start ...');
+    const { id: accountId } = req.user;
+    const { page = "" } = req.query;
     try {
         if (page === "" || (page && (Number.isNaN(+page) || +page < 0))) {
-            logging.warning("Invalid limit value");
+            logging.warning("Invalid page value");
             return next(createError(400));
         }
         
-        const result = await applicationService.read.readPostsAndApplicationsBYAccountId(accountId, +page);
+        const result = await applicationService.read.readPostsAndApplicationsBYAccountId(
+            req.query.lang.toString(), accountId, +page
+        );
+
+        console.log(result);
         
         if (!result) {
             return next(createError(404, 'Applications not found'));
@@ -37,7 +41,6 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
                 a.money_type_text = MoneyType[a.money_type];
                 a.start_date = +a.start_date || null;
                 a.end_date = +a.end_date || null;
-
                 delete a.num_of_application;
                 if (a.image === null) {
                     const firstParentCategoryImage =

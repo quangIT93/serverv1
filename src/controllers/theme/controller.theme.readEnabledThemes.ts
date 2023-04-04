@@ -49,7 +49,7 @@ const readEnabledThemesController = async (
 
                     // VERIFY SUCCESS
                     account_id = payload.id;
-                    let profiles_locations = await readAllByProfileId(account_id);
+                    let profiles_locations = await readAllByProfileId(req.query.lang.toString(), account_id);
                     provinces_locations = profiles_locations.map((location) => location.province_id);
                     themes = await themeServices.readEnabledThemes(provinces_locations);
 

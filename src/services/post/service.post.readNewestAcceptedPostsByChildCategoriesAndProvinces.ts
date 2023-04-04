@@ -1,11 +1,12 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import initQueryReadPost from "./_service.post.initQuery";
+import { initQueryReadPost } from "./_service.post.initQuery";
 
 const readNewestAcceptedPostsByChildCategoriesAndProvinces = async (
+    lang: string,
     accountId: string,
     childCategoryIds: number[],
-    provinceIds: number[],
+    provinceIds: string[],
     limit: number | null,
     threshold: number | null
 ) => {
@@ -15,7 +16,7 @@ const readNewestAcceptedPostsByChildCategoriesAndProvinces = async (
         );
 
         let query =
-            initQueryReadPost.q1 +
+            initQueryReadPost(lang) +
             "WHERE posts.status = ? AND wards.district_id = districts.id " +
             "AND district_id NOT IN (SELECT location_id FROM profiles_locations WHERE account_id = ?) " +
             "AND posts.id IN " +
@@ -24,13 +25,10 @@ const readNewestAcceptedPostsByChildCategoriesAndProvinces = async (
             "AND provinces.id IN " +
             `(${provinceIds.map(() => "?").join(", ")}) ` +
             `${threshold ? "AND posts.id < ? " : ""} ` +
-            "UNION " +
             "GROUP BY posts.id " +
             `${provinceIds.length > 1 ? "ORDER BY FIELD(provinces.id, " + 
             provinceIds.map((_) => "?").join(", ") + ") " : ""}` +
             `${limit ? "LIMIT ?" : ""}`;
-
-        // console.log(query);
 
         const params = [
             1,

@@ -1,8 +1,9 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import initQueryReadPost from "./_service.post.initQuery";
+import { initQueryReadPost } from "./_service.post.initQuery";
 
 const readNewestAcceptedPostsByProvinces = async (
+    lang: string,
     accountId: string,
     provinceIds: string[],
     limit: number | null,
@@ -15,7 +16,7 @@ const readNewestAcceptedPostsByProvinces = async (
         // console.log(accountId)
 
         let query =
-            initQueryReadPost.q1 +
+            initQueryReadPost(lang) +
             "WHERE posts.status = ? " +
             "AND provinces.id IN (" + 
             provinceIds.map((_) => "?").join(", ") +

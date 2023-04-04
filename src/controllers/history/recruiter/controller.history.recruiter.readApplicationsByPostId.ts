@@ -14,19 +14,6 @@ const readApplicationsByPostIdController = async (req: Request, res: Response, n
     const { threshold, limit } = req.query;
     try {
 
-        if (limit === "" || (limit && (Number.isNaN(+limit) || +limit <= 0))) {
-            logging.warning("Invalid limit value");
-            return next(createError(400));
-        }
-
-        // THRESHOLD
-        if (
-            (threshold && (Number.isNaN(+threshold) || +threshold <= 0))
-        ) {
-            logging.warning("Invalid threshold value");
-            return next(createError(400));
-        }
-
         if (!postId) {
             return next(createError(400, 'Post id is required'));
         }
@@ -48,7 +35,11 @@ const readApplicationsByPostIdController = async (req: Request, res: Response, n
         }
 
         // READ APPLICATIONS
-        const applications = await applicationService.read.readAllByPostId(+postId, +limit, +threshold);
+        const applications = await applicationService.read.readAllByPostId(
+            +postId,
+            +limit + 1, 
+            +threshold
+        );
 
         if (!applications) {
             return next(createError(404, "Applications not found"));
@@ -60,7 +51,7 @@ const readApplicationsByPostIdController = async (req: Request, res: Response, n
             a.created_at = new Date(a.created_at).getTime();
             a.birthday = a.birthday ? +a.birthday : null;
             a.application_status_text = ApplicationStatus[a.application_status];
-            a.categories = await applicationService.read.readCategoriesById(a.id);
+            a.categories = await applicationService.read.readCategoriesById(req.query.lang.toString(), a.id);
             a.liked = +a.liked;
             a.liked_value = a.liked === 0 ? null : a.liked === 1 ? true : false;
             a.avatar = a.avatar ? 
@@ -71,7 +62,7 @@ const readApplicationsByPostIdController = async (req: Request, res: Response, n
         let isOver: boolean = false;
 
         if (limit) {
-            if (applications.length < +limit) {
+            if (applications.length <= +limit) {
                 isOver = true;
             }
         } else {

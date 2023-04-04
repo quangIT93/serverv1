@@ -34,7 +34,7 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
         }
 
         // CHECK INFORMATION OF USER BEFORE APPLY
-        const userProfile = await readProfileByIdService(accountId);
+        const userProfile = await readProfileByIdService("vi", accountId);
 
 
         if (!userProfile) {

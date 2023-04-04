@@ -9,19 +9,7 @@ const readAcceptedApplicationsByRecruiterId = async (req: Request, res: Response
     const {id: recruiterId} = req.user;
     const {limit, threshold} = req.query;
     try {
-        if (limit === "" || (limit && (Number.isNaN(+limit) || +limit <= 0))) {
-            logging.warning("Invalid limit value");
-            return next(createError(400));
-        }
-
-        // THRESHOLD
-        if (
-            (threshold && (Number.isNaN(+threshold) || +threshold <= 0))
-        ) {
-            logging.warning("Invalid threshold value");
-            return next(createError(400));
-        }
-
+        
         const applications = await applicationService.read.readAcceptedApplicationByRecruiterId(recruiterId, +limit, +threshold);
         
         if (!applications) {
@@ -31,7 +19,7 @@ const readAcceptedApplicationsByRecruiterId = async (req: Request, res: Response
         const data = await Promise.all(applications.map(async (a) => {
             a.created_at = new Date(a.created_at).getTime();
             a.birthday = a.birthday ? +a.birthday : null;
-            a.categories = await applicationService.read.readCategoriesById(a.id);
+            a.categories = await applicationService.read.readCategoriesById("vi", a.id);
             a.avatar = a.avatar ? 
                 `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.AVATAR_IMAGES}/` + a.avatar : null;
             return a;

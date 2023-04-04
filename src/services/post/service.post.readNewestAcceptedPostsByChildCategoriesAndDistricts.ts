@@ -1,8 +1,9 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import initQueryReadPost from "./_service.post.initQuery";
+import { initQueryReadPost } from "./_service.post.initQuery";
 
 const readNewestAcceptedPostsByChildCategoriesAndDistricts = async (
+    lang: string = "vi",
     chilCategoryIds: number[],
     districtIds: string[],
     limit: number | null,
@@ -14,7 +15,7 @@ const readNewestAcceptedPostsByChildCategoriesAndDistricts = async (
         );
 
         let query =
-            initQueryReadPost.q1 +
+            initQueryReadPost(lang) +
             "LEFT JOIN posts_categories "+
             "ON posts_categories.post_id = posts.id "+
             "WHERE posts.status = ? AND posts.salary_type = salary_types.id AND wards.district_id IN ";

@@ -1,15 +1,16 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import initQueryReadPost from "./_service.post.initQuery";
+import { initQueryReadPost } from "./_service.post.initQuery";
 
 const readNewestAcceptedPosts = async (
+    lang: string = "vi",
     limit: number | null,
     threshold: number | null
 ) => {
     try {
         logging.info("Read newest accepted posts service start ...");
         let query =
-            initQueryReadPost.q1 +
+            initQueryReadPost(lang) +
             "WHERE posts.status = ? ";
 
         let params = [1];

@@ -1,12 +1,14 @@
 import { Router } from "express";
 import verifyAccessToken from "../../middlewares/middleware.verifyAccessToken";
 import historyApplicatorController from "../../controllers/history/applicator/_controller.history.applicator";
+import { checkLimitAndThresholdParams } from "../../middlewares/utils/midleware.checkUtilsParams";
 const router = Router();
 
 // applicator
 router.get(
     "/applications",
     verifyAccessToken,
+    checkLimitAndThresholdParams,
     historyApplicatorController.readSubmittedApplications
 ); // read all post and quantity of applications
 

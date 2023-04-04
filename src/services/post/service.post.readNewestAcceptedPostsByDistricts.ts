@@ -1,9 +1,10 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import initQueryReadPost from "./_service.post.initQuery";
+import { initQueryReadPost } from "./_service.post.initQuery";
 
 const readNewestAcceptedPostsByDistricts = async (
-    districtIds: number[],
+    lang: string = "vi",
+    districtIds: string[],
     limit: number | null,
     threshold: number | null
 ) => {
@@ -13,15 +14,12 @@ const readNewestAcceptedPostsByDistricts = async (
         );
 
         let query =
-            initQueryReadPost.q1 +
-            "WHERE posts.status = ? AND posts.salary_type = salary_types.id AND wards.district_id IN ";
+            initQueryReadPost(lang) +
+            "WHERE posts.status = ? AND posts.salary_type = salary_types.id" +
+            `AND posts.district_id IN (${districtIds ? districtIds.join(",") : ""})`
 
-        let params = [1];
-        districtIds.forEach((districtId, index) => {
-            query += index === 0 ? `(?` : `, ?`;
-            params = [...params, districtId];
-        });
-
+        let params = [1, ...districtIds];
+        
         query += threshold && threshold > 0 ? ") AND posts.id < ? " : ") ";
         params =
             threshold && threshold > 0 ? [...params, threshold] : [...params];

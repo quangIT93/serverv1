@@ -1,12 +1,12 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import initQueryReadPost from "./_service.post.initQuery";
+import { initQueryReadPost } from "./_service.post.initQuery";
 
-const readAcceptedPostsByAccountId = async (accountId: string) => {
+    const readAcceptedPostsByAccountId = async (accountId: string, lang: string = "vi",) => {
     try {
         logging.info("Read accepted posts by account id service start ...");
         const query =
-            initQueryReadPost.q1 +
+            initQueryReadPost(lang) +
             "WHERE posts.account_id = ? AND posts.status = ? AND posts.salary_type = salary_types.id " +
             "GROUP BY posts.id " +
             "ORDER BY posts.id DESC";

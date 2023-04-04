@@ -1,11 +1,11 @@
 import readAcceptedPostsOfMyAccountController from "./controller.post.readAcceptedPostsOfMyAccount";
-import readPostByIdController from "./controller.post.readPostById";
+import readPostByIdController from "./readPost/handler/controller.post.readPostById";
 import readAcceptedPostsOfAnotherAccountController from "./controller.post.readAcceptedPostsOfAnotherAccount";
-import readAcceptedPostsInBookmarkController from "./controller.post.readAcceptedPostsInBookmark";
-import readAcceptedPostsByThemeController from "./controller.post.readAcceptedPostsByTheme";
+import readAcceptedPostsInBookmarkController from "./readPost/handler/controller.post.readAcceptedPostsInBookmark";
+import readAcceptedPostsByThemeController from "./readPost/handler/controller.post.readAcceptedPostsByTheme";
 import readPostsByAdminController from "./controller.post.readPostsByAdmin";
-import readNewestAcceptedPostsController from "./controller.post.readNewestAcceptedPosts";
-import readNearbyAcceptedPostsController from "./controller.post.readNearbyAcceptedPosts";
+import readNewestAcceptedPostsController from "./readPost/handler/controller.post.readNewestAcceptedPosts";
+import readNearbyAcceptedPostsController from "./readPost/handler/controller.post.readNearbyAcceptedPosts";
 import readAllPostsByThemeController from "./controller.post.readAllPostsByTheme";
 import countPostQuantityByAdminController from "./controller.post.countPostQuantityByAdmin";
 

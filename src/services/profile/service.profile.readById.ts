@@ -1,7 +1,10 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
 
-const readProfileByIdService = async (profileId: string, lang: string = "vi") => {
+const readProfileByIdService = async (
+    lang: string,
+    profileId: string
+) => {
     try {
         logging.info("Read profile by id service start ...");
         // const query =
@@ -12,7 +15,7 @@ const readProfileByIdService = async (profileId: string, lang: string = "vi") =>
             "profiles.name, " +
             "profiles.birthday, " +
             "provinces.id as province_id, " +
-            `${lang === "vi" ? "provinces.full_name" : "provinces.name_en"}` + ` as address, ` +
+            `${lang === "vi" ? "provinces.full_name" : "provinces.full_name_en"} as address, ` +
             "profiles.gender, " +
             "profiles.introduction, " +
             "profiles.phone, " +

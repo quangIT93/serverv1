@@ -1,10 +1,10 @@
 import createError from "http-errors";
 import { NextFunction, Request, Response } from "express";
 
-import logging from "../../utils/logging";
-import * as postServices from "../../services/post/_service.post";
-import { formatPostBeforeReturn } from "./_controller.post.formatPostBeforeReturn";
-import readDefaultPostImageByPostId from "../../services/category/service.category.readDefaultPostImageByPostId";
+import logging from "../../../../utils/logging";
+import * as postServices from "../../../../services/post/_service.post";
+import { formatPostBeforeReturn } from "../../_controller.post.formatPostBeforeReturn";
+import readDefaultPostImageByPostId from "../../../../services/category/service.category.readDefaultPostImageByPostId";
 
 const readAcceptedPostsInBookmarkController = async (
     req: Request,
@@ -16,29 +16,20 @@ const readAcceptedPostsInBookmarkController = async (
 
     try {
         // logging.info("Read accepted posts in bookmark start ...");
-        
-        if (limit === "" || (limit && (Number.isNaN(+limit) || +limit <= 0))) {
-            logging.warning("Invalid limit value");
-            return next(createError(400));
-        }
-
-        // THRESHOLD
-        if (
-            (threshold && (Number.isNaN(+threshold) || +threshold <= 0))
-        ) {
-            logging.warning("Invalid threshold value");
-            return next(createError(400));
-        }
-
+    
         if (!req.user || !req.user.id) {
             return next(createError(401));
         }
 
         const accountId = req.user.id;
 
-        const posts = await postServices.readAcceptedPostsInBookmark(accountId, +limit, +threshold);
+        const posts = await postServices.readAcceptedPostsInBookmark(
+            req.query.lang.toString(),
+            accountId, 
+            +limit, 
+            +threshold
+        );
         if (!posts) {
-            
             throw new Error("Posts not found");
         }
         

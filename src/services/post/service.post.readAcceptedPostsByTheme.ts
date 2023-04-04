@@ -1,8 +1,9 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import initQueryReadPost from "./_service.post.initQuery";
+import { initQueryReadPost } from "./_service.post.initQuery";
 
 const readAcceptedPostsByTheme = async (
+    lang: string = "vi",
     themeId: number,
     limit: number | null,
     threshold: number | null
@@ -10,13 +11,9 @@ const readAcceptedPostsByTheme = async (
     try {
         logging.info("Read accepted posts by theme service start ...");
         let query =
-            initQueryReadPost.q1 +
-            "INNER JOIN themes ON themes.id = ? " +
-            "WHERE posts.status = ? " +
-            // "AND posts.id IN (SELECT post_id FROM themes_posts WHERE theme_id = ?) ";
-            "AND districts.id = themes.district_id " +
-            `${threshold && threshold > 0 ? "AND posts.id < ? " : " "}` +
-            "GROUP BY posts.id ORDER BY posts.id DESC LIMIT ?";
+            initQueryReadPost(lang) +
+            "WHERE posts.status = ? AND posts.salary_type = salary_types.id " +
+            "AND posts.id IN (SELECT post_id FROM themes_posts WHERE theme_id = ?) ";
 
         let params = [themeId, 1]
         params = threshold && threshold > 0 ? [...params, threshold] : [...params];

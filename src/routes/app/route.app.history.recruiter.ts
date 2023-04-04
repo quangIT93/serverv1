@@ -1,6 +1,7 @@
 import { Router } from "express";
 import historyRecruiterController from "../../controllers/history/recruiter/_controller.history.recruiter";
 import verifyAccessToken from "../../middlewares/middleware.verifyAccessToken";
+import { checkLimitAndThresholdParams } from "../../middlewares/utils/midleware.checkUtilsParams";
 
 const router = Router();
 
@@ -8,12 +9,14 @@ const router = Router();
 router.get(
     "/applications",
     verifyAccessToken,
+    checkLimitAndThresholdParams,
     historyRecruiterController.readQuantityApplicationsOfAllPosts
 ); // read all post and quantity of applications
 
 router.get(
     "/posts",
     verifyAccessToken,
+    checkLimitAndThresholdParams,
     historyRecruiterController.readAllPostedJobs
 ); // read all posted jobs
 
@@ -26,6 +29,7 @@ router.get(
 router.get(
     "/:post_id/applications",
     verifyAccessToken,
+    checkLimitAndThresholdParams,
     historyRecruiterController.readApplicationByPostId
 ); // read all applications by post id
 

@@ -10,22 +10,11 @@ const readQuantityApplicationOfAllPostsController = async (req: Request, res: Re
     const { id: recruiterId } = req.user;
     const { threshold, limit } = req.query;
     try {
-        if (limit === "" || (limit && (Number.isNaN(+limit) || +limit <= 0))) {
-            logging.warning("Invalid limit value");
-            return next(createError(400));
-        }
-
-        // THRESHOLD
-        if (
-            (threshold && (Number.isNaN(+threshold) || +threshold <= 0))
-        ) {
-            logging.warning("Invalid threshold value");
-            return next(createError(400));
-        }
 
         const titles = await applicationService.read.readByRecruiterId(
+            req.query.lang.toString(),
             recruiterId,
-            Number.isInteger(+limit) ? +limit : null,
+            +limit + 1,
             Number.isInteger(+threshold) ? +threshold : null
         );
 
@@ -38,25 +27,14 @@ const readQuantityApplicationOfAllPostsController = async (req: Request, res: Re
         
         const data = await Promise.all(titles.map(async (post) => {
             post = await formatPostBeforeReturn(post);
-            post.num_of_application = Number(post.num_of_application);
-            // if (a.image === null) {
-            //     const firstParentCategoryImage =
-            //         await readDefaultPostImageByPostId(
-            //             a.id
-            //         );
-            //     if (!firstParentCategoryImage) {
-            //         a.image = null;
-            //     } else {
-            //         a.image = firstParentCategoryImage.image;
-            //     }
-            // }
+            post.num_of_application = Number(post.num_of_application) || 0;
             return post;
         }));
 
         let isOver: boolean = false;
 
         if (limit) {
-            if (titles.length < +limit) {
+            if (titles.length <= +limit) {
                 isOver = true;
             }
         } else {

@@ -1,6 +1,8 @@
 import express from "express";
 import postController from "../../controllers/post/_controller.post";
 import verifyAccessToken from "../../middlewares/middleware.verifyAccessToken";
+import { checkLimitAndThresholdParams } from "../../middlewares/utils/midleware.checkUtilsParams";
+import { checkBookmark } from "../../middlewares/checkBookmark";
 
 const router = express.Router();
 
@@ -21,27 +23,43 @@ router.get(
 router.get("/acc", postController.readAcceptedPostsOfAnotherAccount);
 
 // READ NEWEST ACCEPTED POSTS
-router.get("/newest", postController.readNewestAcceptedPosts);
+router.get(
+    "/newest",
+    checkLimitAndThresholdParams,
+    postController.readNewestAcceptedPosts,
+    checkBookmark
+);
 
 // READ NEARBY ACCEPTED POSTS
 router.get(
     "/nearby",
     verifyAccessToken,
-    postController.readNearbyAcceptedPosts
+    checkLimitAndThresholdParams,
+    postController.readNearbyAcceptedPosts,
+    checkBookmark
 );
 
 // READ ACCEPTED POSTS BY THEME
-router.get("/theme", postController.readAcceptedPostsByTheme);
+router.get(
+    "/theme",
+    checkLimitAndThresholdParams,
+    postController.readAcceptedPostsByTheme,
+    checkBookmark,
+);
 
 // READ ACCEPTED POSTS IN BOOKMARK
 router.get(
     "/bookmark",
     verifyAccessToken,
-    postController.readAcceptedPostsInBookmark
+    checkLimitAndThresholdParams,
+    postController.readAcceptedPostsInBookmark,
 );
 
 // READ POST BY ID
-router.get("/:id", postController.readPostById);
+router.get(
+    "/:id", 
+    postController.readPostById
+);
 
 router.get(
     "/by-admin/count-quantity",

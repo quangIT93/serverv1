@@ -2,6 +2,7 @@ import logging from "../../../utils/logging";
 import { executeQuery } from "../../../configs/database";
 
 const readSubmittedApplicationByAccountIdService = async (
+    lang: string | null = "vi",
     accountId: string,
     limit: number | null,
     threshold: number | null
@@ -21,17 +22,24 @@ const readSubmittedApplicationByAccountIdService = async (
             "posts.end_date, " +
             "posts.salary_min, " +
             "posts.salary_max, " +
-            "wards.full_name as ward," + 
+            ` ${lang === "vi" ? "wards.full_name" : "wards.full_name_en"} as ward,` +
             "wards.name as ward_name," +
             "districts.id as district_id," +
-            "districts.full_name as district," + 
+            ` ${lang === "vi" ? "districts.full_name" : "districts.full_name_en"
+            } as district,` +
             "districts.name as district_name," +
-            "provinces.full_name as province," +
+            ` ${lang === "vi" ? "provinces.full_name" : "provinces.full_name_en"
+            } as province,` +
             "provinces.name as province_name," +
             "provinces.id as province_id," +
             "posts.salary_type as salary_type_id, " +
             "post_images.image as image, " +
-            "salary_types.value as salary_type, " +
+            ` ${lang === "vi"
+                ? "salary_types.value"
+                : lang === "en"
+                    ? "salary_types.value_en"
+                    : "salary_types.value_ko"
+            } as salary_type,` +
             "posts.money_type " +
             " FROM applications" +
             " LEFT JOIN posts ON applications.post_id = posts.id" +
@@ -42,9 +50,8 @@ const readSubmittedApplicationByAccountIdService = async (
             " LEFT JOIN salary_types ON posts.salary_type = salary_types.id" +
             " WHERE applications.account_id = ?" +
             ` ${threshold ? " AND applications.id < ?" : ""}` +
-            " GROUP BY applications.id"
-            " ORDER BY applications.id DESC" +
-            ` ${limit ? " LIMIT ?" : ""}`;
+            " GROUP BY applications.id";
+        " ORDER BY applications.id DESC" + ` ${limit ? " LIMIT ?" : ""}`;
         const params: any[] = [accountId];
         if (threshold) {
             params.push(threshold);

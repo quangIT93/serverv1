@@ -1,8 +1,9 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import initQueryReadPost from "./_service.post.initQuery";
+import { initQueryReadPost } from "./_service.post.initQuery";
 
 const readNewestAcceptedPostsByParentCategoryAndProvinces = async (
+    lang: string,
     accountId: string,
     parentCategoryId: number,
     provinceIds: string[],
@@ -15,7 +16,7 @@ const readNewestAcceptedPostsByParentCategoryAndProvinces = async (
         );
 
         let query =
-            initQueryReadPost.q1 +
+            initQueryReadPost(lang) +
             "LEFT JOIN posts_categories " +
             "ON posts_categories.post_id = posts.id " +
             "LEFT JOIN child_categories " +
@@ -30,6 +31,7 @@ const readNewestAcceptedPostsByParentCategoryAndProvinces = async (
             `${provinceIds.length > 1 ? "ORDER BY FIELD(provinces.id, " + 
             provinceIds.map((_) => "?").join(", ") + ") " : ""}` +
             `${limit && limit > 0 ? "LIMIT ?" : ""}`;
+
 
         let params: any[] = [1, parentCategoryId, accountId];
         

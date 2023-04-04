@@ -10,7 +10,7 @@ const historyRecruiterController = {
     readApplicationByPostId: readApplicationsByPostIdController,
     readApplicationsByApplicationId: readApplicationByIdController,
     readAllPostedJobs: readPostedJobByRecruiterIdController,
-    readAcceptedApplicationsByRecruiterId: readAcceptedApplicationsByRecruiterId,
+    // readAcceptedApplicationsByRecruiterId: readAcceptedApplicationsByRecruiterId,
     createRateForApplicator: createRateForApplicationController,
 };
 

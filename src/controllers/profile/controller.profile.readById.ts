@@ -37,7 +37,7 @@ const readProfileByIdController = async (
         }
 
         // GET PROFILE BY ID
-        const profileData = await readProfileByIdService(id);
+        const profileData = await readProfileByIdService(req.query.lang.toString(), id);
         if (!profileData) {
             logging.warning("Incorrect profile id");
             return next(createError(404));
@@ -50,20 +50,24 @@ const readProfileByIdController = async (
 
         profileData.birthday = +profileData.birthday;
 
-        profileData.avatar = profileData.avatar ? `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.AVATAR_IMAGES}/` + profileData.avatar : null;
+        profileData.avatar = profileData.avatar
+            ? `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.AVATAR_IMAGES}/` +
+            profileData.avatar
+            : null;
 
         delete profileData.province_id;
 
         // GET CATEGORIES OF PROFILE
-        const categories = await profileCategoryServices.readAllByProfileId(id);
-
-        // GET LOCATIONS OF PROFILE
-        const locations = await profileLocationServices.readAllByProfileId(id, lang.toString());
-
-        // GET EDUCATIONS OF PROFILE
-        const educations = await profileEducationServices.readAllByProfileId(
+        const categories = await profileCategoryServices.readAllByProfileId(
+            req.query.lang.toString(),
             id
         );
+
+        // GET LOCATIONS OF PROFILE
+        const locations = await profileLocationServices.readAllByProfileId(req.query.lang.toString(), id);
+
+        // GET EDUCATIONS OF PROFILE
+        const educations = await profileEducationServices.readAllByProfileId(id);
         const educationsModified = educations.map((education) => ({
             ...education,
             start_date: +education.start_date,
@@ -71,9 +75,7 @@ const readProfileByIdController = async (
         }));
 
         // GET EXPERIENCES OF PROFILE
-        const experiences = await profileExperienceServices.readAllByProfileId(
-            id
-        );
+        const experiences = await profileExperienceServices.readAllByProfileId(id);
         const experiencesModified = experiences.map((experience) => ({
             ...experience,
             start_date: +experience.start_date,
