@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.get("/today", verifyAccessToken, accountController.readTodayAccounts);
 router.get("/", verifyAccessToken, accountController.readAccounts);
-router.delete("/", verifyAccessToken);
+router.delete("/delete/:id", verifyAccessToken, accountController.deleteAccount);
 
 export default router;
