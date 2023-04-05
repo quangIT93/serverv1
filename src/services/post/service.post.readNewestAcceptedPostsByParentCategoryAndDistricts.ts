@@ -28,8 +28,7 @@ const readNewestAcceptedPostsByParentCategoryAndDistricts = async (
             "GROUP BY posts.id DESC LIMIT ?"
         let params = [1, parentCategoryId, ...districtIds]
         .concat(threshold && threshold > 0 ? [threshold] : [])
-        .concat(limit && limit > 0 ? [limit] : []);
-            
+        .concat(limit && limit > 0 ? [limit] : []);            
         const res = await executeQuery(query, params);
         return res ? res : null;
     } catch (error) {
