@@ -74,7 +74,7 @@ const createPost = async (
             phoneNumber,
             moneyType,
             role === 1 || role === 2 ? '1' : '0',
-            0 //test
+            1 //test
         ];
         const res = await executeQuery(query, params);
         return res ? Number(res.insertId) : null;
