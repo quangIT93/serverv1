@@ -283,11 +283,13 @@ const updatePostInformationController = async (
                     return next(createError(500));
                 }
                 // DELETE IMAGES FROM AWS
+                // console.log(currentImages)
                 const BASE_URL = ImageBucket.POST_IMAGES + "/" + postId + "/";
                 const deletedImagesUrls = deletedImageIds.map(
                     (imageId) => {
+                        // console.log(imageId, currentImagesIds.includes(imageId), );
                         if (currentImagesIds.includes(imageId)) {
-                            return BASE_URL + currentImages.find((image) => image.id === imageId).url;
+                            return BASE_URL + currentImages.find((image) => image.id === imageId).image;
                         }
                     }
                 );
