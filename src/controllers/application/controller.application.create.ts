@@ -79,7 +79,6 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
         const applicationEducations = await applicationService.create.createApplicationEducations(applicationIdNumber, accountId);
 
         if (!applicationEducations) {
-            await applicationService.delete.deleteExperiencesById(applicationIdNumber);
             applicationService.delete.deleteById(applicationIdNumber);
             return next(createError(500, "Create application educations failed"));
         }
@@ -88,8 +87,6 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
         const applicationCategory = await applicationService.create.createApplicationCategories(applicationIdNumber, accountId);
 
         if (!applicationCategory) {
-            await applicationService.delete.deleteExperiencesById(applicationIdNumber);
-            await applicationService.delete.deleteEducationsById(applicationIdNumber);
             applicationService.delete.deleteById(applicationIdNumber);
             return next(createError(500, "Create application category failed"));
         }
@@ -98,9 +95,6 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
         const applicationLocations = await applicationService.create.createApplicationLocations(applicationIdNumber, accountId);
 
         if (!applicationLocations) {
-            await applicationService.delete.deleteExperiencesById(applicationIdNumber);
-            await applicationService.delete.deleteEducationsById(applicationIdNumber);
-            await applicationService.delete.deleteCategoriesById(applicationIdNumber);
             applicationService.delete.deleteById(applicationIdNumber);
             return next(createError(500, "Create application locations failed"));
         }

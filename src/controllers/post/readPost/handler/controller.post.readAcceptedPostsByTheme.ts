@@ -1,20 +1,10 @@
 import createError from "http-errors";
-import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
 import logging from "../../../../utils/logging";
 import * as postServices from "../../../../services/post/_service.post";
-import * as bookmarkServices from "../../../../services/bookmark/_service.bookmark";
-import * as categoryServices from "../../../../services/category/_service.category";
-import MoneyType from "../../../../enum/money_type.enum";
 import { formatPostBeforeReturn } from "../../_controller.post.formatPostBeforeReturn";
 import { PostResponse, PostService } from "../../../../interface/Post";
-import { checkBookmark } from "../../../../middlewares/checkBookmark";
-
-interface Payload {
-    id: string;
-    role: number;
-}
 
 const readAcceptedPostsByThemeController = async (
     req: Request,
