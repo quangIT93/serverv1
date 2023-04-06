@@ -31,22 +31,25 @@ const updatePostInformationController = async (
                 return next(createError(400));
             }
 
-            const urlsUploaded =
-                req.files && req.files.length as number > 0
-                    ? await awsServices.uploadImages(req.files, ImageBucket.POST_IMAGES, postId)
-                    : [];
+            const post = await postServices.readPostById(postId);
+            
+            if (!post) {
+                logging.error("Post not found");
+                return next(createError(404));
+            }
 
+            if (post[0].account_id !== req.user.id) {
+                return next(createError(406, "You can not update this post"));
+            }
             // GET BODY DATA
-            const title = req.body.title
-                ? req.body.title.toString().trim()
-                : null;
+            const title = req.body.title ? req.body.title.toString().trim() : null;
             const companyName = req.body.companyName
                 ? req.body.companyName.toString().trim()
                 : null;
             const wardId = req.body.wardId;
             const address = req.body.address;
             const latitude = req.body.latitude;
-            const longitude = req.body.longitude; 
+            const longitude = req.body.longitude;
             const isDatePeriod = +req.body.isDatePeriod;
             const isWorkingWeekend = +req.body.isWorkingWeekend;
             const isRemotely = +req.body.isRemotely;
@@ -60,15 +63,13 @@ const updatePostInformationController = async (
             const description = req.body.description
                 ? req.body.description.toString().trim()
                 : null;
-            const categoryIds = req.body.categoryIds
-                ? req.body.categoryIds
-                : null;
+            const categoryIds = req.body.categoryIds ? req.body.categoryIds : null;
             let deletedImages = req.body.deletedImages
                 ? req.body.deletedImages
                 : null;
             let phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : null;
             let moneyType = req.body.moneyType ? +req.body.moneyType : null;
-                
+
             // PARSE DATA
             if (Array.isArray(deletedImages)) {
                 deletedImages.forEach((e, index) => {
@@ -85,13 +86,21 @@ const updatePostInformationController = async (
                 logging.warning("Invalid body data");
                 return next(createError(400));
             }
-            
-            if (parseFloat(latitude) < 8.0 || parseFloat(latitude) > 23.0 || !parseFloat(latitude)) {
+
+            if (
+                parseFloat(latitude) < 8.0 ||
+                parseFloat(latitude) > 23.0 ||
+                !parseFloat(latitude)
+            ) {
                 logging.warning("Invalid latitude value");
                 return next(createError(400, "Invalid latitude value"));
             }
 
-            if (parseFloat(longitude) < 102.0 || parseFloat(longitude) > 109.0 || !parseFloat(longitude)) {
+            if (
+                parseFloat(longitude) < 102.0 ||
+                parseFloat(longitude) > 109.0 ||
+                !parseFloat(longitude)
+            ) {
                 logging.warning("Invalid longitude value");
                 return next(createError(400, "Invalid longitude value"));
             }
@@ -104,13 +113,13 @@ const updatePostInformationController = async (
                 return next(createError(400));
             }
 
-            if (startTime < 57600000 || 
-                endTime < 57600000 || 
-                startTime > 144000000 || 
+            if (
+                startTime < 57600000 ||
+                endTime < 57600000 ||
+                startTime > 144000000 ||
                 endTime > 144000000
             ) {
                 logging.warning("Invalid time value");
-                return next(createError(400));
             }
 
             if (
@@ -118,18 +127,15 @@ const updatePostInformationController = async (
                 isDatePeriod < 0 ||
                 isDatePeriod > 1
             ) {
-                logging.warning("Invalid isDatePeriod value");
-                return next(createError(400));
+                return next(createError(400, "Invalid isDatePeriod value"));
             }
 
             if (
                 isDatePeriod === 1 &&
                 (new Date(startDate).toString() === "Invalid Date" ||
-                    new Date(startTime).toString() === "Invalid Date" ||
                     new Date(startDate) > new Date(endDate))
             ) {
-                logging.warning("Invalid date value");
-                return next(createError(400));
+                return next(createError(400, "Invalid date value"));
             }
 
             if (
@@ -137,37 +143,38 @@ const updatePostInformationController = async (
                 isWorkingWeekend < 0 ||
                 isWorkingWeekend > 1
             ) {
-                logging.warning("Invalid isWorkingWeekend value");
-                return next(createError(400));
+                return next(createError(400, "Invalid isWorkingWeekend value"));
             }
 
             if (
                 !Number.isInteger(isRemotely) ||
                 (isRemotely !== 0 && isRemotely !== 1)
             ) {
-                logging.warning("Invalid isRemotely value");
                 return next(createError(400, "Invalid isRemotely value"));
             }
 
             if (!Number.isInteger(salaryMin) || salaryMin <= 0) {
                 logging.warning("Invalid salary value");
+                return next(createError(400, "Invalid salary value"));
+            }
+
+            if (
+                !Number.isInteger(salaryMax) ||
+                salaryMax <= 0 ||
+                !Number.isInteger(salaryType) ||
+                salaryType <= 0
+            ) {
                 return next(createError(400));
             }
 
-            if (!Number.isInteger(salaryMax) || salaryMax <= 0) {
-                logging.warning("Invalid salary value");
-                return next(createError(400));
+            if (salaryMin > salaryMax) {
+                return next(createError(400, "Invalid salary value"));
             }
 
-            if (!Number.isInteger(salaryType) || salaryType <= 0) {
-                logging.warning("Invalid salaryType value");
-                return next(createError(400));
-            }
-
-            const helper = new Helper()
+            const helper = new Helper();
 
             // remove char + at head of phone number
-            phoneNumber = phoneNumber.replace(/^\+/, '');
+            phoneNumber = phoneNumber.replace(/^\+/, "");
 
             if (phoneNumber && !helper.checkPhoneNumberFormat(phoneNumber)) {
                 logging.warning("Invalid phone number format");
@@ -175,35 +182,62 @@ const updatePostInformationController = async (
             }
 
             if (!moneyType) {
-                logging.warning("Invalid money type");
-                return next(createError(400, 'Type of money is required'));
+                return next(createError(400, "Type of money is required"));
             }
 
-            if (moneyType !== 1 && moneyType !== 2) {
-                logging.warning("Invalid money type");
-                return next(createError(400, 'Invalid money type, only 1 (VND) or 2 (USD)'));
+            if (!moneyType || moneyType !== 1 && moneyType !== 2) {
+                return next(
+                    createError(400, "Invalid money type, only 1 (VND) or 2 (USD)")
+                );
             }
 
-            if (description.length > 1500) {
-                logging.warning("Description is too long");
+            if (description.length > 4000) {
                 return next(createError(400, "Mô tả quá dài (tối đa 1500 ký tự)"));
             }
             if (!categoryIds) {
-                logging.warning("Invalid categoryIds");
                 return next(createError(400, "CategoryIds is required"));
             }
 
             let isValidCategoryId = true;
-            categoryIds.forEach((categoryId) => {
-                if (!Number.isInteger(+categoryId)) {
+            for (let i = 0; i < categoryIds.length; i++) {
+                if (!Number.isInteger(+categoryIds[i])) {
                     isValidCategoryId = false;
-                    return;
+                    break;
                 }
-            });
+            }
+
+            if (!isValidCategoryId) {
+                return next(createError(400, "Invalid categoryIds"));
+            }
+
+            // HANDLE IMAGES OF POST
+            // GET CURRENT IMAGES OF POST
+            const currentImages = await postImageServices.readImagesOfPost(postId);
+            const currentImagesIds = currentImages.map((image) => +image.id);
+            const newImages = req.files ? req.files : [];
+            const deletedImageIds = deletedImages.map((image) => +image.id);
+
+            if (currentImages.length + newImages.length - deletedImageIds.length > 5) {
+                return next(createError(400, "Số lượng ảnh quá nhiều (tối đa 5 ảnh)"));
+            }
+
+
+            // GET IMAGES WILL BE DELETED
+            if (deletedImages.length > 0) {
+                let isUpdateImagesSuccess = true;
+                // DELETE IMAGES OF POST BY IMAGE IDS
+                for (let i = 0; i < deletedImageIds.length; i++) {
+                    if (!currentImagesIds.includes(deletedImageIds[i])) {
+                        isUpdateImagesSuccess = false;
+                        break;
+                    }
+                }
+                if (!isUpdateImagesSuccess) {
+                    return next(createError(400, "Invalid deletedImages"));
+                }
+            }
 
             // HANDLE UPDATE
-
-            logging.info("Update post information: " + isRemotely);
             const isUpdateSuccess = await postServices.updateInformation(
                 postId,
                 title,
@@ -226,41 +260,48 @@ const updatePostInformationController = async (
                 helper.formatPhoneNumber(phoneNumber),
                 moneyType
             );
-            // if (isUpdateSuccess === 2) {
-            //     console.log("Not thing to update");
-            //     return res.status(200).json({
-            //         code: 200,
-            //         success: true,
-            //         message: "Not thing to update",
-            //     });
 
-            // }
             if (!isUpdateSuccess) {
-                // console.log("Update post information failed");
-                return next(createError(500));
+                return next(createError(500, "Update post information failed"));
             }
 
-            // HANDLE IMAGES OF POST
-            // GET IMAGES WILL BE DELETED
-            if (deletedImages.length > 0) {
-                // DELETE IMAGES OF POST BY IMAGE IDS
-                const deletedImageIds = deletedImages.map((image) => +image.id);
-                if (deletedImageIds.length > 0) {
-                    const isDeleteImagesSuccess =
-                        await postImageServices.deleteByIds(
-                            postId,
-                            deletedImageIds
-                        );  
-                    if (!isDeleteImagesSuccess) {
-                        return next(createError(500));
-                    }
+            const urlsUploaded =
+            req.files && (req.files.length as number) > 0
+                ? await awsServices.uploadImages(
+                    newImages,
+                    ImageBucket.POST_IMAGES,
+                    postId
+                )
+                : [];
+            
+            if (deletedImageIds.length > 0) {
+                const isDeleteImagesSuccess = await postImageServices.deleteByIds(
+                    postId,
+                    deletedImageIds
+                );
+                if (!isDeleteImagesSuccess) {
+                    return next(createError(500));
                 }
+                // DELETE IMAGES FROM AWS
+                const BASE_URL = ImageBucket.POST_IMAGES + "/" + postId + "/";
+                const deletedImagesUrls = deletedImageIds.map(
+                    (imageId) => {
+                        if (currentImagesIds.includes(imageId)) {
+                            return BASE_URL + currentImages.find((image) => image.id === imageId).url;
+                        }
+                    }
+                );
+                await awsServices.deleteImages(
+                    deletedImagesUrls
+                );
             }
-
+            
             // IF POST HAS NEW IMAGES => CREATE IMAGES OF POST
             if (urlsUploaded.length > 0) {
-                const isCreateImagesOfPostSuccess =
-                    await postImageServices.create(postId, urlsUploaded);
+                const isCreateImagesOfPostSuccess = await postImageServices.create(
+                    postId,
+                    urlsUploaded
+                );
                 if (!isCreateImagesOfPostSuccess) {
                     return next(createError(500));
                 }

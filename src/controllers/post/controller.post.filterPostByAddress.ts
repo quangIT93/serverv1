@@ -6,7 +6,7 @@ import * as locationServices from "../../services/location/_service.location";
 // import MoneyType from "../../enum/money_type.enum";
 // import { formatPostBeforeReturn } from "./_controller.post.formatPostBeforeReturn";
 
-const filterPostbyAddress = async (
+const filterPostByAddress = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -84,4 +84,4 @@ const filterPostbyAddress = async (
     }
 };
 
-export default filterPostbyAddress;
+export default filterPostByAddress;
