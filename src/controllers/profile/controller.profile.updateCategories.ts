@@ -61,7 +61,7 @@ const updateCategoriesController = async (
         // console.log(`categoryIdsWillBeCreated: ${categoryIdsWillBeCreated}`);
 
         // HANDLE CREATE
-        console.log(">>> categoryIdsWillBeCreated: ", categoryIdsWillBeCreated);
+        // console.log(">>> categoryIdsWillBeCreated: ", categoryIdsWillBeCreated);
         if (categoryIdsWillBeCreated.length > 0) {
             const isCreateSuccess =
                 await profileCategoryService.createCategoriesOfProfile(
@@ -74,7 +74,7 @@ const updateCategoriesController = async (
         }
 
         // HANDLE DELETE
-        console.log(">>> categoryIdsWillBeDeleted: ", categoryIdsWillBeDeleted);
+        // console.log(">>> categoryIdsWillBeDeleted: ", categoryIdsWillBeDeleted);
         if (categoryIdsWillBeDeleted.length > 0) {
             const isDeleteSuccess =
                 await profileCategoryService.deleteCategoriesOfProfile(

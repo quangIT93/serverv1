@@ -23,7 +23,7 @@ const createThemeController = async (
             return next(createError(400));
         }
 
-        let imageUrl;
+        let imageUrl: string;
 
         if (files && files.length > 0) {
             // UPLOAD FILE TO AWS AND CREATE BANNER
@@ -36,7 +36,7 @@ const createThemeController = async (
         } else {
             // ONLY CREATE BANNER
             imageUrl = req.body.imageUrl
-                ? req.body.imageUrl.toString().trim()
+                ? req.body.imageUrl.toString().trim().split("/").pop()
                 : null;
         }
 
@@ -72,13 +72,14 @@ const createThemeController = async (
             }
         }
 
+
         // SUCCESS
         return res.status(200).json({
             code: 200,
             success: true,
             data: {
                 id: themeIdCreated,
-                image: imageUrl,
+                image: `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.THEME_IMAGES}/${imageUrl}`,
                 title,
                 status: 1,
             },

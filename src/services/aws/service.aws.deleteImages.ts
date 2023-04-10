@@ -9,10 +9,8 @@ const deleteImages = async (urls: string[]) => {
             Key: url
             
         }));
-
-        console.log("params: ", params);
         
-        const result = await Promise.all(
+        await Promise.all(
             params.map((param) => client.send(new DeleteObjectCommand({
                 Bucket: process.env.AWS_BUCKET_NAME,
                 Key: param.Key

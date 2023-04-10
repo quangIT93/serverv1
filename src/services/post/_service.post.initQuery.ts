@@ -15,6 +15,7 @@ const initQueryReadPost = (lang: string): string => {
         posts.salary_type as salary_type_id,
         posts.money_type,
         posts.created_at,
+        posts.status,
         ${lang === "vi" ? "wards.full_name" :  "wards.full_name_en"} as ward,
         wards.name as ward_name,
         districts.id as district_id,

@@ -33,7 +33,7 @@ const readNewestAcceptedPostsByDistricts = async (
             "Read newest accepted posts by parent category and districts service has error: ",
             error
         );
-        console.log(query);
+        // console.log(query);
         throw error;
     }
 };

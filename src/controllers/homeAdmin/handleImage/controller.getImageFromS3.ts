@@ -7,7 +7,7 @@ import uploadImages from '../../../services/aws/service.aws.uploadImages';
 
 const downloadImage = async (imageName: string) => {  
 
-    console.log(imageName);
+    // console.log(imageName);
 
     if (imageName === null) {
         return;
