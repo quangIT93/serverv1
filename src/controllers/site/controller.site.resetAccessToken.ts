@@ -5,7 +5,7 @@ import logging from "../../utils/logging";
 import * as jwtServices from "../../services/jwt/_service.jwt";
 
 interface Payload {
-    accountId: string;
+    id: string;
     role: number;
 }
 
