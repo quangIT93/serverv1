@@ -36,15 +36,6 @@ const readAcceptedPostsOfAnotherAccountController = async (
             posts.map(async (post, index: number) => {
                 posts[index] = await formatPostBeforeReturn(post);
 
-                // if (post.image === null) {
-                //     const firstParentCategoryImage =
-                //         await readDefaultPostImageByPostId(
-                //             post.id
-                //         );
-                //     if (firstParentCategoryImage) {
-                //         post.image = firstParentCategoryImage.image;
-                //     }
-                // }
             })
         );
 

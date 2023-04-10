@@ -8,7 +8,7 @@ const countPostQuantityPerMonthByAccountId = async (accountId) => {
             "FROM posts " +
             "WHERE account_id = ? " +
             "GROUP BY MONTH(created_at) " +
-            "ORDER BY date ASC";
+            "ORDER BY created_at ASC";
         const params = [accountId];
         const res = await executeQuery(query, params);
         return res ? res : null;

@@ -4,11 +4,12 @@ import { executeQuery } from "../../configs/database";
 const countPostQuantityPerDayByAccountId = async (accountId) => {
     try {
         const query =
-            "SELECT DATE_FORMAT(created_at, '%d/%m/%Y') as date, COUNT(*) as quantity " +
+            "SELECT DATE_FORMAT(created_at, '%d/%m/%Y') as date, " +
+            "COUNT(*) as quantity " +
             "FROM posts " +
             "WHERE account_id = ? " +
-            "GROUP BY DAY(created_at) " +
-            "ORDER BY date ASC";
+            "GROUP BY DATE_FORMAT(created_at, '%d/%m/%Y') " +
+            "ORDER BY created_at ASC";
         const params = [accountId];
         const res = await executeQuery(query, params);
         return res ? res : null;
