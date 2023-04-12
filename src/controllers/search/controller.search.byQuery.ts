@@ -197,6 +197,7 @@ const searchByQueryController = async (req: Request, res: Response, next: NextFu
         q = q.toLocaleLowerCase();
         q = q.replace(/[^a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂ ưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]/g, ' ');
 
+
         if (page && !Number.isInteger(parseInt(page as string))) {
             logging.warning('Invalid page');
             return next(createError(400));

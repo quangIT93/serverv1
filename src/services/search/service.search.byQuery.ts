@@ -99,7 +99,7 @@ const searchByQueryService = async (
         .concat(isRemotely !== null ? [isRemotely.toString()] : [])
         .concat(startDate !== null ? [startDate] : [])
         .concat(endDate !== null ? [endDate] : [])
-        .concat([`%${q}%`, `%${q}%`, `%${q}%`, q, q, q, q, q, q ])
+        .concat([`%${q}%`, `%${q}%`])
         // console.log(query);
         // console.log(params);
         const res = await executeQuery(query, params);
