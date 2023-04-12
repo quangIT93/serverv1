@@ -43,7 +43,7 @@ const updateInformationByAdmin = async (
                   startTime,
                   endTime,
                   isWorkingWeekend,
-                  isRemotely,
+                  isRemotely.toString(),
                   salaryMin,
                   salaryMax,
                   salaryType,
@@ -63,7 +63,7 @@ const updateInformationByAdmin = async (
                   startTime,
                   endTime,
                   isWorkingWeekend,
-                  isRemotely,
+                  isRemotely.toString(),
                   salaryMin,
                   salaryMax,
                   salaryType,
@@ -71,6 +71,7 @@ const updateInformationByAdmin = async (
                   moneyType,
                   postId,
               ];
+        console.log(params);
         const res = await executeQuery(query, params);
         return res ? res.affectedRows === 1 : false;
     } catch (error) {

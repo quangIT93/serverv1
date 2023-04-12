@@ -5,6 +5,7 @@ import sgMail from "@sendgrid/mail";
 
 import logging from "../../utils/logging";
 import * as accountServices from "../../services/account/_service.account";
+import createProfileWithAccountIdService from "../../services/profile/service.profile.createWithAccountId";
 
 interface Payload {
     id: string;
@@ -48,6 +49,16 @@ const adminSignUpController = async (
                 role
             );
         if (!isCreateAccountSuccess) {
+            return next(createError(500));
+        }
+
+        // create profile
+        const isCreateProfileSuccess = await createProfileWithAccountIdService(
+            accountId,
+            email
+        );
+
+        if (!isCreateProfileSuccess) {
             return next(createError(500));
         }
 

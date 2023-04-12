@@ -23,7 +23,7 @@ const verifyRefreshTokenService = (refreshToken: string) => {
 
                 // Get payload
                 const { id } = payload;
-
+                
                 // Get refresh token by email in redis
                 try {
                     const reply = await redisClient.get(id);
