@@ -42,6 +42,7 @@ async function formatPostBeforeReturn(post: PostService) {
         latitude: post.latitude ? Number(post.latitude) : null, // Number(null) = 0 (not null
         longitude: post.longitude ? Number(post.longitude) : null,
         updated_at: post.updated_at ? new Date(post.updated_at).getTime() : null,
+        share_link: `${process.env.WEB_DEEP_LINK}/post?postId=${post.post_id ? post.post_id : post.id}`
     };
     if (post.image !== undefined && post.image !== null) {
         postResponse.image =

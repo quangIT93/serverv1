@@ -76,6 +76,7 @@ interface PostResponse {
     province: string;
     province_name: string;
     bookmarked?: boolean;
+    share_link?: string;
 }
 
 export { PostService, PostResponse };
