@@ -50,8 +50,9 @@ const readSubmittedApplicationByAccountIdService = async (
             " LEFT JOIN salary_types ON posts.salary_type = salary_types.id" +
             " WHERE applications.account_id = ?" +
             ` ${threshold ? " AND applications.id < ?" : ""}` +
-            " GROUP BY applications.id";
-        " ORDER BY applications.id DESC" + ` ${limit ? " LIMIT ?" : ""}`;
+            " GROUP BY applications.id" +
+            " ORDER BY applications.id DESC" +
+            ` ${limit ? " LIMIT ?" : ""}`;
         const params: any[] = [accountId];
         if (threshold) {
             params.push(threshold);

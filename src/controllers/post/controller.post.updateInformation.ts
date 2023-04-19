@@ -199,6 +199,9 @@ const updatePostInformationController = async (
             }
 
             let isValidCategoryId = true;
+            if (categoryIds.length > 2) {
+                return next(createError(400, "Maximum 2 categories"));
+            }
             for (let i = 0; i < categoryIds.length; i++) {
                 if (!Number.isInteger(+categoryIds[i])) {
                     isValidCategoryId = false;

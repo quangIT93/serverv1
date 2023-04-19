@@ -141,12 +141,20 @@ const updatePostInformationByAdminController = async (
         }
 
         let isValidCategoryId = true;
+        if (categoryIds.length > 2) {
+            logging.warning("Invalid categoryIds");
+            return next(createError(400, "Maximum 2 categories"));
+        }
         categoryIds.forEach((categoryId) => {
             if (!Number.isInteger(+categoryId)) {
                 isValidCategoryId = false;
                 return;
             }
         });
+        if (!isValidCategoryId) {
+            logging.warning("Invalid categoryIds");
+            return next(createError(400, "Invalid categoryIds"));
+        }
 
         // HANDLE UPDATE
         const isUpdateSuccess = await postServices.updateInformationByAdmin(

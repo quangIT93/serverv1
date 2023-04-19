@@ -235,6 +235,9 @@ const createPostController = async (
             }
 
             let isValidCategoryId = true;
+            if (categoryIds.length > 2) {
+                return next(createError(400, "Maximum 2 categories"));
+            }
             categoryIds.forEach((categoryId) => {
                 if (!Number.isInteger(+categoryId)) {
                     isValidCategoryId = false;
