@@ -12,18 +12,23 @@ const checkLimitAndThresholdParams = (
     // limit is required
     // threshold is optional
     // But if threshold is provided, limit must be provided
-    const { limit, threshold } = req.query;
-    if (!limit) {
-        return next(createHttpError(400, 'limit is required'));
-    }
-    if (!isNumber(limit)) {
-        return next(createHttpError(400, 'limit must be number'));
-    }
-    if (Number(limit) < 0) {
-        return next(createHttpError(400, 'limit must be greater than 0'));
-    }
-    if (Number(limit) > 20) {
-        return next(createHttpError(400, 'limit must be less than 20'));
+    const { role  = 0 } = req.user || {};
+    let { limit, threshold } = req.query;
+    if (role === 0) {
+        if (!limit) {
+            return next(createHttpError(400, 'limit is required'));
+        }
+        if (!isNumber(limit)) {
+            return next(createHttpError(400, 'limit must be number'));
+        }
+        if (Number(limit) < 0) {
+            return next(createHttpError(400, 'limit must be greater than 0'));
+        }
+        if (Number(limit) > 20) {
+            return next(createHttpError(400, 'limit must be less than 20'));
+        }
+    } else {
+        limit = "999";
     }
     if (limit && threshold) {
         if (!isNumber(threshold)) {

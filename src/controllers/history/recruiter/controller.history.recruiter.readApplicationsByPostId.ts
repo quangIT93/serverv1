@@ -11,7 +11,7 @@ import ImageBucket from '../../../enum/imageBucket.enum';
 const readApplicationsByPostIdController = async (req: Request, res: Response, next: NextFunction) => {
     const { post_id: postId } = req.params;
     const { id: ownerId, role } = req.user;
-    const { threshold, limit } = req.query;
+    const { threshold, limit = -1 } = req.query;
     try {
 
         if (!postId) {
