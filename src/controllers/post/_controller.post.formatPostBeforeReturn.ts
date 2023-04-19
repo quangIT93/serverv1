@@ -46,7 +46,8 @@ async function formatPostBeforeReturn(post: PostService) {
         share_link: `${process.env.WEB_DEEP_LINK}?link=${process.env.PREVIEW_PAGE_URL
             }?postId=${post.post_id ? post.post_id : post.id
             }&st=${`${encodeURIComponent(post.title)}`}&sd=${encodeURIComponent(
-                post.description.substring(0, 100)
+                // post.description.substring(0, 100)
+                "Welcome to HiJob!"
             )}&si=`,
     };
     if (post.image !== undefined && post.image !== null) {
