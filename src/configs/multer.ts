@@ -1,5 +1,5 @@
 import multer from "multer";
-import path from "path";
+// import path from "path";
 
 // Storage
 // const storage = multer.diskStorage({
@@ -24,6 +24,15 @@ const imageFilter = function (req, file, cb) {
     if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG)$/)) {
         req.fileValidationError = "Only image files are allowed!";
         return cb(new Error("Only image files are allowed!"), false);
+    }
+    cb(null, true);
+};
+
+const pdfFilter = function (req, file, cb) {
+    // Accept pdf only
+    if (!file.originalname.match(/\.(pdf|PDF)$/)) {
+        req.fileValidationError = "Only pdf files are allowed!";
+        return cb(new Error("Only pdf files are allowed!"), false);
     }
     cb(null, true);
 };
@@ -94,5 +103,16 @@ const multerUploadImages = multer({
     },
 }).array("images", 5);
 
+const multerUploadPdf = multer({
+    storage,
+    fileFilter: pdfFilter,
+    limits: {
+        fileSize: 1024 * 1024 * 5,
+        files: 1,
+    },
+}).single("pdf");
+
+
+
 // Export
-export { multerUploadImages };
+export { multerUploadImages, multerUploadPdf };

@@ -22,7 +22,7 @@ const updateAvatar = async (
         }
 
         // UPLOAD IMAGES TO AWS
-        if (req.files && req.files.length > 0) {
+        if (req.files && req.files.length as number > 0) {
             const urlsUploaded = await awsServices.uploadImages(req.files, ImageBucket.AVATAR_IMAGES);
             if (!urlsUploaded || urlsUploaded.length === 0) {
                 return next(createError(500));

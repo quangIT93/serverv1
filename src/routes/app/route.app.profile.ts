@@ -62,6 +62,24 @@ router.put(
 );
 
 router.put(
+    "/cv/c",
+    verifyAccessTokenMiddleware,
+    // profileController.createCV
+);
+
+router.put(
+    "/cv/u",
+    verifyAccessTokenMiddleware,
+    // profileController.updateCV
+);
+
+router.put(
+    "/cv/d",
+    verifyAccessTokenMiddleware,
+    // profileController.deleteCV
+);
+
+router.put(
     "/avt",
     verifyAccessTokenMiddleware,
     multerUploadImages,
