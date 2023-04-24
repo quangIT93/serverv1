@@ -21,13 +21,11 @@ const readQuantityApplicationOfAllPostsController = async (req: Request, res: Re
         if (!titles) {
             return next(createError(404, "Not found any posts"));
         }
-
-        titles.forEach(element => { 
-        })
         
         const data = await Promise.all(titles.map(async (post) => {
+            const numOfApplication = post.num_of_application;
             post = await formatPostBeforeReturn(post);
-            post.num_of_application = Number(post.num_of_application) || 0;
+            post.num_of_application = Number(numOfApplication) || 0;
             return post;
         }));
 
