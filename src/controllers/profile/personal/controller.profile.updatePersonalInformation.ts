@@ -1,8 +1,8 @@
 import createError from "http-errors";
 import { Request, Response, NextFunction } from "express";
 
-import logging from "../../utils/logging";
-import { updatePersonalInformationService } from "../../services/profile/_service.profile";
+import logging from "../../../utils/logging";
+import { updatePersonalInformationService } from "../../../services/profile/_service.profile";
 
 const updatePersonalInformationController = async (
     req: Request,

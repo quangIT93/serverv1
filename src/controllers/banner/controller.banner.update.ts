@@ -55,7 +55,7 @@ const updateBannerController = async (
 
         }
             
-        if (imageUrl.startsWith(process.env.AWS_BUCKET_IMAGE_URL)) {
+        if (imageUrl.startsWith(process.env.AWS_BUCKET_PREFIX_URL)) {
             imageUrl = imageUrl.split("/").pop();
         }
         if (!imageUrl) {
@@ -80,7 +80,7 @@ const updateBannerController = async (
             code: 200,
             success: true,
             data: {
-                image: `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.BANNER_IMAGES}/` + imageUrl,
+                image: `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.BANNER_IMAGES}/` + imageUrl,
             },
             message: "Successfully",
         });

@@ -1,16 +1,16 @@
 import createError from "http-errors";
 import { Request, Response, NextFunction } from "express";
 
-import logging from "../../utils/logging";
-import * as profileEducationServices from "../../services/profileEducation/_service.profileEducation";
+import logging from "../../../utils/logging";
+import * as profileExperienceServices from "../../../services/profileExperience/_service.profileExperience";
 
-const createEducationController = async (
+const createExperienceOfProfileController = async (
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
     try {
-        logging.info("Create education of profile controller start ...");
+        logging.info("Create experience of profile controller start ...");
 
         // GET PROFILE ID
         const { id } = req.user;
@@ -19,13 +19,13 @@ const createEducationController = async (
             return next(createError(401));
         }
 
-        // GET DATA
+        // GET BODY DATA
         const bodyData = req.body;
+        const titleForCreate = bodyData.title
+            ? bodyData.title.toString().trim()
+            : null;
         const companyNameForCreate = bodyData.companyName
             ? bodyData.companyName.toString().trim()
-            : null;
-        const majorForCreate = bodyData.major
-            ? bodyData.major.toString().trim()
             : null;
         const startDateForCreate = +bodyData.startDate;
         const endDateForCreate = +bodyData.endDate;
@@ -35,8 +35,8 @@ const createEducationController = async (
 
         // VALIDATION
         if (
+            !titleForCreate ||
             !companyNameForCreate ||
-            !majorForCreate ||
             !Number.isInteger(startDateForCreate) ||
             !Number.isInteger(endDateForCreate)
         ) {
@@ -54,10 +54,10 @@ const createEducationController = async (
 
         // HANDLE CREATE
         const isCreateSuccess =
-            await profileEducationServices.createEducationOfProfile(
+            await profileExperienceServices.createExperienceOfProfile(
                 id,
+                titleForCreate,
                 companyNameForCreate,
-                majorForCreate,
                 startDateForCreate,
                 endDateForCreate,
                 extraInformationForCreate
@@ -74,11 +74,11 @@ const createEducationController = async (
         });
     } catch (error) {
         logging.error(
-            "Create education of profile controller has error: ",
+            "Create experience of profile controller has error: ",
             error
         );
         return next(createError(500));
     }
 };
 
-export default createEducationController;
+export default createExperienceOfProfileController;

@@ -1,8 +1,8 @@
 import createError from "http-errors";
 import { Request, Response, NextFunction } from "express";
 
-import logging from "../../utils/logging";
-import * as profileLocationService from "../../services/profileLocation/_service.profileLocation";
+import logging from "../../../utils/logging";
+import * as profileLocationService from "../../../services/profileLocation/_service.profileLocation";
 
 const updateLocationsOfProfileController = async (
     req: Request,

@@ -1,15 +1,18 @@
-import readProfileByIdController from "./controller.profile.readById";
-import updatePersonalInformationController from "./controller.profile.updatePersonalInformation";
-import updateContactInformationController from "./controller.profile.updateContactInformation";
-import updateCategoriesController from "./controller.profile.updateCategories";
-import updateLocationsOfProfileController from "./controller.profile.updateLocations";
-import createEducationController from "./controller.profile.createEducation";
-import updateEducationController from "./controller.profile.updateEducation";
-import deleteEducationController from "./controller.profile.deleteEducation";
-import createExperienceController from "./controller.profile.createExperience";
-import updateExperienceController from "./controller.profile.updateExperience";
-import deleteExperienceController from "./controller.profile.deleteExperience";
-import updateAvatarController from "./controller.profile.updateAvatar";
+import readProfileByIdController from "./personal/controller.profile.readById";
+import updatePersonalInformationController from "./personal/controller.profile.updatePersonalInformation";
+import updateContactInformationController from "./personal/controller.profile.updateContactInformation";
+import updateCategoriesController from "./categories/controller.profile.updateCategories";
+import updateLocationsOfProfileController from "./personal/controller.profile.updateLocations";
+import createEducationController from "./educations/controller.profile.createEducation";
+import updateEducationController from "./educations/controller.profile.updateEducation";
+import deleteEducationController from "./educations/controller.profile.deleteEducation";
+import createExperienceController from "./experience/controller.profile.createExperience";
+import updateExperienceController from "./experience/controller.profile.updateExperience";
+import deleteExperienceController from "./experience/controller.profile.deleteExperience";
+import updateAvatarController from "./avatar/controller.profile.updateAvatar";
+import createCVProfileController from "./cv/controller.profile.createCv";
+import updateCVProfileController from "./cv/controller.profile.updateCv";
+import deleteCVProfileController from "./cv/controller.profile.deleteCv";
 
 const profileController = {
     readById: readProfileByIdController,
@@ -24,6 +27,9 @@ const profileController = {
     updateExperience: updateExperienceController,
     deleteExperience: deleteExperienceController,
     updateAvatar: updateAvatarController,
+    createCv: createCVProfileController,
+    updateCv: updateCVProfileController,
+    deleteCv: deleteCVProfileController,
 };
 
 export default profileController;

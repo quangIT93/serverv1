@@ -22,7 +22,8 @@ const readProfileByIdService = async (
             "profiles.email, " +
             "profiles.avatar, " +
             "profiles.facebook, " +
-            "profiles.linkedin " +
+            "profiles.linkedin, " +
+            "profiles.cv_url " +
             "FROM profiles " +
             "LEFT JOIN provinces " +
             "ON provinces.id = profiles.address " +

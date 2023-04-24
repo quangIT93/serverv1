@@ -31,7 +31,7 @@ const readApplicationByIdController = async (req: Request, res: Response, next: 
 
         // FORMAT AVATAR
         applicationProfile.avatar = applicationProfile.avatar ?
-            `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.AVATAR_IMAGES}/` + applicationProfile.avatar : null;
+            `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.AVATAR_IMAGES}/` + applicationProfile.avatar : null;
 
         // READ APPLICATION CATEGORY
         const applicationCategories = await applicationService.read.readCategoriesById(

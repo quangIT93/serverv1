@@ -158,7 +158,7 @@ const configSocket = (server) => {
                   // console.log('urlsUploaded: ' + [urlsUploaded].toString());
                   socket.emit('server-send-message-was-sent', {
                     id: chatIdInserted,
-                    image: `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.CHAT_IMAGES}/${urlsUploaded[0]}`,
+                    image: `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.CHAT_IMAGES}/${urlsUploaded[0]}`,
                     created_at: createdAt,
                     type: 'image',
                   });
@@ -171,7 +171,7 @@ const configSocket = (server) => {
                       io.to(reply).emit('server-send-message-to-receiver', {
                         id: chatIdInserted,
                         sender_id: senderId,
-                        image: `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.CHAT_IMAGES}/${urlsUploaded[0]}`,
+                        image: `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.CHAT_IMAGES}/${urlsUploaded[0]}`,
                         type: 'image',
                         created_at: createdAt,
                       });

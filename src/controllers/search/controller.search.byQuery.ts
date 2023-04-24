@@ -298,7 +298,7 @@ const searchByQueryController = async (req: Request, res: Response, next: NextFu
                                 element.image = firstParentCategoryImage.image;
                             }
                         } else {
-                            element.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${element.id}/` + element.image;
+                            element.image = `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.POST_IMAGES}/${element.id}/` + element.image;
                         }
                     }));
 
@@ -379,7 +379,7 @@ const searchByQueryController = async (req: Request, res: Response, next: NextFu
                         element.image = firstParentCategoryImage.image;
                     }
                 } else {
-                    element.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${element.id}/` + element.image;
+                    element.image = `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.POST_IMAGES}/${element.id}/` + element.image;
                 }
             }));
 

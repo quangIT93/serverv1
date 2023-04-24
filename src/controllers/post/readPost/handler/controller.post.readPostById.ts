@@ -54,7 +54,7 @@ const readPostByIdController = async (
 
         postData.avatar_poster = 
             postData.avatar_poster ? 
-                `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.AVATAR_IMAGES}/${postData.avatar_poster}` : null;
+                `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.AVATAR_IMAGES}/${postData.avatar_poster}` : null;
 
         // GET CATEGORIES OF POST
         const categories = await postCategoryServices.readCategoriesOfPost(
@@ -72,7 +72,7 @@ const readPostByIdController = async (
         }
 
         images.forEach((image) => {
-            image.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${postId}/` + image.image;
+            image.image = `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.POST_IMAGES}/${postId}/` + image.image;
         });
 
         // CHECK BOOKMARKED?

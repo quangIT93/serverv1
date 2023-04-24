@@ -55,7 +55,7 @@ const readApplicationsByPostIdController = async (req: Request, res: Response, n
             a.liked = +a.liked;
             a.liked_value = a.liked === 0 ? null : a.liked === 1 ? true : false;
             a.avatar = a.avatar ? 
-                `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.AVATAR_IMAGES}/` + a.avatar : null;
+                `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.AVATAR_IMAGES}/` + a.avatar : null;
             return a;
         }));        
 

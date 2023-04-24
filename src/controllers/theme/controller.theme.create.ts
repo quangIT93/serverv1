@@ -79,7 +79,7 @@ const createThemeController = async (
             success: true,
             data: {
                 id: themeIdCreated,
-                image: `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.THEME_IMAGES}/${imageUrl}`,
+                image: `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.THEME_IMAGES}/${imageUrl}`,
                 title,
                 status: 1,
             },

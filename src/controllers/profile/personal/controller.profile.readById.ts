@@ -1,14 +1,14 @@
 import createError from "http-errors";
 import { Request, Response, NextFunction } from "express";
 
-import logging from "../../utils/logging";
-import { readProfileByIdService } from "../../services/profile/_service.profile";
-import * as profileCategoryServices from "../../services/profileCategory/_service.profileCategory";
-import * as profileLocationServices from "../../services/profileLocation/_service.profileLocation";
-import * as profileEducationServices from "../../services/profileEducation/_service.profileEducation";
-import * as profileExperienceServices from "../../services/profileExperience/_service.profileExperience";
-import * as profileSocialServices from "../../services/profileSocial/_service.profileSocial";
-import ImageBucket from "../../enum/imageBucket.enum";
+import logging from "../../../utils/logging";
+import { readProfileByIdService } from "../../../services/profile/_service.profile";
+import * as profileCategoryServices from "../../../services/profileCategory/_service.profileCategory";
+import * as profileLocationServices from "../../../services/profileLocation/_service.profileLocation";
+import * as profileEducationServices from "../../../services/profileEducation/_service.profileEducation";
+import * as profileExperienceServices from "../../../services/profileExperience/_service.profileExperience";
+import * as profileSocialServices from "../../../services/profileSocial/_service.profileSocial";
+import ImageBucket from "../../../enum/imageBucket.enum";
 
 const readProfileByIdController = async (
     req: Request,
@@ -51,7 +51,7 @@ const readProfileByIdController = async (
         profileData.birthday = +profileData.birthday;
 
         profileData.avatar = profileData.avatar
-            ? `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.AVATAR_IMAGES}/` +
+            ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.AVATAR_IMAGES}/` +
             profileData.avatar
             : null;
 

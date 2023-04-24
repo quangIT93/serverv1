@@ -1,16 +1,16 @@
 import createError from "http-errors";
 import { Request, Response, NextFunction } from "express";
 
-import logging from "../../utils/logging";
-import * as profileEducationServices from "../../services/profileEducation/_service.profileEducation";
+import logging from "../../../utils/logging";
+import * as profileExperienceServices from "../../../services/profileExperience/_service.profileExperience";
 
-const updateEducationsOfProfileController = async (
+const updateExperiencesOfProfileController = async (
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
     try {
-        logging.info("Update educations of profile controller start ...");
+        logging.info("Update experiences of profile controller start ...");
 
         // GET PROFILE ID
         const { id } = req.user;
@@ -24,8 +24,7 @@ const updateEducationsOfProfileController = async (
             ? req.body.action.toString().trim()
             : null;
         if (!action) {
-            logging.warning("Invalid action");
-            return next(createError(400));
+            return next(createError(400, "Invalid action"));
         }
 
         // GET BODY DATA
@@ -37,11 +36,11 @@ const updateEducationsOfProfileController = async (
             case "c":
                 logging.info("Action: Create");
                 // GET DATA
+                const titleForCreate = bodyData.title
+                    ? bodyData.title.toString().trim()
+                    : null;
                 const companyNameForCreate = bodyData.companyName
                     ? bodyData.companyName.toString().trim()
-                    : null;
-                const majorForCreate = bodyData.major
-                    ? bodyData.major.toString().trim()
                     : null;
                 const startDateForCreate = +bodyData.startDate;
                 const endDateForCreate = +bodyData.endDate;
@@ -51,8 +50,8 @@ const updateEducationsOfProfileController = async (
 
                 // VALIDATION
                 if (
+                    !titleForCreate ||
                     !companyNameForCreate ||
-                    !majorForCreate ||
                     !Number.isInteger(startDateForCreate) ||
                     !Number.isInteger(endDateForCreate)
                 ) {
@@ -76,10 +75,10 @@ const updateEducationsOfProfileController = async (
 
                 // HANDLE CREATE
                 const isCreateSuccess =
-                    await profileEducationServices.createEducationOfProfile(
+                    await profileExperienceServices.createExperienceOfProfile(
                         id,
+                        titleForCreate,
                         companyNameForCreate,
-                        majorForCreate,
                         startDateForCreate,
                         endDateForCreate,
                         extraInformationForCreate
@@ -93,14 +92,14 @@ const updateEducationsOfProfileController = async (
             case "u":
                 logging.info("Action: Update");
                 // GET DATA
-                const educationIdForUpdate = bodyData.educationId
-                    ? +bodyData.educationId
+                const experienceIdForUpdate = bodyData.experienceId
+                    ? +bodyData.experienceId
+                    : null;
+                const titleForUpdate = bodyData.title
+                    ? bodyData.title.toString().trim()
                     : null;
                 const companyNameForUpdate = bodyData.companyName
                     ? bodyData.companyName.toString().trim()
-                    : null;
-                const majorForUpdate = bodyData.major
-                    ? bodyData.major.toString().trim()
                     : null;
                 const startDateForUpdate = +bodyData.startDate;
                 const endDateForUpdate = +bodyData.endDate;
@@ -110,9 +109,9 @@ const updateEducationsOfProfileController = async (
 
                 // VALIDATION
                 if (
-                    !Number.isInteger(educationIdForUpdate) ||
+                    !Number.isInteger(experienceIdForUpdate) ||
                     !companyNameForUpdate ||
-                    !majorForUpdate ||
+                    !titleForUpdate ||
                     !Number.isInteger(startDateForUpdate) ||
                     !Number.isInteger(endDateForUpdate)
                 ) {
@@ -125,21 +124,19 @@ const updateEducationsOfProfileController = async (
                         "Invalid Date" ||
                     new Date(endDateForUpdate).toString() === "Invalid Date"
                 ) {
-                    logging.warning("Invalid date value");
                     return next(createError(400));
                 }
 
                 if (startDateForUpdate > endDateForUpdate) {
-                    logging.warning("Invalid date range");
                     return next(createError(400, "Invalid date range"));
                 }
 
                 // HANDLE UPDATE
                 const isUpdateSuccess =
-                    await profileEducationServices.updateEducationOfProfile(
-                        educationIdForUpdate,
+                    await profileExperienceServices.updateExperienceOfProfile(
+                        experienceIdForUpdate,
+                        titleForUpdate,
                         companyNameForUpdate,
-                        majorForUpdate,
                         startDateForUpdate,
                         endDateForUpdate,
                         extraInformationForUpdate
@@ -153,18 +150,18 @@ const updateEducationsOfProfileController = async (
             case "d":
                 logging.info("Action: Delete");
                 // GET DATA
-                const educationIdForDelete = bodyData.educationId
-                    ? +bodyData.educationId
+                const experienceIdForDelete = bodyData.experienceId
+                    ? +bodyData.experienceId
                     : null;
-                if (!Number.isInteger(educationIdForDelete)) {
+                if (!Number.isInteger(experienceIdForDelete)) {
                     logging.warning("Invalid data");
                     return next(createError(400));
                 }
 
                 // HANDLE DELETE
                 const isDeleteSuccess =
-                    await profileEducationServices.deleteEducationOfProfile(
-                        educationIdForDelete
+                    await profileExperienceServices.deleteExperienceOfProfile(
+                        experienceIdForDelete
                     );
                 if (!isDeleteSuccess) {
                     return next(createError(500));
@@ -185,11 +182,11 @@ const updateEducationsOfProfileController = async (
         });
     } catch (error) {
         logging.error(
-            "Update educations of profile controller has error: ",
+            "Update experiences of profile controller has error: ",
             error
         );
         return next(createError(500));
     }
 };
 
-export default updateEducationsOfProfileController;
+export default updateExperiencesOfProfileController;
