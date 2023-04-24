@@ -67,7 +67,7 @@ const createBannerController = async (
                 success: true,
                 data: {
                     id: bannerIdCreated,
-                    image: `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.BANNER_IMAGES}/` + imageUrl,
+                    image: `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.BANNER_IMAGES}/` + imageUrl,
                     redirect_url: redirectUrl,
                     type,
                     version,
@@ -85,7 +85,7 @@ const createBannerController = async (
                 return next(createError(400));
             }
 
-            if (!imageUrl.startsWith(process.env.AWS_BUCKET_IMAGE_URL)) {
+            if (!imageUrl.startsWith(process.env.AWS_BUCKET_PREFIX_URL)) {
                 return next(createError(400, "Please upload image to AWS S3"));
             }
             
@@ -108,7 +108,7 @@ const createBannerController = async (
                 success: true,
                 data: {
                     id: bannerIdCreated,
-                    image: `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.BANNER_IMAGES}/` + imageUrl,
+                    image: `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.BANNER_IMAGES}/` + imageUrl,
                     redirect_url: redirectUrl,
                     type,
                     version,

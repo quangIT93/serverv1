@@ -21,7 +21,7 @@ const readAllThemesController = async (
         }
 
         themes.forEach((theme) => {
-            theme.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.THEME_IMAGES}/` + theme.image;
+            theme.image = `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.THEME_IMAGES}/` + theme.image;
         });
 
         // GET THEME LOCATIONS

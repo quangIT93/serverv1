@@ -43,7 +43,7 @@ const readApplicationByIdController = async (req: Request, res: Response, next: 
 
         // FORMAT AVATAR
         applicationProfile.avatar = applicationProfile.avatar ?
-            `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.AVATAR_IMAGES}/` + applicationProfile.avatar : null;
+            `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.AVATAR_IMAGES}/` + applicationProfile.avatar : null;
         // CONVERT BIRTHDAY TO TIMESTAMP
         applicationProfile.birthday = applicationProfile.birthday ? +applicationProfile.birthday : null;
 

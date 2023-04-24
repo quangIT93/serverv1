@@ -1,8 +1,8 @@
 import createError from "http-errors";
 import { Request, Response, NextFunction } from "express";
 
-import logging from "../../utils/logging";
-import * as profileCategoryService from "../../services/profileCategory/_service.profileCategory";
+import logging from "../../../utils/logging";
+import * as profileCategoryService from "../../../services/profileCategory/_service.profileCategory";
 
 const updateCategoriesController = async (
     req: Request,

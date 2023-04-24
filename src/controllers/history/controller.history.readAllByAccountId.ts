@@ -55,7 +55,7 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
                         a.image = firstParentCategoryImage.image;
                     }
                 } else {
-                    a.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${a.post_id}/` + a.image;
+                    a.image = `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.POST_IMAGES}/${a.post_id}/` + a.image;
                 }
                 a.type = 'application';
             }

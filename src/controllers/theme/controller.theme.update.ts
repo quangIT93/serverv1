@@ -121,7 +121,7 @@ const updateThemeController = async (
             code: 200,
             success: true,
             data: {
-                image: `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.THEME_IMAGES}/${imageUrl}`,
+                image: `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.THEME_IMAGES}/${imageUrl}`,
             },
             message: "Successfully",
         });

@@ -42,7 +42,7 @@ const getPostChatsController = async (
                     const image = await chatImageServices.readChatImages(
                         chat.id
                     );
-                    chat.image = image && image[0] ? `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.CHAT_IMAGES}/` + image[0].image : null ;
+                    chat.image = image && image[0] ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.CHAT_IMAGES}/` + image[0].image : null ;
                 } else {
                     chat.image = null;
                 }

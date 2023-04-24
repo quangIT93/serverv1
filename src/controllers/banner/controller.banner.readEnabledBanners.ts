@@ -26,7 +26,7 @@ const readEnabledBannersController = async (
         }
 
         banners.forEach((banner) => {
-            banner.image = `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.BANNER_IMAGES}/` + banner.image;
+            banner.image = `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.BANNER_IMAGES}/` + banner.image;
         });
 
         banners = shuffle(banners);

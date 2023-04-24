@@ -1,8 +1,8 @@
 import createError from "http-errors";
 import { Request, Response, NextFunction } from "express";
 
-import logging from "../../utils/logging";
-import * as profileServices from "../../services/profile/_service.profile";
+import logging from "../../../utils/logging";
+import * as profileServices from "../../../services/profile/_service.profile";
 
 const updateContactInformationController = async (
     req: Request,

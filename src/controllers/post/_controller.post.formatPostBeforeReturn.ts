@@ -52,7 +52,7 @@ async function formatPostBeforeReturn(post: PostService) {
     };
     if (post.image !== undefined && post.image !== null) {
         postResponse.image =
-            `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.POST_IMAGES}/${post.post_id ? post.post_id : postResponse.id
+            `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.POST_IMAGES}/${post.post_id ? post.post_id : postResponse.id
             }/` + post.image;
     } else {
         const firstParentCategoryImage = await readDefaultPostImageByPostId(

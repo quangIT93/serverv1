@@ -1,7 +1,7 @@
 import express from "express";
 import profileController from "../../controllers/profile/_controller.profile";
 import verifyAccessTokenMiddleware from "../../middlewares/middleware.verifyAccessToken";
-import { multerUploadImages } from "../../configs/multer";
+import { multerUploadImages, multerUploadPdf } from "../../configs/multer";
 
 const router = express.Router();
 // READ
@@ -85,5 +85,27 @@ router.put(
     multerUploadImages,
     profileController.updateAvatar
 );
+
+// CV upload
+router.post(
+    "/cv",
+    verifyAccessTokenMiddleware,
+    // multerUploadPdf,
+    profileController.createCv
+)
+
+router.put(
+    "/cv",
+    verifyAccessTokenMiddleware,
+    // multerUploadPdf,
+    profileController.updateCv
+)
+
+router.delete(
+    "/cv",
+    verifyAccessTokenMiddleware,
+    // multerUploadPdf,
+    profileController.deleteCv
+)
 
 export default router;

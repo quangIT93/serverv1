@@ -1,16 +1,16 @@
 import createError from "http-errors";
 import { Request, Response, NextFunction } from "express";
 
-import logging from "../../utils/logging";
-import * as profileEducationServices from "../../services/profileEducation/_service.profileEducation";
+import logging from "../../../utils/logging";
+import * as profileExperienceServices from "../../../services/profileExperience/_service.profileExperience";
 
-const updateEducationController = async (
+const updateExperienceOfProfileController = async (
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
     try {
-        logging.info("Update education of profile controller start ...");
+        logging.info("Update experience of profile controller start ...");
 
         // GET PROFILE ID
         const { id } = req.user;
@@ -19,16 +19,16 @@ const updateEducationController = async (
             return next(createError(401));
         }
 
-        // GET DATA
+        // GET BODY DATA
         const bodyData = req.body;
-        const educationIdForUpdate = bodyData.educationId
-            ? +bodyData.educationId
+        const experienceIdForUpdate = bodyData.experienceId
+            ? +bodyData.experienceId
+            : null;
+        const titleForUpdate = bodyData.title
+            ? bodyData.title.toString().trim()
             : null;
         const companyNameForUpdate = bodyData.companyName
             ? bodyData.companyName.toString().trim()
-            : null;
-        const majorForUpdate = bodyData.major
-            ? bodyData.major.toString().trim()
             : null;
         const startDateForUpdate = +bodyData.startDate;
         const endDateForUpdate = +bodyData.endDate;
@@ -38,9 +38,9 @@ const updateEducationController = async (
 
         // VALIDATION
         if (
-            !Number.isInteger(educationIdForUpdate) ||
+            !Number.isInteger(experienceIdForUpdate) ||
             !companyNameForUpdate ||
-            !majorForUpdate ||
+            !titleForUpdate ||
             !Number.isInteger(startDateForUpdate) ||
             !Number.isInteger(endDateForUpdate)
         ) {
@@ -52,7 +52,7 @@ const updateEducationController = async (
             new Date(startDateForUpdate).toString() === "Invalid Date" ||
             new Date(endDateForUpdate).toString() === "Invalid Date"
         ) {
-            logging.warning("Invalid date value");
+            logging.warning("Invalid data");
             return next(createError(400));
         }
 
@@ -62,10 +62,10 @@ const updateEducationController = async (
 
         // HANDLE UPDATE
         const isUpdateSuccess =
-            await profileEducationServices.updateEducationOfProfile(
-                educationIdForUpdate,
+            await profileExperienceServices.updateExperienceOfProfile(
+                experienceIdForUpdate,
+                titleForUpdate,
                 companyNameForUpdate,
-                majorForUpdate,
                 startDateForUpdate,
                 endDateForUpdate,
                 extraInformationForUpdate
@@ -82,11 +82,11 @@ const updateEducationController = async (
         });
     } catch (error) {
         logging.error(
-            "Update education of profile controller has error: ",
+            "Update experience of profile controller has error: ",
             error
         );
         return next(createError(500));
     }
 };
 
-export default updateEducationController;
+export default updateExperienceOfProfileController;

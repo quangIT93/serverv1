@@ -1,10 +1,10 @@
 import createError from "http-errors";
 import { Request, Response, NextFunction } from "express";
 
-import logging from "../../utils/logging";
-import * as awsServices from "../../services/aws/_service.aws";
-import * as profileServices from "../../services/profile/_service.profile";
-import ImageBucket from "../../enum/imageBucket.enum";
+import logging from "../../../utils/logging";
+import * as awsServices from "../../../services/aws/_service.aws";
+import * as profileServices from "../../../services/profile/_service.profile";
+import ImageBucket from "../../../enum/imageBucket.enum";
 
 const updateAvatar = async (
     req: Request,

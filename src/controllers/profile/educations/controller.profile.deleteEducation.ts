@@ -1,16 +1,16 @@
 import createError from "http-errors";
 import { Request, Response, NextFunction } from "express";
 
-import logging from "../../utils/logging";
-import * as profileExperienceServices from "../../services/profileExperience/_service.profileExperience";
+import logging from "../../../utils/logging";
+import * as profileEducationServices from "../../../services/profileEducation/_service.profileEducation";
 
-const deleteExperienceOfProfileController = async (
+const deleteEducationController = async (
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
     try {
-        logging.info("Delete experience of profile controller start ...");
+        logging.info("Delete education of profile controller start ...");
 
         // GET PROFILE ID
         const { id } = req.user;
@@ -19,20 +19,20 @@ const deleteExperienceOfProfileController = async (
             return next(createError(401));
         }
 
-        // GET BODY DATA
+        // GET DATA
         const bodyData = req.body;
-        const experienceIdForDelete = bodyData.experienceId
-            ? +bodyData.experienceId
+        const educationIdForDelete = bodyData.educationId
+            ? +bodyData.educationId
             : null;
-        if (!Number.isInteger(experienceIdForDelete)) {
+        if (!Number.isInteger(educationIdForDelete)) {
             logging.warning("Invalid data");
             return next(createError(400));
         }
 
         // HANDLE DELETE
         const isDeleteSuccess =
-            await profileExperienceServices.deleteExperienceOfProfile(
-                experienceIdForDelete
+            await profileEducationServices.deleteEducationOfProfile(
+                educationIdForDelete
             );
         if (!isDeleteSuccess) {
             return next(createError(500));
@@ -46,11 +46,11 @@ const deleteExperienceOfProfileController = async (
         });
     } catch (error) {
         logging.error(
-            "Delete experience of profile controller has error: ",
+            "Delete education of profile controller has error: ",
             error
         );
         return next(createError(500));
     }
 };
 
-export default deleteExperienceOfProfileController;
+export default deleteEducationController;

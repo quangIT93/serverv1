@@ -21,7 +21,7 @@ const readAcceptedApplicationsByRecruiterId = async (req: Request, res: Response
             a.birthday = a.birthday ? +a.birthday : null;
             a.categories = await applicationService.read.readCategoriesById("vi", a.id);
             a.avatar = a.avatar ? 
-                `${process.env.AWS_BUCKET_IMAGE_URL}/${ImageBucket.AVATAR_IMAGES}/` + a.avatar : null;
+                `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.AVATAR_IMAGES}/` + a.avatar : null;
             return a;
         }));
         
