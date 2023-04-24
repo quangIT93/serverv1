@@ -9,6 +9,7 @@ import * as profileEducationServices from "../../../services/profileEducation/_s
 import * as profileExperienceServices from "../../../services/profileExperience/_service.profileExperience";
 import * as profileSocialServices from "../../../services/profileSocial/_service.profileSocial";
 import ImageBucket from "../../../enum/imageBucket.enum";
+import ProfilesBucket from "../../../enum/profileBucket.enum";
 
 const readProfileByIdController = async (
     req: Request,
@@ -53,6 +54,10 @@ const readProfileByIdController = async (
         profileData.avatar = profileData.avatar
             ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.AVATAR_IMAGES}/` +
             profileData.avatar
+            : null;
+
+        profileData.cv_url = profileData.cv_url
+            ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ProfilesBucket.CV_BUCKET}/` + id + "/" + profileData.cv_url
             : null;
 
         delete profileData.province_id;

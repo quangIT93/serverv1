@@ -14,7 +14,7 @@ const readSubmittedApplicationByAccountIdService = async (
             "applications.id, " +
             "applications.post_id, " +
             "applications.account_id, " +
-            "applications.status, " +
+            "applications.status as application_status, " +
             "applications.created_at, " +
             "posts.title, " +
             "posts.company_name, " +

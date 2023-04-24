@@ -38,6 +38,7 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
             if (a.type === 'application') {
                 a.created_at = new Date(a.created_at).getTime();
                 a.application_status_text = ApplicationStatus[a.status];
+                a.application_status = +a.status;
                 a.num_of_application = Number(a.num_of_application);
                 a.money_type = +a.money_type;
                 a.money_type_text = MoneyType[a.money_type];
