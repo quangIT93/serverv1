@@ -15,7 +15,7 @@ async function formatPostBeforeReturn(post: PostService) {
         salary_type_id: post.salary_type_id,
         image: post.image,
         description: post.description,
-        phone_contact: "+" + post.phone_contact,
+        phone_contact: post.phone_contact ? "+" + post.phone_contact : null,
         is_date_period: post.is_date_period,
         is_working_weekend: post.is_working_weekend,
         is_remotely: +post.is_remotely,
