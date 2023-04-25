@@ -7,6 +7,9 @@ import applicationService from '../../services/application/_service.application'
 import * as notificationService from '../../services/notification/_service.notification';
 import { createNotificationContent, NotificationContent } from '../notification/createNotificationContent/createForApplication';
 import pushNotification from '../../configs/firebase/push-notification';
+import copyFileService from '../../services/aws/service.aws.copyFile';
+import ProfilesBucket from '../../enum/profileBucket.enum';
+import ImageBucket from '../../enum/imageBucket.enum';
 const createApplicationController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // GET DATA
@@ -64,9 +67,36 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
             return next(createError(500, "Create application failed"));
         }
 
+        
         // CONVERT FROM BIGINT TO NUMBER
         const applicationIdNumber = Number(applicationId.insertId);
+        
+        // STARTING COPY FILE FROM CV FOLDER TO APPLICATION FOLDER
+        // COPY CV FILE
+        if (userProfile.cv_url) {
+            const copySource = `${process.env.AWS_BUCKET_PREFIX_URL}/${ProfilesBucket.CV_BUCKET}/${accountId}/${userProfile.cv_url}`;
+            const key = `${ProfilesBucket.APPLICATION_BUCKET}/${applicationIdNumber}/${userProfile.cv_url}`;
+            const isSuccessfull = copyFileService(
+                copySource,
+                key,
+            )
+            if (!isSuccessfull) {
+                return next(createError(500, "Copy cv file failed"));
+            }
+        }
 
+        // COPY AVATAR FILE
+        if (userProfile.avatar) {
+            const copySource = `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.AVATAR_IMAGES}/${userProfile.avatar}`;
+            const key = `${ProfilesBucket.APPLICATION_BUCKET}/${accountId}/${applicationIdNumber}/${userProfile.avatar}`;
+            const isSuccessfull = copyFileService(
+                copySource,
+                key,
+            )
+            if (!isSuccessfull) {
+                return next(createError(500, "Copy avatar file failed"));
+            }
+        }
         // CREATE APPLICATION EXPERIENCES
         const applicationExperiences = await applicationService.create.createApplicationExperiences(applicationIdNumber, accountId);
 

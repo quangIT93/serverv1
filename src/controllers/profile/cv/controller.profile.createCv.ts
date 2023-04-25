@@ -22,7 +22,6 @@ const createCVProfileController = async (req: Request, res: Response, next: Next
         if (!file) {
             return next(createHttpError(400, "CV is required"));
         }
-
         // const cvUrl = file.path;
 
         try {
@@ -33,7 +32,7 @@ const createCVProfileController = async (req: Request, res: Response, next: Next
             }
 
             // upload cv to aws s3
-            const isUploadCVSuccess = await uploadCVToS3Service(file, ProfilesBucket.CV_BUCKET, userId);
+            const isUploadCVSuccess = await uploadCVToS3Service(file, file.originalname, ProfilesBucket.CV_BUCKET, userId);
             if (!isUploadCVSuccess || isUploadCVSuccess.length === 0) {
                 return next(createHttpError(500, "Upload CV to AWS S3 failed"));
             }

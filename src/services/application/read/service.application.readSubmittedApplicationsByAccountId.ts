@@ -22,6 +22,7 @@ const readSubmittedApplicationByAccountIdService = async (
             "posts.end_date, " +
             "posts.salary_min, " +
             "posts.salary_max, " +
+            "posts.status as post_status, " +
             ` ${lang === "vi" ? "wards.full_name" : "wards.full_name_en"} as ward,` +
             "wards.name as ward_name," +
             "districts.id as district_id," +

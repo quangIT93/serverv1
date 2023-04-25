@@ -32,9 +32,11 @@ const updateCVProfileController = async (req: Request, res: Response, next: Next
             if (!isCVExist.cv_url) {
                 return next(createHttpError(400, "CV does not exist. Please create CV first"));
             }
+            
+            deleteCv(userId, isCVExist.cv_url)
 
             // upload cv to aws s3
-            const isUploadCVSuccess = await uploadCVToS3Service(file, ProfilesBucket.CV_BUCKET, userId);
+            const isUploadCVSuccess = await uploadCVToS3Service(file, file.originalname, ProfilesBucket.CV_BUCKET, userId);
             if (!isUploadCVSuccess || isUploadCVSuccess.length === 0) {
                 return next(createHttpError(500, "Upload CV to AWS S3 failed"));
             }
@@ -47,7 +49,6 @@ const updateCVProfileController = async (req: Request, res: Response, next: Next
             );
 
             // delete old cv in aws s3
-            deleteCv(userId, isCVExist.cv_url)
 
             if (!updatedCV) {
                 return next(createHttpError(500, "Update CV failed"));

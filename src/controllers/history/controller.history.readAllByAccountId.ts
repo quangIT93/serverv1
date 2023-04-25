@@ -18,7 +18,7 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
             return next(createError(400));
         }
         
-        const result = await applicationService.read.readPostsAndApplicationsBYAccountId(
+        const result = await applicationService.read.readPostsAndApplicationsByAccountId(
             req.query.lang.toString(), accountId, +page
         );
 
@@ -38,12 +38,16 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
             if (a.type === 'application') {
                 a.created_at = new Date(a.created_at).getTime();
                 a.application_status_text = ApplicationStatus[a.status];
-                a.application_status = +a.status;
                 a.num_of_application = Number(a.num_of_application);
                 a.money_type = +a.money_type;
                 a.money_type_text = MoneyType[a.money_type];
                 a.start_date = +a.start_date || null;
                 a.end_date = +a.end_date || null;
+                if (a.post_status === 3) {
+                    a.application_status = -1; // Hired
+                } else {
+                    a.application_status = +a.status;
+                }
                 delete a.num_of_application;
                 if (a.image === null) {
                     const firstParentCategoryImage =

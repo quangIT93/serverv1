@@ -4,6 +4,7 @@ import createError from 'http-errors';
 import applicationService from '../../../services/application/_service.application';
 import ApplicationStatus from '../../../enum/application.enum';
 import ImageBucket from '../../../enum/imageBucket.enum';
+import ProfilesBucket from '../../../enum/profileBucket.enum';
 
 const readApplicationByIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -43,9 +44,17 @@ const readApplicationByIdController = async (req: Request, res: Response, next: 
 
         // FORMAT AVATAR
         applicationProfile.avatar = applicationProfile.avatar ?
-            `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.AVATAR_IMAGES}/` + applicationProfile.avatar : null;
+            `${process.env.AWS_BUCKET_PREFIX_URL}/${ProfilesBucket.APPLICATION_BUCKET}/${applicationId}/` 
+            + applicationProfile.avatar
+            : null;
+
         // CONVERT BIRTHDAY TO TIMESTAMP
         applicationProfile.birthday = applicationProfile.birthday ? +applicationProfile.birthday : null;
+
+        applicationProfile.cv_url = applicationProfile.cv_url
+            ? `$${process.env.AWS_BUCKET_PREFIX_URL}/${ProfilesBucket.APPLICATION_BUCKET}/${applicationId}/` +
+            applicationProfile.cv_url
+            : null;
 
         // READ APPLICATION CATEGORY
         const applicationCategories = await applicationService.read.readCategoriesById(

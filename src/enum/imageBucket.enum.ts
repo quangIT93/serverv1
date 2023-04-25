@@ -5,6 +5,7 @@ enum ImageBucket {
     AVATAR_IMAGES = "images/avatar",
     THEME_IMAGES = "images/themes",
     DEFAULT = "images",
+    APPLICATION_IMAGES = "images/applications",
 }
 
 export default ImageBucket;

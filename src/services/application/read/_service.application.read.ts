@@ -11,4 +11,4 @@ export { default as readByRecruiterId } from "./service.application.readApplicat
 export { default as readByAccountIdAdnApplicationId } from "./service.application.readByAccountIdAndApplicationId";
 export { default as readSubmittedApplicationByAccountId } from "./service.application.readSubmittedApplicationsByAccountId";
 export { default as readAcceptedApplicationByRecruiterId } from "./service.application.readAcceptedApplicationsByRecruiterId";
-export { default as readPostsAndApplicationsBYAccountId } from "./service.application.readPostsAndApplicationsByAccountId";
+export { default as readPostsAndApplicationsByAccountId } from "./service.application.readPostsAndApplicationsByAccountId";

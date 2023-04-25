@@ -6,10 +6,10 @@ const createApplicationService = async (accountId: String, postId: number) => {
         logging.info("Create application service start ...");
         // console.log(accountId);
         const query = "INSERT INTO applications (account_id, post_id, name, birthday, address," +
-        " gender, introduction, phone, email, facebook, linkedin, avatar)" +
+        " gender, introduction, phone, email, facebook, linkedin, avatar, cv_url)" +
         " SELECT ?, ?, profiles.name, profiles.birthday, profiles.address," +
         " profiles.gender, profiles.introduction, profiles.phone, profiles.email, profiles.facebook," +
-        " profiles.linkedin, profiles.avatar FROM profiles WHERE profiles.id = ?";
+        " profiles.linkedin, profiles.avatar, cv_url FROM profiles WHERE profiles.id = ?";
         const params = [accountId, postId, accountId];
         const res = await executeQuery(query, params);
         // console.log(res);

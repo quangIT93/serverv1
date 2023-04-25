@@ -39,9 +39,17 @@ const readSubmittedApplicationByAccountId = async (req: Request, res: Response, 
 
 
         applications = await Promise.all(applications.map(async (post) => {
+            
             const applicationStatus = post.application_status;
+            const post_status = post.post_status;
             post = await formatPostBeforeReturn(post);
-            post.application_status = +applicationStatus;
+
+            if (post_status === 3) {
+                post.application_status = -1; // Hired
+            } else {
+                post.application_status = applicationStatus;
+            }
+            
             return post;
         }));
 

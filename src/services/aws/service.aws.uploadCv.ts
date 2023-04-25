@@ -7,6 +7,7 @@ import ProfilesBucket from "../../enum/profileBucket.enum";
 
 const uploadCVToS3Service = async (
     file,
+    file_name?: string,
     bucket: ProfilesBucket = ProfilesBucket.CV_BUCKET,
     profileId: string = null,
 ) => {
@@ -15,8 +16,7 @@ const uploadCVToS3Service = async (
         const client = new S3Client({ region: process.env.AWS_REGION });
         const param = {
             Bucket: process.env.AWS_BUCKET_NAME , // Bucket name
-            // Key: name ? name : `${bucket}${postsId ? "/" + postsId.toString() : ""}/${Date.now()}-${uuidv4()}.jpg`,
-            Key: `${bucket}${profileId ? "/" + profileId.toString() : ""}/${Date.now()}-${uuidv4()}.pdf`,
+            Key: `${bucket}${profileId ? "/" + profileId.toString() : ""}/${file_name}`,
             Body: file.buffer,
             
         };

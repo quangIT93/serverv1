@@ -21,6 +21,7 @@ const readApplicationProfileByIdService = async (
             "applications.email, " +
             "applications.avatar, " +
             "applications.facebook, " +
+            "applications.cv_url, " +
             "applications.linkedin " +
             "FROM applications " +
             "LEFT JOIN provinces " +
