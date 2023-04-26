@@ -11,6 +11,7 @@ import applicationServices from "../../../../services/application/_service.appli
 import ApplicationStatus from "../../../../enum/application.enum";
 import { formatPostBeforeReturn } from "../../_controller.post.formatPostBeforeReturn";
 import ImageBucket from "../../../../enum/imageBucket.enum";
+import applicationStatusHandler from "../../../application/handler/applicationStatusHandler";
 
 interface Payload {
     id: string;
@@ -134,12 +135,7 @@ const readPostByIdController = async (
                             postId,
                             accountId
                         );
-                    let applicationStatus = null;
-                    if (postData.status === 3 && application) {
-                        applicationStatus = -1;
-                    } else if (application) {
-                        applicationStatus = application.status;
-                    }
+                    
 
 
                     // SUCCESS
@@ -152,7 +148,7 @@ const readPostByIdController = async (
                             images,
                             bookmarked: postIdsOnBookmark.includes(postData.id),
                             applied: application ? true : false,
-                            application_status: applicationStatus,
+                            application_status: application ? applicationStatusHandler(+application.status) : null,
                             application_status_text:
                                 ApplicationStatus[application?.status],
                         },

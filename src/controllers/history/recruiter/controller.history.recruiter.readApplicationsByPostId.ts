@@ -6,6 +6,7 @@ import applicationService from '../../../services/application/_service.applicati
 import * as postService from '../../../services/post/_service.post';
 import ApplicationStatus from '../../../enum/application.enum';
 import ImageBucket from '../../../enum/imageBucket.enum';
+import applicationStatusHandler from '../../application/handler/applicationStatusHandler';
 // import MoneyType from '../../../enum/money_type.enum';
 
 const readApplicationsByPostIdController = async (req: Request, res: Response, next: NextFunction) => {
@@ -50,6 +51,7 @@ const readApplicationsByPostIdController = async (req: Request, res: Response, n
         const data = await Promise.all(applications.map(async (a) => {
             a.created_at = new Date(a.created_at).getTime();
             a.birthday = a.birthday ? +a.birthday : null;
+            a.application_status = applicationStatusHandler(a.application_status)
             a.application_status_text = ApplicationStatus[a.application_status];
             a.categories = await applicationService.read.readCategoriesById(req.query.lang.toString(), a.id);
             a.liked = +a.liked;

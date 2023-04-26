@@ -6,6 +6,7 @@ import applicationService from '../../../services/application/_service.applicati
 // import { readDefaultPostImageByPostId } from '../../../services/category/_service.category';
 import logging from '../../../utils/logging';
 import { formatPostBeforeReturn } from '../../post/_controller.post.formatPostBeforeReturn';
+import applicationStatusHandler from '../../application/handler/applicationStatusHandler';
 
 
 const readSubmittedApplicationByAccountId = async (req: Request, res: Response, next: NextFunction) => {
@@ -40,16 +41,10 @@ const readSubmittedApplicationByAccountId = async (req: Request, res: Response, 
 
         applications = await Promise.all(applications.map(async (post) => {
             
-            const applicationStatus = post.application_status;
+            const applicationStatus = +post.application_status;
             const post_status = post.post_status;
             post = await formatPostBeforeReturn(post);
-
-            if (post_status === 3) {
-                post.application_status = -1; // Hired
-            } else {
-                post.application_status = applicationStatus;
-            }
-            
+            post.application_status = applicationStatusHandler(applicationStatus);
             return post;
         }));
 

@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 
 import logging from "../../utils/logging";
 import * as postServices from "../../services/post/_service.post";
+import rejectApplicationByPostIdService from "../../services/application/update/service.application.updateByPostId";
 
 const updatePostStatusController = async (
     req: Request,
@@ -34,6 +35,14 @@ const updatePostStatusController = async (
         );
         if (!isUpdateStatusSuccess) {
             return next(createError(500));
+        }
+
+        if (status === 3) {
+            // reject all applications if application status is not 4
+            const isRejectAllApplicationsSuccess = rejectApplicationByPostIdService(postId, 3);
+            if (!isRejectAllApplicationsSuccess) {
+                return next(createError(500));
+            }
         }
 
         // SUCCESS
