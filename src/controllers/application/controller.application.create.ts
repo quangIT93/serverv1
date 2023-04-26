@@ -76,11 +76,11 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
         if (userProfile.cv_url) {
             const copySource = `${process.env.AWS_BUCKET_PREFIX_URL}/${ProfilesBucket.CV_BUCKET}/${accountId}/${userProfile.cv_url}`;
             const key = `${ProfilesBucket.APPLICATION_BUCKET}/${applicationIdNumber}/${userProfile.cv_url}`;
-            const isSuccessfull = copyFileService(
+            const isSuccessful = copyFileService(
                 copySource,
                 key,
             )
-            if (!isSuccessfull) {
+            if (!isSuccessful) {
                 return next(createError(500, "Copy cv file failed"));
             }
         }
@@ -89,11 +89,11 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
         if (userProfile.avatar) {
             const copySource = `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.AVATAR_IMAGES}/${userProfile.avatar}`;
             const key = `${ProfilesBucket.APPLICATION_BUCKET}/${accountId}/${applicationIdNumber}/${userProfile.avatar}`;
-            const isSuccessfull = copyFileService(
+            const isSuccessful = copyFileService(
                 copySource,
                 key,
             )
-            if (!isSuccessfull) {
+            if (!isSuccessful) {
                 return next(createError(500, "Copy avatar file failed"));
             }
         }

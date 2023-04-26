@@ -23,7 +23,7 @@ const deleteCVProfileController = async (req: Request, res: Response, next: Next
 
             const createdCV = await updateCV(
                 userId,
-                null
+                ""
             );
 
             deleteCv(userId, isCVExist.cv_url)

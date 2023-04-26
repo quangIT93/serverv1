@@ -134,6 +134,13 @@ const readPostByIdController = async (
                             postId,
                             accountId
                         );
+                    let applicationStatus = null;
+                    if (postData.status === 3 && application) {
+                        applicationStatus = -1;
+                    } else if (application) {
+                        applicationStatus = application.status;
+                    }
+
 
                     // SUCCESS
                     return res.status(200).json({
@@ -145,9 +152,7 @@ const readPostByIdController = async (
                             images,
                             bookmarked: postIdsOnBookmark.includes(postData.id),
                             applied: application ? true : false,
-                            application_status: application
-                                ? application.status
-                                : null,
+                            application_status: applicationStatus,
                             application_status_text:
                                 ApplicationStatus[application?.status],
                         },
