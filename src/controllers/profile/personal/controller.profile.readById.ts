@@ -57,6 +57,8 @@ const readProfileByIdController = async (
 
         }
 
+        profileData.name = profileData.name ? profileData.name : "Your name";
+
         profileData.address = {
             id: profileData.province_id ? profileData.province_id : null,
             name: profileData.address ? profileData.address : null,
