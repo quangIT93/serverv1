@@ -62,7 +62,7 @@ const readProfileByIdController = async (
             name: profileData.address ? profileData.address : null,
         };
 
-        profileData.birthday = +profileData.birthday ? +profileData.birthday : null;
+        profileData.birthday = profileData.birthday ? +profileData.birthday : 0;
 
         profileData.avatar = profileData.avatar
             ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.AVATAR_IMAGES}/` +
