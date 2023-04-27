@@ -58,23 +58,23 @@ const signInWithGoogleController = async (
 
         // GET DATA OF GOOGLE USER
         const payload = ticket.getPayload();
-        let { sub, name, email, picture } = payload;
+        const { sub, name, email, picture } = payload;
 
         // REMOVE INVALID DOT CHARS FROM EMAIL
-        email = email ? removeDots(email) : "";
+        const emailRemovedDots = email ? removeDots(email) : "";
         
         // GET ACCOUNT BY EMAIL
         if (!email) {
             return next(createError(404, "Invalid email"));
         }
         
-        const account = await readAccountByEmailService(email);
+        const account = await readAccountByEmailService(emailRemovedDots);
         let accountId = uuidv4();
         if (!account) {
             // CREATE NEW ACCOUNT
             const isCreateAccountSuccess = await createAccountWithEmailService(
                 accountId,
-                email
+                emailRemovedDots
             );
             logging.info("isCreateAccountSuccess: ", isCreateAccountSuccess);
             if (!isCreateAccountSuccess) {
