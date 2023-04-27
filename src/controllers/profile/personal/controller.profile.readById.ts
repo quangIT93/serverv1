@@ -39,7 +39,7 @@ const readProfileByIdController = async (
         }
 
         // GET PROFILE BY ID
-        const profileData = await readProfileByIdService(req.query.lang.toString(), id);
+        let profileData = await readProfileByIdService(req.query.lang.toString(), id);
         if (!profileData) {
             logging.warning("Incorrect profile id");
             // create new profile
@@ -51,6 +51,8 @@ const readProfileByIdController = async (
                 if (!newProfile) {
                     return next(createError(500));
                 }
+
+                profileData = await readProfileByIdService(req.query.lang.toString(), id);
             }
 
         }
