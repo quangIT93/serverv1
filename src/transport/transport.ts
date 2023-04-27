@@ -10,6 +10,8 @@ const nodeMailerTransporter = nodemailer.createTransport({
 });
 
 const sendEmailToUser = (options: any, callback: Function = () => { }) => {
+    logging.info("Send OTP start ...")
+
     const mailOptions = {
         from: process.env.NODE_MAILER_EMAIL,
         ...options
@@ -18,11 +20,10 @@ const sendEmailToUser = (options: any, callback: Function = () => { }) => {
     nodeMailerTransporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             logging.error("OTP sent to email failed");
-
+            console.log(error)
             callback(false);
         } else {
             logging.info("OTP sent to email");
-
             callback(true);
         }
     });
