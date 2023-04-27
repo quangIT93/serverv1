@@ -49,4 +49,4 @@ const deleteCVProfileController = async (req: Request, res: Response, next: Next
         }
 }
 
-export default deleteCVProfileController;
+export default deleteCVProfileController;   

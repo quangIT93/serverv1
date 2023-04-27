@@ -124,7 +124,7 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
         // CREATE APPLICATION LOCATIONS
         const applicationLocations = await applicationService.create.createApplicationLocations(applicationIdNumber, accountId);
 
-        if (!applicationLocations) {
+        if (!applicationLocations) {    
             applicationService.delete.deleteById(applicationIdNumber);
             return next(createError(500, "Create application locations failed"));
         }

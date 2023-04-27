@@ -20,6 +20,13 @@ const signInWithGoogleController = async (
     next: NextFunction
 ) => {
     try {
+        function removeDots(email: string) {
+            var email_s = email.split("@");
+            if (!email_s[0]) return "";
+            if (!email_s[1]) return "";
+            return email_s[0].replace(/\./g, "") + "@" + email_s[1];
+        }
+
         logging.info("Sign in with google controller start ...");
         // GET DATA
         const idToken: string = req.body.idToken
@@ -51,15 +58,16 @@ const signInWithGoogleController = async (
 
         // GET DATA OF GOOGLE USER
         const payload = ticket.getPayload();
-        const { sub, name, email, picture } = payload;
+        let { sub, name, email, picture } = payload;
 
-        // console.log("payload", payload);
-
+        // REMOVE INVALID DOT CHARS FROM EMAIL
+        email = email ? removeDots(email) : "";
+        
         // GET ACCOUNT BY EMAIL
         if (!email) {
             return next(createError(404, "Invalid email"));
         }
-
+        
         const account = await readAccountByEmailService(email);
         let accountId = uuidv4();
         if (!account) {
@@ -79,7 +87,7 @@ const signInWithGoogleController = async (
                     accountId,
                     email,
                     null,
-                    name
+                    name || "",
                 );
             if (!isCreateProfileSuccess) {
                 return next(createError(500));

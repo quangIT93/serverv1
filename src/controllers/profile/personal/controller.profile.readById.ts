@@ -2,7 +2,7 @@ import createError from "http-errors";
 import { Request, Response, NextFunction } from "express";
 
 import logging from "../../../utils/logging";
-import { readProfileByIdService } from "../../../services/profile/_service.profile";
+import { createProfileWithAccountIdService, readProfileByIdService } from "../../../services/profile/_service.profile";
 import * as profileCategoryServices from "../../../services/profileCategory/_service.profileCategory";
 import * as profileLocationServices from "../../../services/profileLocation/_service.profileLocation";
 import * as profileEducationServices from "../../../services/profileEducation/_service.profileEducation";
@@ -10,6 +10,7 @@ import * as profileExperienceServices from "../../../services/profileExperience/
 import * as profileSocialServices from "../../../services/profileSocial/_service.profileSocial";
 import ImageBucket from "../../../enum/imageBucket.enum";
 import ProfilesBucket from "../../../enum/profileBucket.enum";
+import readAccountByIdService from "../../../services/account/service.account.readAccountById";
 
 const readProfileByIdController = async (
     req: Request,
@@ -41,15 +42,25 @@ const readProfileByIdController = async (
         const profileData = await readProfileByIdService(req.query.lang.toString(), id);
         if (!profileData) {
             logging.warning("Incorrect profile id");
-            return next(createError(404));
+            // create new profile
+            const accountId = await readAccountByIdService(id);
+            if (!accountId) {
+                return next(createError(404));
+            } else {
+                const newProfile = await createProfileWithAccountIdService(id);
+                if (!newProfile) {
+                    return next(createError(500));
+                }
+            }
+
         }
 
         profileData.address = {
-            id: profileData.province_id,
-            name: profileData.address,
+            id: profileData.province_id ? profileData.province_id : null,
+            name: profileData.address ? profileData.address : null,
         };
 
-        profileData.birthday = +profileData.birthday;
+        profileData.birthday = +profileData.birthday ? +profileData.birthday : null;
 
         profileData.avatar = profileData.avatar
             ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.AVATAR_IMAGES}/` +
