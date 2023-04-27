@@ -7,6 +7,7 @@ import {formatPostBeforeReturn} from '../post/_controller.post.formatPostBeforeR
 import MoneyType from '../../enum/money_type.enum';
 import { readDefaultPostImageByPostId } from '../../services/category/_service.category';
 import ImageBucket from '../../enum/imageBucket.enum';
+import applicationStatusHandler from '../application/handler/applicationStatusHandler';
 
 const readAllByAccountId = async (req: Request, res: Response, next: NextFunction) => {
     logging.info('Read All by account id controller start ...');
@@ -38,16 +39,12 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
             if (a.type === 'application') {
                 a.created_at = new Date(a.created_at).getTime();
                 a.application_status_text = ApplicationStatus[a.status];
-                a.num_of_application = Number(a.num_of_application);
+                // a.num_of_application = Number(a.num_of_application);
                 a.money_type = +a.money_type;
                 a.money_type_text = MoneyType[a.money_type];
                 a.start_date = +a.start_date || null;
                 a.end_date = +a.end_date || null;
-                if (a.post_status === 3) {
-                    a.application_status = -1; // Hired
-                } else {
-                    a.application_status = +a.status;
-                }
+                a.application_status = applicationStatusHandler(+a.status)
                 delete a.num_of_application;
                 if (a.image === null) {
                     const firstParentCategoryImage =
