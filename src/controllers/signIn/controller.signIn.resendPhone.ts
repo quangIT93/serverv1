@@ -3,7 +3,7 @@ import createError from "http-errors";
 import Helper from "../../helpers/helper.class";
 import { readAccountByPhoneService } from "../../services/account/_service.account";
 import createOtpService from "../../services/otp/service.otp.create";
-import Transport from "../../transport/transport";
+// import Transport from "../../transport/transport";
 import logging from "../../utils/logging";
 
 const resendPhoneOTPController = async (
@@ -26,13 +26,13 @@ const resendPhoneOTPController = async (
         const otp = helper.generateOTP();
 
         // Transporter
-        const transporter = new Transport();
+        // const transporter = new Transport();
 
         // SEND OTP TO PHONE NUMBER
-        transporter.sendOTPToPhoneNumber(
-            `+${phoneNumber}`,
-            `Your Hi Job OTP is: ${otp}`
-        );
+        // transporter.sendOTPToPhoneNumber(
+        //     `+${phoneNumber}`,
+        //     `Your Hi Job OTP is: ${otp}`
+        // );
 
         // CREATE OTP
         const isCreateOtpSuccess = await createOtpService(otp, accountData.id);

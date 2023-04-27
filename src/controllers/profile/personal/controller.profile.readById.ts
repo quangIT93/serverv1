@@ -47,7 +47,7 @@ const readProfileByIdController = async (
             if (!accountId) {
                 return next(createError(404));
             } else {
-                const newProfile = await createProfileWithAccountIdService(id);
+                const newProfile = await createProfileWithAccountIdService(id, "", "", "");
                 if (!newProfile) {
                     return next(createError(500));
                 }

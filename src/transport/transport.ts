@@ -1,32 +1,33 @@
 import logging from "../utils/logging";
-import client from "twilio";
+const nodemailer = require("nodemailer");
 
-class Transport {
-  // ...
-  sendOTPToPhoneNumber(phoneNumber: string, message: string, callback: Function = () => {}) {
-    // ...
-    logging.info("OTP sent to phone number");
+const nodeMailerTransporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: process.env.NODE_MAILER_EMAIL,
+        pass: process.env.NODE_MAILER_PASSWORD
+    }
+});
 
-    const accountSid = process.env.TWILIO_ACCOUNT_SID;
-    const authToken = process.env.TWILIO_AUTH_TOKEN;
+const sendEmailToUser = (options: any, callback: Function = () => { }) => {
+    const mailOptions = {
+        from: process.env.NODE_MAILER_EMAIL,
+        ...options
+    };
 
-    client(accountSid, authToken).messages.create({
-        body: message,
-        from: process.env.TWILIO_PHONE_NUMBER,
-        to: phoneNumber
-        }).then((message) => {
-            logging.info(message.sid);
-        }).catch((error) => {
-            logging.error(error);
-        }).finally(() => {
-            callback();
-        });
-    
-  }
+    nodeMailerTransporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            logging.error("OTP sent to email failed");
 
-  mailSender() {
-    // ...
-  }
-}
+            callback(false);
+        } else {
+            logging.info("OTP sent to email");
 
-export default Transport;
+            callback(true);
+        }
+    });
+};
+
+
+
+export { sendEmailToUser, nodeMailerTransporter};

@@ -1,4 +1,3 @@
-import sgMail from "@sendgrid/mail";
 import otpGenerator from "otp-generator";
 import createError from "http-errors";
 import { v4 as uuidv4 } from "uuid";
@@ -11,6 +10,7 @@ import {
 } from "../../services/account/_service.account";
 import { createOtpService } from "../../services/otp/_service.otp";
 import { createProfileWithAccountIdService } from "../../services/profile/_service.profile";
+import { sendEmailToUser } from "../../transport/transport";
 
 const signInWithEmailController = async (
     req: Request,
@@ -31,23 +31,11 @@ const signInWithEmailController = async (
         });
 
         // SEND EMAIL
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-        const msg = {
-            to: {
-                email: email,
-            },
-            from: {
-                email: process.env.SENDGRID_HOST_EMAIL,
-                name: "Hi Job",
-            },
+        sendEmailToUser({
+            to: email,
             subject: "Verify email",
-            templateId: process.env.SENDGRID_TEMPLATE_ID,
-            dynamicTemplateData: {
-                name: "my friend",
-                code: otp,
-            },
-        };
-        sgMail.send(msg);
+            html: `<p>Your OTP is <b>${otp}</b></p>`,
+        });
 
         // CREATE ACCOUNT DATA
         // CHECK ACCOUNT WAS EXISTED?

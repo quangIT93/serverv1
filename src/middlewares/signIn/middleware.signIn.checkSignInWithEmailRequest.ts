@@ -13,13 +13,16 @@ const checkSignInWithEmailRequest = async (
         // REMOVE INVALID DOT CHARS FROM EMAIL
         function removeDots(email: string) {
             var email_s = email.split("@");
+            if (!email_s[0]) return "";
+            if (!email_s[1]) return "";
             return email_s[0].replace(/\./g, "") + "@" + email_s[1];
         }
 
+        
         // GET EMAIL
         let email = req.body.email
-            ? removeDots(req.body.email.toString().trim())
-            : "";
+        ? removeDots(req.body.email.toString().trim())
+        : "";
         if (!email) {
             return next(createError(400, "Invalid email"));
         }
