@@ -4,9 +4,9 @@ import logging from "../../utils/logging";
 const getLastOtpByEmailService = async (email: String) => {
     try {
         const query =
-            "SELECT otps.otp, otps.created_at " +
-            "FROM otps, accounts " +
-            "WHERE accounts.email=? AND accounts.id=otps.account_id " +
+            "SELECT otp, created_at, account, type " +
+            "FROM otps " +
+            "WHERE account = ? AND type = 1 " +
             "ORDER BY otps.created_at DESC " +
             "LIMIT 1";
         const params = [email];
