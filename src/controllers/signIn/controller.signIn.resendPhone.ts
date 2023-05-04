@@ -35,10 +35,10 @@ const resendPhoneOTPController = async (
         // );
 
         // CREATE OTP
-        const isCreateOtpSuccess = await createOtpService(otp, accountData.id);
-        if (!isCreateOtpSuccess) {
-            return next(createError.InternalServerError());
-        }
+        // const isCreateOtpSuccess = await createOtpService(otp, accountData.id);
+        // if (!isCreateOtpSuccess) {
+        //     return next(createError.InternalServerError());
+        // }
 
         // SUCCESS
         return res.status(200).json({

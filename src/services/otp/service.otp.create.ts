@@ -1,11 +1,11 @@
 import { executeQuery } from "../../configs/database";
 import logging from "../../utils/logging";
 
-const createOtpService = async (otp: String, accountId: String) => {
+const createOtpService = async (otp: string, account: string, type: '1' | '2') => {
     try {
         logging.info("Create otp service start: ", otp);
-        const query = "INSERT INTO otps (account_id, otp) VALUES (?, ?)";
-        const params = [accountId, otp];
+        const query = "INSERT INTO otps (account, otp, type) VALUES (?, ?, ?)";
+        const params = [account, otp, type];
         const res = await executeQuery(query, params);
         return res.affectedRows === 1;
     } catch (error) {

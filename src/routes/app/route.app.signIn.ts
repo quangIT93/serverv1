@@ -1,6 +1,7 @@
 import express from "express";
 import signInController from "../../controllers/signIn/_controller.signIn";
 import signInMiddleware from "../../middlewares/signIn/_middleware.signIn";
+import handlerSignInSuccessful from "../../controllers/signIn/emailAndGoogle/controller.signIn.success";
 
 const router = express.Router();
 
@@ -9,8 +10,15 @@ router.post(
     signInMiddleware.checkSignInWithEmailRequest,
     signInController.signInWithEmail
 );
-router.post("/email/verify", signInController.verifyEmailOtp);
-router.post("/email/resend", signInController.resendEmail);
+router.post(
+    "/email/verify",
+    signInController.verifyEmailOtp,
+    handlerSignInSuccessful
+);
+router.post(
+    "/email/resend",
+    signInController.resendEmail
+);
 
 router.post(
     "/phone",
@@ -23,7 +31,11 @@ router.post(
     signInMiddleware.checkSignInWithPhoneRequest,
     signInController.resendPhoneOTP
 );
-router.post("/google", signInController.signInWithGoogle);
+router.post(
+    "/google", 
+    signInController.signInWithGoogle,
+    handlerSignInSuccessful
+);
 
 router.post("/facebook", signInController.signInWithFacebook);
 

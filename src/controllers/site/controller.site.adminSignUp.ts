@@ -46,6 +46,7 @@ const adminSignUpController = async (
             await accountServices.createAccountWithEmailService(
                 accountId,
                 email,
+                "",
                 role
             );
         if (!isCreateAccountSuccess) {
