@@ -22,7 +22,12 @@ const createProfile = async (
 
     if (!profile) {
         // create new profile
-        const isCreateProfileSuccess = await createProfileWithAccountIdService(accountId, email, name);
+        const isCreateProfileSuccess = await createProfileWithAccountIdService(
+            accountId,
+            email,
+            "",
+            name
+        );
 
         if (!isCreateProfileSuccess) {
             return null;
