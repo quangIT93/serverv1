@@ -32,7 +32,6 @@ const readProfileByIdController = async (
             ? req.query.id.toString().trim()
             : req.user.id.toString().trim();
 
-        logging.info("Profile id: ", id);
         if (!id) {
             logging.warning("Invalid profile id");
             return next(createError(400));
