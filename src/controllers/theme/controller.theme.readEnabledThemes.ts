@@ -6,7 +6,7 @@ import logging from "../../utils/logging";
 import * as themeServices from "../../services/theme/_service.theme";
 import ImageBucket from "../../enum/imageBucket.enum";
 import readAllByProfileId from '../../services/profileLocation/service.profileLocation.readAllByProfileId';
-import shuffle from '../../utils/shuffleArray';
+import { getRandom } from '../../utils/shuffleArray';
 
 const readEnabledThemesController = async (
     req: Request,
@@ -61,7 +61,7 @@ const readEnabledThemesController = async (
 
                     if (profiles_locations.length === 0) {
                         // Shuffle themes and get 10 themes
-                        themes = shuffle(themes, 10);
+                        themes = getRandom(themes, 10);
                     }
 
                     themes.forEach((theme) => {
@@ -90,7 +90,7 @@ const readEnabledThemesController = async (
             }
 
             // Shuffle themes and get 10 themes
-            themes = shuffle(themes, 10);
+            themes = getRandom(themes, 10);
 
             themes.forEach((theme) => {
                 theme.image = `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.THEME_IMAGES}/` + theme.image;

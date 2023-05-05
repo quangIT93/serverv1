@@ -4,7 +4,7 @@ import logging from "../../utils/logging";
 import * as bannerServices from "../../services/banner/_service.banner";
 import { formatBannerResponse } from "./handler/formatBannerResponse";
 import ImageBucket from "../../enum/imageBucket.enum";
-import shuffle from "../../utils/shuffleArray";
+import { shuffle } from "../../utils/shuffleArray";
 
 const readEnabledBannersController = async (
     req: Request,
