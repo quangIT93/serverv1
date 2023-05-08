@@ -92,7 +92,7 @@ const updateApplicationController = async (req: Request, res: Response, next: Ne
             pushNotification(
                 postInformation.account_id,
                 notificationContent.title,
-                notificationContent.body,
+                notificationContent.body_push,
                 // "",
                 notificationContent.data
             )
