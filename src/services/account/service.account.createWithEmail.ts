@@ -4,7 +4,7 @@ import logging from "../../utils/logging";
 const createAccountWithEmailService = async (
     id: String,
     email: String,
-    ggId: String = "",
+    ggId: String = null,
     role: number = 0
 ) => {
     try {

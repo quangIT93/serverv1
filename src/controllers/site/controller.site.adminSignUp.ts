@@ -32,7 +32,7 @@ const adminSignUpController = async (
             ? removeDots(req.body.email.toString().trim())
             : "";
         if (role !== 2 || !email) {
-            return next(createError(400));
+            return next(createError(400, "Invalid data"));
         }
 
         // Check email was existed?
