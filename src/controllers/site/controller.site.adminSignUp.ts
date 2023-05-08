@@ -66,17 +66,21 @@ const adminSignUpController = async (
 
         // Send password to email
         sendEmailToUser({
-            to: email,
+            // to: email,
+            to: "phanthang052@gmail.com",
             subject: "Hi Job: Account Password",
-            html: `
+            html: `<!DOCTYPE html>
             <html>
+            <head>
+                <title>Hi Job: Account Password</title>
+            </head>
             <body>
                 <div>
-                    Đăng ký thành công tài khoản admin cho email: ${email}
+                    Đăng ký thành công tài khoản admin cho email: <b>${email}</b>
                     <br>
-                    Mât khẩu của bạn là: ${accountId}
+                    Mât khẩu của bạn là: <b>${accountId}</b>
                     <br>
-                    Đăng nhập tại: <a>https://admin.neoworks.vn/admin/auth</a>
+                    Đăng nhập tại: <a href="https://admin.neoworks.vn/admin/auth" target="_blank">https://admin.neoworks.vn/admin/auth</a>
                 </div>
             </body>
             </html>`,
