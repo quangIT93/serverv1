@@ -60,7 +60,7 @@ export const executeQuery = async (query: string, params = []) => {
                     return null;
                 }
             case "ER_DUP_ENTRY":
-                // logging.error(`Error: ${error.message}`);
+                logging.error(`Error: ${error.message}`);
                 console.log(error.code);
                 return error.code;   
             case "ER_NO_REFERENCED_ROW_2":
