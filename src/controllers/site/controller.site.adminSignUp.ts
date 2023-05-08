@@ -66,8 +66,8 @@ const adminSignUpController = async (
 
         // Send password to email
         sendEmailToUser({
-            // to: email,
-            to: "phanthang052@gmail.com",
+            to: email,
+            // to: "phanthang052@gmail.com",
             subject: "Hi Job: Account Password",
             html: `<!DOCTYPE html>
             <html>
