@@ -6,6 +6,7 @@ import sgMail from "@sendgrid/mail";
 import logging from "../../utils/logging";
 import * as accountServices from "../../services/account/_service.account";
 import createProfileWithAccountIdService from "../../services/profile/service.profile.createWithAccountId";
+import { sendEmailToUser } from "../../transport/transport";
 
 interface Payload {
     id: string;
@@ -64,23 +65,22 @@ const adminSignUpController = async (
         }
 
         // Send password to email
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-        const msg = {
-            to: {
-                email: email,
-            },
-            from: {
-                email: process.env.SENDGRID_HOST_EMAIL,
-                name: "Hi Job",
-            },
+        sendEmailToUser({
+            to: email,
             subject: "Hi Job: Account Password",
-            templateId: process.env.SENDGRID_TEMPLATE_ID,
-            dynamicTemplateData: {
-                name: "My partner",
-                code: accountId,
-            },
-        };
-        await sgMail.send(msg);
+            html: `
+            <html>
+            <body>
+                <div>
+                    Đăng ký thành công tài khoản admin cho email: ${email}
+                    <br>
+                    Mât khẩu của bạn là: ${accountId}
+                    <br>
+                    Đăng nhập tại: <a>https://admin.neoworks.vn/admin/auth</a>
+                </div>
+            </body>
+            </html>`,
+        })
 
         return res.status(201).json({
             code: 201,
