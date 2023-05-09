@@ -10,6 +10,7 @@ import * as postCategoryServices from "../../services/postCategory/_service.post
 import Helper from "../../helpers/helper.class";
 import ImageBucket from "../../enum/imageBucket.enum";
 import countPostQuantityByDayByAccountId from "../../services/post/service.post.countPostQuantityByDayByAccountId";
+import createPostResourceService from "../../services/postResource/service.postResource.create";
 
 const createPostController = async (
     req: Request,
@@ -81,6 +82,18 @@ const createPostController = async (
                 ? req.body.phoneNumber
                 : null;
             let moneyType = req.body.moneyType ? +req.body.moneyType : null;
+
+
+            // NEW FIELDS
+            const siteUrl = req.body.url ? req.body.url : null;
+
+            const email = req.body.email ? req.body.email : null;
+
+            const companyResourceId = req.body.companyResourceId ? req.body.companyResourceId : null;
+
+            const jobTypeId = req.body.jobTypeId ? req.body.jobTypeId : 3;
+
+            //
 
             // VALIDATION
             if (!accountId || !title || !companyName) {
@@ -190,14 +203,19 @@ const createPostController = async (
             //HELPER
             const helper = new Helper();
 
-            if (phoneNumber && !helper.checkPhoneNumberFormat(phoneNumber)) {
-                logging.warning("Invalid phone number format");
-                return next(
-                    createError(
-                        400,
-                        "Please enter a valid Vietnamese phone number"
-                    )
-                );
+            // if (phoneNumber && !helper.checkPhoneNumberFormat(phoneNumber)) {
+            //     logging.warning("Invalid phone number format");
+            //     return next(
+            //         createError(
+            //             400,
+            //             "Please enter a valid Vietnamese phone number"
+            //         )
+            //     );
+            // }
+
+            if (email && !helper.checkEmailFormat(email)) {
+                logging.warning("Invalid email format");
+                return next(createError(400, "Please enter a valid email"));
             }
 
             if (!moneyType) {
@@ -248,6 +266,22 @@ const createPostController = async (
                 return next(createError(400, "Invalid categoryIds"));
             }
 
+
+            // CHECK IF JOB TYPE ID IS VALID
+            // NOTE: JOB TYPE ID IS OPTIONAL
+            if (jobTypeId && !Number.isInteger(+jobTypeId)) {
+                logging.warning("Invalid jobTypeId");
+                return next(createError(400, "Invalid jobTypeId"));
+            }
+
+
+            // CHECK IF COMPANY RESOURCE ID IS VALID
+            // NOTE: COMPANY RESOURCE ID IS OPTIONAL
+            if (companyResourceId && !Number.isInteger(+companyResourceId)) {
+                logging.warning("Invalid companyResourceId");
+                return next(createError(400, "Invalid companyResourceId"));
+            }
+
             // HANDLE CREATE
             const postIdCreated = await postServices.createPost(
                 accountId,
@@ -270,7 +304,9 @@ const createPostController = async (
                 description.toString().trim(),
                 helper.formatPhoneNumber(phoneNumber),
                 moneyType,
-                role
+                role,
+                +jobTypeId,
+                companyResourceId,
             );
             if (!postIdCreated) {
                 return next(createError(500));
@@ -297,6 +333,19 @@ const createPostController = async (
                     if (!isCreateImagesOfPostSuccess) {
                         return next(createError(500));
                     }
+                }
+            }
+
+            // CREATE POST RESOURCE
+            if (companyResourceId && siteUrl) {
+                const isCreatePostResourceSuccess =
+                    await createPostResourceService(
+                        postIdCreated,
+                        siteUrl,
+                        +companyResourceId,
+                    );
+                if (!isCreatePostResourceSuccess) {
+                    return next(createError(500));
                 }
             }
 

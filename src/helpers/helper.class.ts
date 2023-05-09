@@ -24,6 +24,7 @@ class Helper {
     if (!phoneNumber) {
       return null;
     }
+    phoneNumber = phoneNumber.replace(/ /g, "").replace(/-/g, "").replace(/\+/g, "");
     if (phoneNumber.startsWith("0")) {
       //if phone number start with 0 and length is 10
       //replace 0 with +84

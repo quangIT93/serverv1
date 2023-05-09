@@ -20,9 +20,11 @@ const createPost = async (
     salaryMax: number,
     salaryType: number,
     description: string | null,
-    phoneNumber: string,
+    phoneNumber: string | null = null,
     moneyType: number,
-    role: number
+    role: number,
+    jobTypeId: number | null = null,
+    email: string | null = null,
 ) => {
     try {
         logging.info("Create post service start ...");
@@ -48,10 +50,12 @@ const createPost = async (
             "description, " +
             "phone_contact, " +
             "money_type, "+
+            "job_type, " +
+            "email, " +
             "is_inhouse_data," +
             "status" + //test 
             ") " +
-            "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         const params = [
             accountId,
             title,
@@ -73,6 +77,8 @@ const createPost = async (
             description,
             phoneNumber,
             moneyType,
+            jobTypeId,
+            email,
             role === 1 || role === 2 ? '1' : '0',
             1 //test
         ];

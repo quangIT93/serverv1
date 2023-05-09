@@ -35,6 +35,11 @@ interface PostService {
     status: 0 | 1 | 2 | 3 | 4;
     is_inhouse_data: "0" | "1";
     updated_at?: string;
+    job_type?: number;
+    job_type_name?: string;
+    url?: string;
+    company_resource?: number;
+    company_resource_name?: string;
 }
 
 interface PostResponse {
@@ -77,6 +82,16 @@ interface PostResponse {
     province_name: string;
     bookmarked?: boolean;
     share_link?: string;
+    job_type?: {
+        job_type_id?: number;
+        job_type_name?: string;
+    }
+    resource?: {
+        company_resource_id?: number;
+        company_resource_name?: string;
+        url?: string;
+        company_icon?: string;
+    }
 }
 
 export { PostService, PostResponse };

@@ -49,6 +49,16 @@ async function formatPostBeforeReturn(post: PostService) {
                 // post.description.substring(0, 100)
                 "Welcome to HiJob!"
             )}&si=`,
+        job_type: {
+            job_type_id: post.job_type,
+            job_type_name: post.job_type_name,
+        },
+        resource: {
+            company_resource_id: post.company_resource,
+            company_resource_name: post.company_resource_name,
+            // company_icon: post.company_icon,
+            url: post.url,
+        }
     };
     if (post.image !== undefined && post.image !== null) {
         postResponse.image =

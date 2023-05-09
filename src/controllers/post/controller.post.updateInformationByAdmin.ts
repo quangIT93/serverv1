@@ -6,6 +6,9 @@ import * as postServices from "../../services/post/_service.post";
 import * as postImageServices from "../../services/postImage/_service.postImage";
 import * as postCategoryServices from "../../services/postCategory/_service.postCategory";
 import Helper from "../../helpers/helper.class";
+import updatePostResourceService from "../../services/postResource/service.postResource.update";
+import readPostResourceService from "../../services/postResource/service.postResource.readByPostId";
+import createPostResourceService from "../../services/postResource/service.postResource.create";
 
 const updatePostInformationByAdminController = async (
     req: Request,
@@ -44,6 +47,12 @@ const updatePostInformationByAdminController = async (
         let disabledImageIds = req.body.disabledImageIds
             ? req.body.disabledImageIds
             : null;
+        // NEW FIELDS
+        let jobTypeId = req.body.jobTypeId ? +req.body.jobTypeId : null;
+        let companyResourceId = req.body.companyResourceId
+            ? +req.body.companyResourceId : null;
+        let url = req.body.url ? req.body.url : null;
+        let email = req.body.email ? req.body.email : null;
 
         // VALIDATION
         if (!Number.isInteger(postId) || postId <= 0) {
@@ -58,10 +67,12 @@ const updatePostInformationByAdminController = async (
 
         const helper = new Helper();
 
-        if (phoneContact && !helper.checkPhoneNumberFormat(phoneContact)) {
-            logging.warning("Invalid phone number format");
-            return next(createError(400));
-        }
+        // if (phoneContact && !helper.checkPhoneNumberFormat(phoneContact)) {
+        //     logging.warning("Invalid phone number format");
+        //     return next(createError(400));
+        // }
+
+
 
         if (
             new Date(startTime).toString() === "Invalid Date" ||
@@ -156,6 +167,17 @@ const updatePostInformationByAdminController = async (
             return next(createError(400, "Invalid categoryIds"));
         }
 
+        // NEW FIELDS
+        if (jobTypeId && !Number.isInteger(jobTypeId)) {
+            logging.warning("Invalid jobTypeId");
+            return next(createError(400, "Invalid jobTypeId"));
+        }
+
+        if (companyResourceId && !Number.isInteger(companyResourceId)) {
+            logging.warning("Invalid companyResourceId");
+            return next(createError(400, "Invalid companyResourceId"));
+        }
+
         // HANDLE UPDATE
         const isUpdateSuccess = await postServices.updateInformationByAdmin(
             postId,
@@ -175,7 +197,9 @@ const updatePostInformationByAdminController = async (
             salaryMax,
             salaryType,
             moneyType,
-            description
+            description,
+            email,
+            jobTypeId,
         );
 
         if (!isUpdateSuccess) {
@@ -247,6 +271,38 @@ const updatePostInformationByAdminController = async (
         } else {
             // DELETE ALL CATEGORIES OF POST
             await postCategoryServices.deleteByPostId(postId);
+        }
+
+        if (companyResourceId && url) {
+            // CHECK EXIST COMPANY RESOURCE
+            const isExistCompanyResource =
+                await readPostResourceService(postId);
+
+            if (isExistCompanyResource) {
+                // UPDATE COMPANY RESOURCE
+                const isUpdateCompanyResourceSuccess =
+                    await updatePostResourceService(
+                        postId,
+                        url,
+                        +companyResourceId
+                    );
+                
+    
+                if (isUpdateCompanyResourceSuccess !== 1 && isUpdateCompanyResourceSuccess !== 0) {
+                    return next(createError(500));
+                }
+            } else {
+                // CREATE COMPANY RESOURCE
+                const isCreateCompanyResourceSuccess =
+                    await createPostResourceService(
+                        postId,
+                        url,
+                        +companyResourceId
+                    );
+                if (!isCreateCompanyResourceSuccess) {
+                    return next(createError(500));
+                }
+            }
         }
 
         // SUCCESS
