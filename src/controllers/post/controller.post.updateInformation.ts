@@ -69,6 +69,10 @@ const updatePostInformationController = async (
                 : null;
             let phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : null;
             let moneyType = req.body.moneyType ? +req.body.moneyType : null;
+            let email = req.body.email ? req.body.email : null;
+
+            const expiredDate = Number.isInteger(+req.body.expiredDate) ? +req.body.expiredDate : null;
+
 
             // PARSE DATA
             if (Array.isArray(deletedImages)) {
@@ -242,6 +246,17 @@ const updatePostInformationController = async (
                 }
             }
 
+            let newExpireDate = null;
+
+            if (expiredDate) {
+                if (new Date(expiredDate).toString() === "Invalid Date") {
+                    logging.warning("Invalid expiredDate");
+                    return next(createError(400, "Invalid expiredDate"));
+                } else {
+                    newExpireDate = new Date(expiredDate);
+                }
+            }
+
             // HANDLE UPDATE
             const isUpdateSuccess = await postServices.updateInformation(
                 postId,
@@ -263,7 +278,9 @@ const updatePostInformationController = async (
                 salaryType,
                 description,
                 helper.formatPhoneNumber(phoneNumber),
-                moneyType
+                moneyType,
+                email.toString().trim(),
+                newExpireDate,
             );
 
             if (!isUpdateSuccess) {

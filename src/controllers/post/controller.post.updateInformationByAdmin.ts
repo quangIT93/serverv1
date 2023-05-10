@@ -53,6 +53,8 @@ const updatePostInformationByAdminController = async (
             ? +req.body.companyResourceId : null;
         let url = req.body.url ? req.body.url : null;
         let email = req.body.email ? req.body.email : null;
+        const expiredDate = Number.isInteger(+req.body.expiredDate) ? +req.body.expiredDate : null;
+
 
         // VALIDATION
         if (!Number.isInteger(postId) || postId <= 0) {
@@ -176,6 +178,17 @@ const updatePostInformationByAdminController = async (
         if (companyResourceId && !Number.isInteger(companyResourceId)) {
             logging.warning("Invalid companyResourceId");
             return next(createError(400, "Invalid companyResourceId"));
+        }
+
+        let newExpireDate = null;
+
+        if (expiredDate) {
+            if (new Date(expiredDate).toString() === "Invalid Date") {
+                logging.warning("Invalid expiredDate");
+                return next(createError(400, "Invalid expiredDate"));
+            } else {
+                newExpireDate = new Date(expiredDate);
+            }
         }
 
         // HANDLE UPDATE

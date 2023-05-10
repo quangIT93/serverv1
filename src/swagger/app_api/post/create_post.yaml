@@ -77,6 +77,12 @@ paths:
                                 phoneNumber:
                                     type: string
                                     example: "0123456789"
+                                email:
+                                    type: string
+                                    example: "example@gmail.com"
+                                expiredDate:
+                                    type: number
+                                    example: 1611234567
                                 categoryIds:
                                     type: array
                                     items:

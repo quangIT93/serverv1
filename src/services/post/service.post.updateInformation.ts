@@ -20,8 +20,10 @@ const updateInformation = async (
     salaryMax: number,
     salaryType: number,
     description: string,
-    phoneNumber: string,
-    moneyType: number
+    phoneNumber: string | null = null,
+    moneyType: number,
+    email: string | null = null,
+    expiredDate: Date | null = null
 ) => {
     try {
         logging.info("Update post information service start ...");
@@ -45,7 +47,9 @@ const updateInformation = async (
             "salary_type = ?, " +
             "description = ?, " +
             "phone_contact = ?, " +
-            "money_type = ? " +
+            "money_type = ?, " +
+            "email = ?, " +
+            "expired_date = ? " +
             "WHERE id = ?";
 
         const params = isDatePeriod

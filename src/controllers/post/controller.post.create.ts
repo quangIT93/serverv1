@@ -83,16 +83,18 @@ const createPostController = async (
                 : null;
             let moneyType = req.body.moneyType ? +req.body.moneyType : null;
 
-
+            
+            
             // NEW FIELDS
             const siteUrl = req.body.url ? req.body.url : null;
-
+            
             const email = req.body.email ? req.body.email : null;
-
+            
             const companyResourceId = req.body.companyResourceId ? req.body.companyResourceId : null;
-
+            
             const jobTypeId = req.body.jobTypeId ? req.body.jobTypeId : 3;
-
+            
+            const expiredDate = Number.isInteger(+req.body.expiredDate) ? +req.body.expiredDate : null;
             //
 
             // VALIDATION
@@ -282,6 +284,22 @@ const createPostController = async (
                 return next(createError(400, "Invalid companyResourceId"));
             }
 
+            let newExpireDate = null;
+
+            if (expiredDate) {
+                if (new Date(expiredDate).toString() === "Invalid Date") {
+                    logging.warning("Invalid expiredDate");
+                    return next(createError(400, "Invalid expiredDate"));
+                } else {
+                    newExpireDate = new Date(expiredDate);
+                }
+            }
+
+            console.log("newExpireDate", newExpireDate);
+            console.log("expiredDate", expiredDate);
+
+
+
             // HANDLE CREATE
             const postIdCreated = await postServices.createPost(
                 accountId,
@@ -306,7 +324,8 @@ const createPostController = async (
                 moneyType,
                 role,
                 +jobTypeId,
-                companyResourceId,
+                email.toString().trim(),
+                newExpireDate
             );
             if (!postIdCreated) {
                 return next(createError(500));
