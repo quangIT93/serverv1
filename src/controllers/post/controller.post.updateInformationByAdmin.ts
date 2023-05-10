@@ -279,6 +279,7 @@ const updatePostInformationByAdminController = async (
                 await readPostResourceService(postId);
 
             if (isExistCompanyResource) {
+                console.log("EXIST");
                 // UPDATE COMPANY RESOURCE
                 const isUpdateCompanyResourceSuccess =
                     await updatePostResourceService(

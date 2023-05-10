@@ -56,7 +56,7 @@ async function formatPostBeforeReturn(post: PostService) {
         resource: {
             company_resource_id: post.company_resource,
             company_resource_name: post.company_resource_name,
-            // company_icon: post.company_icon,
+            company_icon: post.company_resource_icon ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.COMPANY_ICON}/${post.company_resource_icon}` : null,
             url: post.url,
         }
     };

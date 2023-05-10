@@ -286,6 +286,13 @@ const searchByQueryController = async (req: Request, res: Response, next: NextFu
                         item.bookmarked = item.bookmark_post_id ? true : false;
                         item.money_type_text = MoneyType[item.money_type];
                         item.money_type = +item.money_type;
+                        item.resource = {
+                            // company_resource_id?: number;
+                            // company_resource_name?: string;
+                            // url?: string;
+                            company_icon: item.company_resource_icon,
+                        }
+                        delete item.company_resource_icon;
                     })
 
                     await Promise.all(posts.map(async (element) => {
@@ -367,6 +374,13 @@ const searchByQueryController = async (req: Request, res: Response, next: NextFu
                 item.created_at = new Date(item.created_at).getTime();
                 item.money_type_text = MoneyType[item.money_type];
                 item.money_type = +item.money_type;
+                item.resource = {
+                    // company_resource_id?: number;
+                    // company_resource_name?: string;
+                    // url?: string;
+                    company_icon: item.company_resource_icon,
+                }
+                delete item.company_resource_icon;
             })
 
             await Promise.all(posts.map(async (element) => {

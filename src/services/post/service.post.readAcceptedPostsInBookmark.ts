@@ -41,6 +41,7 @@ const readAcceptedPostsInBookmark = async (
             `${lang === "vi" ? "salary_types.value" 
                 : lang === "en" ? "salary_types.value_en" : "salary_types.value_ko"}` +
             " as salary_type," +
+            "company_resource.icon as company_resource_icon, " +
             "post_images.image AS image " +
             "FROM bookmarks " +
             "LEFT JOIN posts " +
@@ -57,6 +58,10 @@ const readAcceptedPostsInBookmark = async (
             "ON districts.province_id = provinces.id " +
             "LEFT JOIN post_images " + 
             "ON post_images.post_id = posts.id " +
+            "LEFT JOIN post_resource " +
+            "ON post_resource.post_id = posts.id " +
+            "INNER JOIN company_resource " +
+            "ON company_resource.id = post_resource.company " +
             "WHERE posts.status = 1 " +
             "AND bookmarks.account_id = ? " +
             `${threshold ? "AND bookmarks.id < ? " : ""} ` +

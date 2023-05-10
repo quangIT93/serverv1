@@ -24,6 +24,8 @@ const signInWithEmailController = async (
             specialChars: false,
         });
 
+        console.log(email, ":", otp);
+
         // INSERT OTP TO DATABASE
         const isCreateOtpSuccess = await createOtpService(otp, email, '1');
         

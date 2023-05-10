@@ -41,6 +41,7 @@ const readSubmittedApplicationByAccountIdService = async (
                     ? "salary_types.value_en"
                     : "salary_types.value_ko"
             } as salary_type,` +
+            "company_resource.icon as company_resource_icon, " +
             "posts.money_type " +
             " FROM applications" +
             " LEFT JOIN posts ON applications.post_id = posts.id" +
@@ -49,6 +50,10 @@ const readSubmittedApplicationByAccountIdService = async (
             " LEFT JOIN provinces ON districts.province_id = provinces.id" +
             " LEFT JOIN post_images ON posts.id = post_images.post_id" +
             " LEFT JOIN salary_types ON posts.salary_type = salary_types.id" +
+            " LEFT JOIN post_resource" +
+            " ON post_resource.post_id = posts.id" +
+            " INNER JOIN company_resource" +
+            " ON company_resource.id = post_resource.company" +
             " WHERE applications.account_id = ?" +
             ` ${threshold ? " AND applications.id < ?" : ""}` +
             " GROUP BY applications.id" +

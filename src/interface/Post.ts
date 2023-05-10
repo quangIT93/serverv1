@@ -40,6 +40,7 @@ interface PostService {
     url?: string;
     company_resource?: number;
     company_resource_name?: string;
+    company_resource_icon?: string;
 }
 
 interface PostResponse {

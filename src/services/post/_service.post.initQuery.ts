@@ -26,8 +26,9 @@ const initQueryReadPost = (lang: string): string => {
         provinces.name as province_name,
         provinces.id as province_id,
         ${lang === "vi" ? "salary_types.value" : lang === "en" ? "salary_types.value_en" : "salary_types.value_ko"} as salary_type,
-        post_images.image AS image
-    FROM posts
+        post_images.image AS image,
+        company_resource.icon as company_resource_icon
+        FROM posts
     LEFT JOIN wards
     ON wards.id = posts.ward_id
     LEFT JOIN districts
@@ -38,9 +39,15 @@ const initQueryReadPost = (lang: string): string => {
     ON salary_types.id = posts.salary_type
     LEFT JOIN post_images
     ON post_images.post_id = posts.id
+    LEFT JOIN post_resource
+    ON post_resource.post_id = posts.id
+    INNER JOIN company_resource
+    ON company_resource.id = post_resource.company AND company_resource.id IN (7,8,2)
     `;
 }
-
+// /        post_resource.url as url,
+// post_resource.company as company_resource,
+// company_resource.name as company_resource_name,
 const initQueryReadDetailPost = (lang: string): string => {
     return `
     SELECT
@@ -83,7 +90,8 @@ const initQueryReadDetailPost = (lang: string): string => {
     profiles.avatar as avatar_poster,
     post_resource.url as url,
     post_resource.company as company_resource,
-    company_resource.name as company_resource_name
+    company_resource.name as company_resource_name,
+    company_resource.icon as company_resource_icon
     FROM posts 
     LEFT JOIN wards 
     ON wards.id = posts.ward_id 

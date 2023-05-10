@@ -56,6 +56,10 @@ const searchByQueryService = async (
             "posts.salary_type as salary_type_id, " +
             "posts.money_type, " +
             `${accountId !== null ? "bookmarks.post_id as bookmark_post_id, " : ""}` +
+            // "post_resource.url as url, " +
+            // "post_resource.company as company_resource, " +
+            // "company_resource.name as company_resource_name, " +
+            "company_resource.icon as company_resource_icon, " +
             "COUNT(*) OVER() AS total " + 
             "FROM posts " +
             "LEFT JOIN salary_types " +
@@ -70,6 +74,10 @@ const searchByQueryService = async (
             "ON post_images.post_id = posts.id " +
             `${accountId !== null ? "LEFT JOIN (SELECT post_id FROM bookmarks WHERE account_id = ?) AS bookmarks " +
             "ON bookmarks.post_id = posts.id " : ""}` +
+            "LEFT JOIN post_resource " +
+            "ON post_resource.post_id = posts.id " +
+            "INNER JOIN company_resource " +
+            "ON company_resource.id = post_resource.company AND company_resource.id IN (7,8,2) " + //@; HiJob, 7: CHOTOT, 8 :FB
             "WHERE posts.status = 1 " +
             `${districtIds.length > 0 ? `AND wards.district_id IN (${districtIds.join(",")}) ` : ''}` +
             `${categoryIds.length > 0 ? 
