@@ -73,8 +73,9 @@ const updateInformation = async (
                 description,
                 phoneNumber,
                 moneyType,
+                email,
+                expiredDate,
                 postId,
-
               ]
             : [
                 title,
@@ -96,6 +97,8 @@ const updateInformation = async (
                 description,
                 phoneNumber,
                 moneyType,
+                email,
+                expiredDate,
                 postId,
               ];
         const res = await executeQuery(query, params);

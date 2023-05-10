@@ -22,6 +22,7 @@ const updateInformationByAdmin = async (
     description: string,
     email: string | null = null,
     jobType: number | null = null,
+    expiredDate: Date | null = null
 ) => {
     try {
         logging.info("Update post information service start ...");
@@ -30,7 +31,7 @@ const updateInformationByAdmin = async (
             "SET title = ?, company_name = ?, ward_id = ?, address = ?, phone_contact = ?, is_date_period = ?, " +
             "start_date = ?, end_date = ?, start_time = ?, end_time = ?, is_working_weekend = ?, is_remotely = ?, " +
             "salary_min = ?, salary_max = ?, salary_type = ?, description = ?, " +
-            "money_type = ?, email = ?, job_type = ? " +
+            "money_type = ?, email = ?, job_type = ?, expired_date = ? " +
             "WHERE id = ?";
         const params = isDatePeriod
             ? [
@@ -53,6 +54,7 @@ const updateInformationByAdmin = async (
                   moneyType,
                   email,
                   jobType,
+                  expiredDate,
                   postId,
               ]
             : [
@@ -75,6 +77,7 @@ const updateInformationByAdmin = async (
                   moneyType,
                   email,
                   jobType,
+                  expiredDate,
                   postId,
               ];
         // console.log(params);

@@ -55,6 +55,7 @@ const updatePostInformationByAdminController = async (
         let email = req.body.email ? req.body.email : null;
         const expiredDate = Number.isInteger(+req.body.expiredDate) ? +req.body.expiredDate : null;
 
+        console.log(req.body);
 
         // VALIDATION
         if (!Number.isInteger(postId) || postId <= 0) {
@@ -213,6 +214,7 @@ const updatePostInformationByAdminController = async (
             description,
             email,
             jobTypeId,
+            newExpireDate
         );
 
         if (!isUpdateSuccess) {

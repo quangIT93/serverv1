@@ -69,7 +69,7 @@ const updatePostInformationController = async (
                 : null;
             let phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : null;
             let moneyType = req.body.moneyType ? +req.body.moneyType : null;
-            let email = req.body.email ? req.body.email : null;
+            let email = req.body.email ? req.body.email : "";
 
             const expiredDate = Number.isInteger(+req.body.expiredDate) ? +req.body.expiredDate : null;
 

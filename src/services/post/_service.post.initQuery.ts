@@ -77,6 +77,7 @@ const initQueryReadDetailPost = (lang: string): string => {
     posts.email,
     posts.is_inhouse_data,
     posts.created_at,
+    posts.expired_date,
     ${lang === "vi" ? "wards.full_name" :  "wards.full_name_en"} as ward,
     wards.name as ward_name,
     districts.id as district_id,

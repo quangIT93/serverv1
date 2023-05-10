@@ -88,13 +88,15 @@ const createPostController = async (
             // NEW FIELDS
             const siteUrl = req.body.url ? req.body.url : null;
             
-            const email = req.body.email ? req.body.email : null;
+            const email = req.body.email ? req.body.email : "";
             
             const companyResourceId = req.body.companyResourceId ? req.body.companyResourceId : null;
             
             const jobTypeId = req.body.jobTypeId ? req.body.jobTypeId : 3;
             
             const expiredDate = Number.isInteger(+req.body.expiredDate) ? +req.body.expiredDate : null;
+
+            console.log(req.body);
             //
 
             // VALIDATION

@@ -41,6 +41,7 @@ interface PostService {
     company_resource?: number;
     company_resource_name?: string;
     company_resource_icon?: string;
+    expired_date?: string;
 }
 
 interface PostResponse {
@@ -92,7 +93,8 @@ interface PostResponse {
         company_resource_name?: string;
         url?: string;
         company_icon?: string;
-    }
+    },
+    expired_date?: number;
 }
 
 export { PostService, PostResponse };
