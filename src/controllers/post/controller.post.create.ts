@@ -297,11 +297,6 @@ const createPostController = async (
                 }
             }
 
-            console.log("newExpireDate", newExpireDate);
-            console.log("expiredDate", expiredDate);
-
-
-
             // HANDLE CREATE
             const postIdCreated = await postServices.createPost(
                 accountId,
@@ -358,12 +353,22 @@ const createPostController = async (
             }
 
             // CREATE POST RESOURCE
-            if (companyResourceId && siteUrl) {
+            if (companyResourceId && siteUrl && (role === 2 || role === 1)) {
                 const isCreatePostResourceSuccess =
                     await createPostResourceService(
                         postIdCreated,
                         siteUrl,
                         +companyResourceId,
+                    );
+                if (!isCreatePostResourceSuccess) {
+                    return next(createError(500));
+                }
+            } else {
+                const isCreatePostResourceSuccess =
+                    await createPostResourceService(
+                        postIdCreated,
+                        "",
+                        2,
                     );
                 if (!isCreatePostResourceSuccess) {
                     return next(createError(500));

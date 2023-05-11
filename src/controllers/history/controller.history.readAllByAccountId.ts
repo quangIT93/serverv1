@@ -8,6 +8,7 @@ import MoneyType from '../../enum/money_type.enum';
 import { readDefaultPostImageByPostId } from '../../services/category/_service.category';
 import ImageBucket from '../../enum/imageBucket.enum';
 import applicationStatusHandler from '../application/handler/applicationStatusHandler';
+import readCompanyInformationByPostId from '../../services/postResource/service.postResource.readCompanyByPostId';
 
 const readAllByAccountId = async (req: Request, res: Response, next: NextFunction) => {
     logging.info('Read All by account id controller start ...');
@@ -35,6 +36,15 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
                 a = await formatPostBeforeReturn(a);
                 a.num_of_application = Number(n) || 0;
                 a.type = 'post';
+                const resource = await readCompanyInformationByPostId(a.post_id);
+                if (resource) {
+                    a.resource = {
+                        // company_resource_id?: number;
+                        // company_resource_name?: string;
+                        // url?: string;
+                        company_icon: resource.icon ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.COMPANY_ICON}/${resource.icon}` : null
+                    }
+                }
             }
             if (a.type === 'application') {
                 a.created_at = new Date(a.created_at).getTime();
