@@ -41,7 +41,7 @@ const initQueryReadPost = (lang: string): string => {
     ON post_images.post_id = posts.id
     LEFT JOIN post_resource
     ON post_resource.post_id = posts.id
-    INNER JOIN company_resource
+    LEFT JOIN company_resource
     ON company_resource.id = post_resource.company 
     `;
     // AND company_resource.id IN (7,8,2)

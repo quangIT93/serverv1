@@ -41,8 +41,7 @@ const readPostsAndApplicationsBYAccountIdService = async (
         posts.salary_type as salary_type_id,
         posts.money_type, 
         posts.status as post_status,
-        applications.updated_at,
-        posts.is_inhouse_data
+        applications.updated_at 
         FROM applications 
         LEFT JOIN posts ON applications.post_id = posts.id 
         WHERE applications.account_id = ? 
@@ -65,8 +64,7 @@ const readPostsAndApplicationsBYAccountIdService = async (
         posts.salary_type as salary_type_id,
         posts.money_type, 
         posts.status as post_status,
-        COALESCE((SELECT MAX(updated_at) FROM applications WHERE post_id = posts.id), posts.created_at) as updated_at,
-        posts.is_inhouse_data
+        COALESCE((SELECT MAX(updated_at) FROM applications WHERE post_id = posts.id), posts.created_at) as updated_at 
         FROM posts 
         LEFT JOIN applications ON applications.post_id = posts.id 
         WHERE posts.account_id = ? 
