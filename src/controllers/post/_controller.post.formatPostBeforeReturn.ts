@@ -60,6 +60,7 @@ async function formatPostBeforeReturn(post: PostService) {
             url: post.url,
         },
         expired_date: post.expired_date ? new Date(post.expired_date).getTime() : null,
+        email: post.email,
     };
     if (post.image !== undefined && post.image !== null) {
         postResponse.image =

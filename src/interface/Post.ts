@@ -42,6 +42,7 @@ interface PostService {
     company_resource_name?: string;
     company_resource_icon?: string;
     expired_date?: string;
+    email: string;
 }
 
 interface PostResponse {
@@ -84,6 +85,7 @@ interface PostResponse {
     province_name: string;
     bookmarked?: boolean;
     share_link?: string;
+    email: string;
     job_type?: {
         job_type_id?: number;
         job_type_name?: string;
