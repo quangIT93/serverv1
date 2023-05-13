@@ -43,7 +43,6 @@ const searchByQueryService = async (
             "AS salary_type, " +
             "posts.created_at, " +
             "post_images.image AS image, " +
-            "posts.description, " +
             "posts.address, " +
             "posts.ward_id, " +
             `${lang === "vi" ? "wards.full_name as ward, " : "wards.full_name_en as ward, "}` +

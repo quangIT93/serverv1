@@ -290,9 +290,10 @@ const searchByQueryController = async (req: Request, res: Response, next: NextFu
                             // company_resource_id?: number;
                             // company_resource_name?: string;
                             // url?: string;
-                            company_icon: item.company_resource_icon,
+                            company_icon: item.company_resource_icon ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.COMPANY_ICON}/${item.company_resource_icon}` : null,
                         }
                         delete item.company_resource_icon;
+
                     })
 
                     await Promise.all(posts.map(async (element) => {
@@ -378,7 +379,8 @@ const searchByQueryController = async (req: Request, res: Response, next: NextFu
                     // company_resource_id?: number;
                     // company_resource_name?: string;
                     // url?: string;
-                    company_icon: item.company_resource_icon,
+                    company_icon: item.company_resource_icon ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.COMPANY_ICON}/${item.company_resource_icon}` : null,
+
                 }
                 delete item.company_resource_icon;
             })
