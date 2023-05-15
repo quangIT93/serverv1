@@ -1,7 +1,7 @@
 import { executeQuery } from './../../configs/database';
 import logging from './../../utils/logging';
 
-const searchByQueryService = async (
+const searchByQueryV2Service = async (
     lang: string,
     q: string,
     page: number | null,
@@ -16,14 +16,13 @@ const searchByQueryService = async (
     endDate : number | undefined | null,
     moneyType: number | undefined | null,
     accountId: string | undefined | null,
-
 ) => {
     try {
         // search by like, match in boolean mode, match in natural language mode
         // then union all
         // then order by relevance
         // then limit 20
-        logging.info("Search by query service called: ", q);
+        logging.info("Search by query service called: ");
         const query =
             "SELECT " +
             "posts.id," +
@@ -75,6 +74,8 @@ const searchByQueryService = async (
             "LEFT JOIN company_resource " +
             "ON company_resource.id = post_resource.company " + //@; HiJob, 7: CHOTOT, 8 :FB  AND company_resource.id IN (7,8,2)
             "WHERE posts.status = 1 " +
+            "AND (title LIKE ? OR " +
+            "company_name LIKE ?) " +
             `${districtIds.length > 0 ? `AND wards.district_id IN (${districtIds.join(",")}) ` : ''}` +
             `${categoryIds.length > 0 ? 
                 `AND posts.id IN (SELECT post_id 
@@ -88,13 +89,20 @@ const searchByQueryService = async (
             `${isRemotely !== null ? "AND posts.is_remotely = ? " : ""}` +
             `${startDate !== null ? "AND posts.start_date >= ? " : ""}` +
             `${endDate !== null ? "AND posts.end_date <= ? " : ""}` +
-            "AND (title LIKE ? OR " +
-            "company_name LIKE ?) " +
+            // "AND (title LIKE ? OR " +
+            // "company_name LIKE ?) " +
+            // ADD expired date here
+            // some posts are expired but still show up in search result
+            // because they are not deleted yet
+            // and some posts don't have expired date
+            "AND (posts.expired_date IS NULL OR " +
+            "posts.expired_date >= NOW()) " +
             "GROUP BY posts.id " + 
             "ORDER BY posts.created_at DESC " +
             "LIMIT 20 " +
             `OFFSET ${page ? (page - 1) * 20 : 0}`;
         const params = []
+        .concat([`%${q}%`, `%${q}%`])
         .concat(accountId !== null ? [accountId] : [])
         .concat(salaryMin !== null ? [salaryMin] : [])
         .concat(salaryMax !== null ? [salaryMax] : [])
@@ -103,7 +111,6 @@ const searchByQueryService = async (
         .concat(isRemotely !== null ? [isRemotely.toString()] : [])
         .concat(startDate !== null ? [startDate] : [])
         .concat(endDate !== null ? [endDate] : [])
-        .concat([`%${q}%`, `%${q}%`])
         // console.log(query);
         // console.log(params);
         const res = await executeQuery(query, params);
@@ -114,4 +121,4 @@ const searchByQueryService = async (
     }
 };
 
-export default searchByQueryService;
+export default searchByQueryV2Service;

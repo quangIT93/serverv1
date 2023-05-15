@@ -1,6 +1,6 @@
 import express from "express";
-import accountController from "../../controllers/account/_controller.account";
-import verifyAccessToken from "../../middlewares/middleware.verifyAccessToken";
+import accountController from "../../../controllers/account/_controller.account";
+import verifyAccessToken from "../../../middlewares/middleware.verifyAccessToken";
 
 const router = express.Router();
 

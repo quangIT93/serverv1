@@ -1,7 +1,7 @@
 import { Router } from "express";
-import verifyAccessToken from "../../middlewares/middleware.verifyAccessToken";
-import historyApplicatorController from "../../controllers/history/applicator/_controller.history.applicator";
-import { checkLimitAndThresholdParams } from "../../middlewares/utils/midleware.checkUtilsParams";
+import verifyAccessToken from "../../../middlewares/middleware.verifyAccessToken";
+import historyApplicatorController from "../../../controllers/history/applicator/_controller.history.applicator";
+import { checkLimitAndThresholdParams } from "../../../middlewares/utils/midleware.checkUtilsParams";
 const router = Router();
 
 // applicator

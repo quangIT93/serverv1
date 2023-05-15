@@ -1,8 +1,8 @@
 import express from "express";
-import postController from "../../controllers/post/_controller.post";
-import verifyAccessToken from "../../middlewares/middleware.verifyAccessToken";
-import { checkLimitAndThresholdParams } from "../../middlewares/utils/midleware.checkUtilsParams";
-import { checkBookmark } from "../../middlewares/checkBookmark";
+import postController from "../../../controllers/post/_controller.post";
+import verifyAccessToken from "../../../middlewares/middleware.verifyAccessToken";
+import { checkLimitAndThresholdParams } from "../../../middlewares/utils/midleware.checkUtilsParams";
+import { checkBookmark } from "../../../middlewares/checkBookmark";
 
 const router = express.Router();
 

@@ -1,7 +1,7 @@
 import express from "express";
-import bannerController from "../../controllers/banner/_controller.banner";
-import { multerUploadImages } from "../../configs/multer";
-import verifyAccessToken from "../../middlewares/middleware.verifyAccessToken";
+import bannerController from "../../../controllers/banner/_controller.banner";
+import { multerUploadImages } from "../../../configs/multer";
+import verifyAccessToken from "../../../middlewares/middleware.verifyAccessToken";
 
 const router = express.Router();
 

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import fcmTokenController from "../../controllers/fcm-token/_controller.fcm-token";
-import verifyAccessToken from "../../middlewares/middleware.verifyAccessToken";
+import fcmTokenController from "../../../controllers/fcm-token/_controller.fcm-token";
+import verifyAccessToken from "../../../middlewares/middleware.verifyAccessToken";
 const router = Router();
 
 // register fcm token

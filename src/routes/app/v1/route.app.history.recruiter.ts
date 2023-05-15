@@ -1,7 +1,7 @@
 import { Router } from "express";
-import historyRecruiterController from "../../controllers/history/recruiter/_controller.history.recruiter";
-import verifyAccessToken from "../../middlewares/middleware.verifyAccessToken";
-import { checkLimitAndThresholdParams } from "../../middlewares/utils/midleware.checkUtilsParams";
+import historyRecruiterController from "../../../controllers/history/recruiter/_controller.history.recruiter";
+import verifyAccessToken from "../../../middlewares/middleware.verifyAccessToken";
+import { checkLimitAndThresholdParams } from "../../../middlewares/utils/midleware.checkUtilsParams";
 
 const router = Router();
 

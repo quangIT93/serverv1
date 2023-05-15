@@ -1,7 +1,7 @@
 import express from "express";
-import themeController from "../../controllers/theme/_controller.theme";
-import { multerUploadImages } from "../../configs/multer";
-import verifyAccessToken from "../../middlewares/middleware.verifyAccessToken";
+import themeController from "../../../controllers/theme/_controller.theme";
+import { multerUploadImages } from "../../../configs/multer";
+import verifyAccessToken from "../../../middlewares/middleware.verifyAccessToken";
 
 const router = express.Router();
 

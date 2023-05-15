@@ -1,6 +1,6 @@
 import express from "express";
-import bookmarkController from "../../controllers/bookmark/_controller.bookmark";
-import verifyAccessToken from "../../middlewares/middleware.verifyAccessToken";
+import bookmarkController from "../../../controllers/bookmark/_controller.bookmark";
+import verifyAccessToken from "../../../middlewares/middleware.verifyAccessToken";
 
 const router = express.Router();
 

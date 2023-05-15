@@ -1,7 +1,7 @@
 import { Router } from 'express';
 const router = Router();
-import applicationController from '../../controllers/application/_controller.application';
-import verifyAccessToken from "../../middlewares/middleware.verifyAccessToken";
+import applicationController from '../../../controllers/application/_controller.application';
+import verifyAccessToken from "../../../middlewares/middleware.verifyAccessToken";
 
 router.post('/create', verifyAccessToken, applicationController.createApplication);
 router.put('/update', verifyAccessToken, applicationController.updateApplication);

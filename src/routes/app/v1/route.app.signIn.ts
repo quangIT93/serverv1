@@ -1,7 +1,7 @@
 import express from "express";
-import signInController from "../../controllers/signIn/_controller.signIn";
-import signInMiddleware from "../../middlewares/signIn/_middleware.signIn";
-import handlerSignInSuccessful from "../../controllers/signIn/emailAndGoogle/controller.signIn.success";
+import signInController from "../../../controllers/signIn/_controller.signIn";
+import signInMiddleware from "../../../middlewares/signIn/_middleware.signIn";
+import handlerSignInSuccessful from "../../../controllers/signIn/emailAndGoogle/controller.signIn.success";
 
 const router = express.Router();
 

@@ -57,7 +57,7 @@ async function formatPostBeforeReturn(post: PostService) {
             company_resource_id: post.company_resource,
             company_resource_name: post.company_resource_name,
             company_icon: post.company_resource_icon ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.COMPANY_ICON}/${post.company_resource_icon}` : null,
-            url: post.url,
+            url: post.url ? post.url : null,
         },
         expired_date: post.expired_date ? new Date(post.expired_date).getTime() : null,
         email: post.email,

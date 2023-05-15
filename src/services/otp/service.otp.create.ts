@@ -3,7 +3,7 @@ import logging from "../../utils/logging";
 
 const createOtpService = async (otp: string, account: string, type: '1' | '2') => {
     try {
-        logging.info("Create otp service start: ", otp);
+        logging.info("Create otp service start: ");
         const query = "INSERT INTO otps (account, otp, type) VALUES (?, ?, ?)";
         const params = [account, otp, type];
         const res = await executeQuery(query, params);
