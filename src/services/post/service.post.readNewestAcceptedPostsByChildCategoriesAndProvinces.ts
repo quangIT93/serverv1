@@ -1,6 +1,6 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import { initQueryReadPost } from "./_service.post.initQuery";
+import { expiredDateCondition, initQueryReadPost } from "./_service.post.initQuery";
 
 const readNewestAcceptedPostsByChildCategoriesAndProvinces = async (
     lang: string,
@@ -24,10 +24,11 @@ const readNewestAcceptedPostsByChildCategoriesAndProvinces = async (
             `(${childCategoryIds.map(() => "?").join(", ")})) ` +
             "AND provinces.id IN " +
             `(${provinceIds.map(() => "?").join(", ")}) ` +
-            `${threshold ? "AND posts.id < ? " : ""} ` +
+            `${threshold ? "AND posts.id < ? " : " "} ` +
+            expiredDateCondition() + 
             "GROUP BY posts.id " +
             `${provinceIds.length > 1 ? "ORDER BY FIELD(provinces.id, " + 
-            provinceIds.map((_) => "?").join(", ") + ") " : ""}` +
+            provinceIds.map((_) => "?").join(", ") + "), posts.id DESC " : "  ORDER BY posts.id DESC "}` +
             `${limit ? "LIMIT ?" : ""}`;
 
         const params = [

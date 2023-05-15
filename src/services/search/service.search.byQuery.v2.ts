@@ -89,12 +89,6 @@ const searchByQueryV2Service = async (
             `${isRemotely !== null ? "AND posts.is_remotely = ? " : ""}` +
             `${startDate !== null ? "AND posts.start_date >= ? " : ""}` +
             `${endDate !== null ? "AND posts.end_date <= ? " : ""}` +
-            // "AND (title LIKE ? OR " +
-            // "company_name LIKE ?) " +
-            // ADD expired date here
-            // some posts are expired but still show up in search result
-            // because they are not deleted yet
-            // and some posts don't have expired date
             "AND (posts.expired_date IS NULL OR " +
             "posts.expired_date >= NOW()) " +
             "GROUP BY posts.id " + 

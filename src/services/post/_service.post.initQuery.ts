@@ -115,4 +115,11 @@ const initQueryReadDetailPost = (lang: string): string => {
 
 }
 
-export { initQueryReadPost, initQueryReadDetailPost };
+const expiredDateCondition = () => {
+    // some post don't have expired date
+    return `
+     AND (posts.expired_date IS NULL OR posts.expired_date >= NOW()) 
+    `;
+}
+
+export { initQueryReadPost, initQueryReadDetailPost, expiredDateCondition };

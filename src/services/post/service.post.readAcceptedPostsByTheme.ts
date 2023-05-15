@@ -1,6 +1,6 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import { initQueryReadPost } from "./_service.post.initQuery";
+import { expiredDateCondition, initQueryReadPost } from "./_service.post.initQuery";
 
 const readAcceptedPostsByTheme = async (
     lang: string = "vi",
@@ -14,6 +14,7 @@ const readAcceptedPostsByTheme = async (
             initQueryReadPost(lang) +
             "INNER JOIN themes ON themes.id = ? " +
             "WHERE posts.status = ? " +
+            expiredDateCondition() +
             "AND districts.id = themes.district_id " +
             `${threshold && threshold > 0 ? "AND posts.id < ? " : " "}` +
             "GROUP BY posts.id ORDER BY posts.id DESC LIMIT ?";

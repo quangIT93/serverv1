@@ -1,6 +1,6 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import { initQueryReadPost } from "./_service.post.initQuery";
+import { expiredDateCondition, initQueryReadPost } from "./_service.post.initQuery";
 
 const readNewestAcceptedPostsByChildCategories = async (
     lang: string = "vi",
@@ -16,24 +16,31 @@ const readNewestAcceptedPostsByChildCategories = async (
             initQueryReadPost(lang) +
             "LEFT JOIN posts_categories " +
             "ON posts.id = posts_categories.post_id " +
-            "WHERE posts.status = ? AND posts_categories.category_id IN ";
+            "WHERE posts.status = ? AND posts_categories.category_id IN " +
+            `(${chilCategoryIds.map((_) => "?").join(", ")}) ` +
+            `${threshold && threshold > 0 ? "AND posts.id < ? " : " "}` +
+            expiredDateCondition() +
+            "GROUP BY posts.id ORDER BY posts.id DESC LIMIT ?"
 
-        let params = [1];
+        let params = [1]
+            .concat(chilCategoryIds)
+            .concat(threshold && threshold > 0 ? [threshold] : [])
+            .concat(limit && limit > 0 ? [limit] : []);
 
-        chilCategoryIds.forEach((chilCategoryId, index) => {
-            query += index === 0 ? `(?` : `, ?`;
-            params = [...params, chilCategoryId];
-        });
+        // chilCategoryIds.forEach((chilCategoryId, index) => {
+        //     query += index === 0 ? `(?` : `, ?`;
+        //     params = [...params, chilCategoryId];
+        // });
 
-        query += threshold && threshold > 0 ? ") AND posts.id < ? " : ") ";
-        params =
-            threshold && threshold > 0 ? [...params, threshold] : [...params];
+        // query += threshold && threshold > 0 ? ") AND posts.id < ? " : ") ";
+        // params =
+        //     threshold && threshold > 0 ? [...params, threshold] : [...params];
 
-        query +=
-            limit && limit > 0
-                ? "GROUP BY posts.id ORDER BY posts.id DESC LIMIT ?"
-                : "GROUP BY posts.id ORDER BY posts.id DESC";
-        params = limit && limit > 0 ? [...params, limit] : [...params];
+        // query +=
+        //     limit && limit > 0
+        //         ? "GROUP BY posts.id ORDER BY posts.id DESC LIMIT ?"
+        //         : "GROUP BY posts.id ORDER BY posts.id DESC";
+        // params = limit && limit > 0 ? [...params, limit] : [...params];
         // console.log(query, params)
         const res = await executeQuery(query, params);
         return res ? res : null;

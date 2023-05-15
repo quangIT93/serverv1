@@ -1,6 +1,6 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import { initQueryReadPost } from "./_service.post.initQuery";
+import { expiredDateCondition, initQueryReadPost } from "./_service.post.initQuery";
 
 const readNewestAcceptedPostsByParentCategoryAndDistricts = async (
     lang: string = "vi",
@@ -23,8 +23,10 @@ const readNewestAcceptedPostsByParentCategoryAndDistricts = async (
             "JOIN parent_categories " +
             "ON parent_categories.id = child_categories.parent_category_id " +
             "WHERE posts.status = ? AND parent_categories.id = ? " +
+            expiredDateCondition() +
             `${districtIds.length > 0 ? `AND district_id IN (${districtIds.map((_) => `?`).join(", ")})` : ""}` +
             `${threshold && threshold > 0 ? "AND posts.id < ? " : " "}` +
+            expiredDateCondition() +
             "GROUP BY posts.id DESC LIMIT ?"
         let params = [1, parentCategoryId, ...districtIds]
         .concat(threshold && threshold > 0 ? [threshold] : [])

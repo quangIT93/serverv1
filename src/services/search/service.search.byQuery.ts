@@ -16,7 +16,6 @@ const searchByQueryService = async (
     endDate : number | undefined | null,
     moneyType: number | undefined | null,
     accountId: string | undefined | null,
-
 ) => {
     try {
         // search by like, match in boolean mode, match in natural language mode

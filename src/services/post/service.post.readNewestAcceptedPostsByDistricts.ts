@@ -1,6 +1,6 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
-import { initQueryReadPost } from "./_service.post.initQuery";
+import { expiredDateCondition, initQueryReadPost } from "./_service.post.initQuery";
 import { query } from "express";
 
 const readNewestAcceptedPostsByDistricts = async (
@@ -17,6 +17,7 @@ const readNewestAcceptedPostsByDistricts = async (
         let query =
             initQueryReadPost(lang) +
             "WHERE posts.status = ? AND posts.salary_type = salary_types.id " +
+            expiredDateCondition() +
             `AND districts.id IN (${districtIds.map((_) => `?`).join(", ")}) ` +
             `${threshold && threshold > 0 ? "AND posts.id < ? " : " "}` +
             "GROUP BY posts.id ORDER BY posts.id DESC " +

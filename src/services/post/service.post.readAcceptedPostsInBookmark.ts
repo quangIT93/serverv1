@@ -1,5 +1,6 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database";
+import {  } from "./_service.post.initQuery";
 
 const readAcceptedPostsInBookmark = async (
     lang: string = "vi",
@@ -64,6 +65,7 @@ const readAcceptedPostsInBookmark = async (
             "ON company_resource.id = post_resource.company " +
             "WHERE posts.status = 1 " +
             "AND bookmarks.account_id = ? " +
+            // expiredDateCondition() +
             `${threshold ? "AND bookmarks.id < ? " : ""} ` +
             "GROUP BY bookmarks.id ORDER BY bookmarks.id DESC " +
             `${limit ? "LIMIT ?" : ""}`;
