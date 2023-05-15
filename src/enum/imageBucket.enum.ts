@@ -7,6 +7,7 @@ enum ImageBucket {
     DEFAULT = "images",
     APPLICATION_IMAGES = "images/applications",
     COMPANY_ICON = "images/icons/company",
+    WELCOME_IMAGES = "images/welcome-images",
 }
 
 export default ImageBucket;

@@ -95,8 +95,6 @@ const createPostController = async (
             const jobTypeId = req.body.jobTypeId ? req.body.jobTypeId : 3;
             
             const expiredDate = Number.isInteger(+req.body.expiredDate) ? +req.body.expiredDate : null;
-
-            console.log(req.body);
             //
 
             // VALIDATION
