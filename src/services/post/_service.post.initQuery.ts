@@ -78,7 +78,6 @@ const initQueryReadDetailPost = (lang: string): string => {
     posts.money_type,
     posts.description,
     posts.phone_contact,
-    posts.job_type,
     posts.email,
     posts.is_inhouse_data,
     posts.created_at,
