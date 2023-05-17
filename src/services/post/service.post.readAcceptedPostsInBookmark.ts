@@ -9,9 +9,7 @@ const readAcceptedPostsInBookmark = async (
     threshold: number | null
 ) => {
     try {
-        logging.info("Read accepted posts in bookmark service start ...", accountId);
-
-        
+        logging.info("Read accepted posts in bookmark service start ...");
 
         const query =
             "SELECT bookmarks.id as bookmark_id, " +
