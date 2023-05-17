@@ -9,7 +9,9 @@ const readAcceptedPostsInBookmark = async (
     threshold: number | null
 ) => {
     try {
-        logging.info("Read accepted posts in bookmark service start ...");
+        logging.info("Read accepted posts in bookmark service start ...", accountId);
+
+        
 
         const query =
             "SELECT bookmarks.id as bookmark_id, " +
@@ -61,18 +63,19 @@ const readAcceptedPostsInBookmark = async (
             "ON post_images.post_id = posts.id " +
             "LEFT JOIN post_resource " +
             "ON post_resource.post_id = posts.id " +
-            "INNER JOIN company_resource " +
+            "LEFT JOIN company_resource " +
             "ON company_resource.id = post_resource.company " +
             "WHERE posts.status = 1 " +
             "AND bookmarks.account_id = ? " +
             // expiredDateCondition() +
-            `${threshold ? "AND bookmarks.id < ? " : ""} ` +
+            `${threshold ? "AND bookmarks.id < ? " : " "} ` +
             "GROUP BY bookmarks.id ORDER BY bookmarks.id DESC " +
             `${limit ? "LIMIT ?" : ""}`;
         const params = threshold
             ? [accountId, threshold, limit]
             : [accountId, limit];
         const res = await executeQuery(query, params);
+        // console.log(res);
         return res ? res : null;
     } catch (error) {
         logging.error(

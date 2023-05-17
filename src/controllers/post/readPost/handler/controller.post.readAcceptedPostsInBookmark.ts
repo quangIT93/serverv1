@@ -35,7 +35,9 @@ const readAcceptedPostsInBookmarkController = async (
         
 
         const data = await Promise.all(posts.map(async (post) => {
+            const bookmark_id = post.bookmark_id;
             post = await formatPostBeforeReturn(post, req.query.lang.toString());
+            post.bookmark_id = bookmark_id;
             return post;
         }));
 

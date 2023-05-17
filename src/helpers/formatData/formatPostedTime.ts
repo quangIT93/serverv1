@@ -5,13 +5,6 @@ const formatPostedTime = (time: number, lang: string = "vi") => {
     const days = Math.floor((Date.now() - time) / 86400000);
     const months = Math.floor((Date.now() - time) / 2592000000);
 
-    console.log("time", time);
-
-    console.log("minutes", minutes);
-    console.log("hours", hours);
-    console.log("days", days);
-    console.log("months", months);
-
     if (minutes < 30) {
         return newPostTime(lang);
     }
