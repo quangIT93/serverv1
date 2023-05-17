@@ -51,7 +51,7 @@ const readPostByIdController = async (
         }
 
         // CHANGE TIMESTAMP
-        postData = await formatPostBeforeReturn(postData[0]);
+        postData = await formatPostBeforeReturn(postData[0], req.query.lang.toString());
 
         postData.avatar_poster = 
             postData.avatar_poster ? 

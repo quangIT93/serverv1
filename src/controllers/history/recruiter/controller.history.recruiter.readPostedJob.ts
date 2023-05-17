@@ -28,7 +28,7 @@ const readPostedJobByRecruiterIdController = async (
 
         const data = await Promise.all(
             posts.map(async (post) => {
-                post = await formatPostBeforeReturn(post);
+                post = await formatPostBeforeReturn(post, req.query.lang.toString());
                 return post;
             })
         );

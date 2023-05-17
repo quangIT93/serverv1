@@ -5,6 +5,7 @@ import { Request, Response, NextFunction } from "express";
 import logging from "../../../utils/logging";
 import { createOtpService } from "../../../services/otp/_service.otp";
 import { sendEmailToUser } from "../../../transport/transport";
+import generateOTPMail from "../../../html/mail/generateOTPMail";
 
 const signInWithEmailController = async (
     req: Request,
@@ -37,24 +38,7 @@ const signInWithEmailController = async (
         sendEmailToUser({
             to: email,
             subject: "Verify email",
-            html: `<!DOCTYPE html>
-                    <html>
-                    <head>
-                        <meta charset="UTF-8">
-                        <title>Mã xác minh OTP của bạn</title>
-                    </head>
-                    <body>
-                        <div>
-                            <h2>Xin chào,</h2>
-                            <p>Chúng tôi đã nhận được yêu cầu đăng nhập vào tài khoản của bạn. Dưới đây là mã xác minh OTP của bạn để hoàn tất đăng nhập:</p>
-                            <h3>${otp}</h3>
-                            <p>Vui lòng nhập mã xác minh này trong trang đăng nhập để hoàn tất quá trình đăng nhập.</p>
-                            <p>Nếu bạn không yêu cầu đăng nhập này, vui lòng bỏ qua email này hoặc liên hệ với chúng tôi ngay lập tức.</p>
-                            <p>Trân trọng cảm ơn,</p>
-                            <p>Neoworks,. ltd</p>
-                        </div>
-                    </body>
-                    </html>`,
+            html: generateOTPMail(otp, email),
         });
         // SUCCESS
         return res.status(200).json({

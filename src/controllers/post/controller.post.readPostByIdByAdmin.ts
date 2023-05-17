@@ -57,7 +57,7 @@ const readPostByIdByAdminController = async (
         }
 
         // CHANGE TIMESTAMP
-        postData = await formatPostBeforeReturn(postData[0]);
+        postData = await formatPostBeforeReturn(postData[0], req.query.lang.toString());
 
         // GET CATEGORIES OF POST
         const categories = await postCategoryServices.readCategoriesOfPost(

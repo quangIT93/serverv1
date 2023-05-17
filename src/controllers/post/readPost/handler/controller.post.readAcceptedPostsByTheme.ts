@@ -36,7 +36,7 @@ const readAcceptedPostsByThemeController = async (
 
         const postResponse: PostResponse[] = await Promise.all(
             posts.map(async (post) => {
-                return await formatPostBeforeReturn(post);
+                return await formatPostBeforeReturn(post, req.query.lang.toString());
             })
         );
 

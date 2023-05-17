@@ -17,6 +17,8 @@ const initQueryReadPost = (lang: string): string => {
         posts.created_at,
         posts.status,
         posts.is_inhouse_data,
+        posts.job_type,
+        ${lang === "vi" ? "job_types.name" : lang === "en" ? "job_types.name_en" : "job_types.name_ko"} as job_type_name,
         ${lang === "vi" ? "wards.full_name" :  "wards.full_name_en"} as ward,
         wards.name as ward_name,
         districts.id as district_id,
@@ -43,6 +45,8 @@ const initQueryReadPost = (lang: string): string => {
     ON post_resource.post_id = posts.id
     LEFT JOIN company_resource
     ON company_resource.id = post_resource.company 
+    LEFT JOIN job_types
+    ON job_types.id = posts.job_type
     `;
     // AND company_resource.id IN (7,8,2)
 }
@@ -79,6 +83,8 @@ const initQueryReadDetailPost = (lang: string): string => {
     posts.is_inhouse_data,
     posts.created_at,
     posts.expired_date,
+    posts.job_type,
+    ${lang === "vi" ? "job_types.name" : lang === "en" ? "job_types.name_en" : "job_types.name_ko"} as job_type_name,
     ${lang === "vi" ? "wards.full_name" :  "wards.full_name_en"} as ward,
     wards.name as ward_name,
     districts.id as district_id,
@@ -111,6 +117,8 @@ const initQueryReadDetailPost = (lang: string): string => {
     ON post_resource.post_id = posts.id
     LEFT JOIN company_resource
     ON company_resource.id = post_resource.company
+    LEFT JOIN job_types
+    ON job_types.id = posts.job_type
     `;
 
 }

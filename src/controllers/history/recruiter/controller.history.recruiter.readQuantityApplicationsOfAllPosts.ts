@@ -24,7 +24,7 @@ const readQuantityApplicationOfAllPostsController = async (req: Request, res: Re
         
         const data = await Promise.all(titles.map(async (post) => {
             const numOfApplication = post.num_of_application;
-            post = await formatPostBeforeReturn(post);
+            post = await formatPostBeforeReturn(post, req.query.lang.toString());
             post.num_of_application = Number(numOfApplication) || 0;
             return post;
         }));

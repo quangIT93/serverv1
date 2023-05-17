@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 import readAccountByEmailService from "../../../../services/account/service.account.readByEmail";
 import createAccountWithEmailService from "../../../../services/account/service.account.createWithEmail";
+import { sendEmailToUser } from "../../../../transport/transport";
+import generateWelcomeMail from "../../../../html/mail/generateWelcomeMail";
 
 const createAccountWithEmail = async (
     { 
@@ -30,6 +32,12 @@ const createAccountWithEmail = async (
         if (!isCreateAccountSuccess) {
             return null;
         }
+
+        sendEmailToUser({
+            to: email,
+            subject: "Welcome to HiJob!",
+            html: generateWelcomeMail(email),
+        })
     }
     else {
         accountId = account.id;

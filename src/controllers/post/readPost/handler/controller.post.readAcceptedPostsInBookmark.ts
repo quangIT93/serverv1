@@ -15,7 +15,7 @@ const readAcceptedPostsInBookmarkController = async (
     const { limit, threshold } = req.query;
 
     try {
-        // logging.info("Read accepted posts in bookmark start ...");
+        logging.info("Read accepted posts in bookmark start ...");
     
         if (!req.user || !req.user.id) {
             return next(createError(401));
@@ -35,7 +35,7 @@ const readAcceptedPostsInBookmarkController = async (
         
 
         const data = await Promise.all(posts.map(async (post) => {
-            post = await formatPostBeforeReturn(post);
+            post = await formatPostBeforeReturn(post, req.query.lang.toString());
             return post;
         }));
 

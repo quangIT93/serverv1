@@ -35,7 +35,7 @@ const readAcceptedPostsOfMyAccountController = async (
 
         await Promise.all(
             posts.map(async (post, index: number) => {
-                posts[index] = await formatPostBeforeReturn(post);
+                posts[index] = await formatPostBeforeReturn(post, req.query.lang.toString());
 
                 // if (post.image === null) {
                 //     const firstParentCategoryImage =

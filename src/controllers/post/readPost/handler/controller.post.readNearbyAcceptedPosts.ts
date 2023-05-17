@@ -96,7 +96,7 @@ const readNearbyAcceptedPostsController = async (
         // MODIFY
         const postResponse: PostResponse[] = await Promise.all(
             posts.map(async (post: PostService) => {
-                return await formatPostBeforeReturn(post);
+                return await formatPostBeforeReturn(post, req.query.lang.toString());
             })
         );
 

@@ -97,6 +97,7 @@ interface PostResponse {
         company_icon?: string;
     },
     expired_date?: number;
+    created_at_text?: string;
 }
 
 export { PostService, PostResponse };

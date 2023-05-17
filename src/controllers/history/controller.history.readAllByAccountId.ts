@@ -33,7 +33,7 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
         const data = await Promise.all(result.map(async (a) => {
             if (a.type === 'post') {
                 const n = a.num_of_application;
-                a = await formatPostBeforeReturn(a);
+                a = await formatPostBeforeReturn(a, req.query.lang.toString());
                 a.num_of_application = Number(n) || 0;
                 a.type = 'post';
             }

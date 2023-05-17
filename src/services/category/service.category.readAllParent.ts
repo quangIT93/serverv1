@@ -8,7 +8,7 @@ const readAllParentCategories = async (lang: string) => {
         "id, " +
         `${lang === "vi" ? "name, " : lang === "en" ? "name_en as name, " : "name_kor as name, "}` +
         "default_post_image, image " +
-        "FROM parent_categories";
+        "FROM parent_categories WHERE status = 1";
 
         // console.log(query);
 

@@ -43,7 +43,7 @@ const readSubmittedApplicationByAccountId = async (req: Request, res: Response, 
             
             const applicationStatus = +post.application_status;
             const post_status = post.post_status;
-            post = await formatPostBeforeReturn(post);
+            post = await formatPostBeforeReturn(post, req.query.lang.toString());
             post.application_status = applicationStatusHandler(applicationStatus);
             return post;
         }));

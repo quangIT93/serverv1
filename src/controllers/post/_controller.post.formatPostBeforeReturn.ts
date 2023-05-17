@@ -1,9 +1,10 @@
 import ImageBucket from "../../enum/imageBucket.enum";
 import MoneyType from "../../enum/money_type.enum";
+import formatPostedTime from "../../helpers/formatData/formatPostedTime";
 import { PostService, PostResponse } from "../../interface/Post";
 import { readDefaultPostImageByPostId } from "../../services/category/_service.category";
 
-async function formatPostBeforeReturn(post: PostService) {
+async function formatPostBeforeReturn(post: PostService, lang: string = "vi") {
     const postResponse: PostResponse = {
         id: post.id,
         post_id: post.post_id ? post.post_id : post.id,
@@ -61,6 +62,7 @@ async function formatPostBeforeReturn(post: PostService) {
         },
         expired_date: post.expired_date ? new Date(post.expired_date).getTime() : null,
         email: post.email,
+        created_at_text: formatPostedTime(new Date(post.created_at).getTime(), lang),
     };
     if (post.image !== undefined && post.image !== null) {
         postResponse.image =

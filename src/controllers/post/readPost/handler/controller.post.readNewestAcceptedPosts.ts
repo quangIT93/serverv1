@@ -131,7 +131,7 @@ const readNewestAcceptedPostsController = async (
         // MODIFY
         let postResponses: PostResponse[] = await Promise.all(
             posts.map(async (post) => {
-                return await formatPostBeforeReturn(post);
+                return await formatPostBeforeReturn(post, req.query.lang.toString());
             })
         );
         res.locals.posts = postResponses;
