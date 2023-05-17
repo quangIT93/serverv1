@@ -37,8 +37,10 @@ const searchByQueryV2Service = async (
             "posts.end_time," +
             "posts.salary_min," +
             "posts.salary_max," +
-            `${lang === "vi" ? "salary_types.value " : 
-                lang === "en" ? "salary_types.value_en " : "salary_types.value_ko "}` +
+            "posts.job_type as job_type_id," +
+            `${lang === "vi" ? "job_types.name " : lang === "en" ? "job_types.name_en " : "job_types.name_ko "}` +
+            "AS job_type_name, " +
+            `${lang === "vi" ? "salary_types.value " : lang === "en" ? "salary_types.value_en " : "salary_types.value_ko "}` +
             "AS salary_type, " +
             "posts.created_at, " +
             "post_images.image AS image, " +
@@ -73,6 +75,8 @@ const searchByQueryV2Service = async (
             "ON post_resource.post_id = posts.id " +
             "LEFT JOIN company_resource " +
             "ON company_resource.id = post_resource.company " + //@; HiJob, 7: CHOTOT, 8 :FB  AND company_resource.id IN (7,8,2)
+            "LEFT JOIN job_types " +
+            "ON posts.job_type = job_types.id " +
             "WHERE posts.status = 1 " +
             "AND (title LIKE ? OR " +
             "company_name LIKE ?) " +

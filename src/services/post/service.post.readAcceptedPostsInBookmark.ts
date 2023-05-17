@@ -43,7 +43,10 @@ const readAcceptedPostsInBookmark = async (
                 : lang === "en" ? "salary_types.value_en" : "salary_types.value_ko"}` +
             " as salary_type," +
             "company_resource.icon as company_resource_icon, " +
-            "post_images.image AS image " +
+            "post_images.image AS image, " +
+            "posts.job_type, " +
+            `${lang === "vi" ? "job_types.name " : lang === "en" ? "job_types.name_en " : "job_types.name_ko "}` +
+            "AS job_type_name " +
             "FROM bookmarks " +
             "LEFT JOIN posts " +
             "ON posts.id = bookmarks.post_id " +
@@ -63,6 +66,8 @@ const readAcceptedPostsInBookmark = async (
             "ON post_resource.post_id = posts.id " +
             "LEFT JOIN company_resource " +
             "ON company_resource.id = post_resource.company " +
+            "LEFT JOIN job_types " +
+            "ON job_types.id = posts.job_type " +
             "WHERE posts.status = 1 " +
             "AND bookmarks.account_id = ? " +
             // expiredDateCondition() +

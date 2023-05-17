@@ -7,6 +7,7 @@ import readDefaultPostImageByPostId from '../../../services/category/service.cat
 import ImageBucket from '../../../enum/imageBucket.enum';
 import isNumeric from 'validator/lib/isNumeric';
 import isAscii from 'validator/lib/isAscii';
+import formatPostedTime from '../../../helpers/formatData/formatPostedTime';
 
 const searchByQueryV2Controller = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -212,13 +213,20 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
             element.bookmarked = element.bookmark_post_id ? true : false;
             element.money_type_text = MoneyType[element.money_type];
             element.money_type = +element.money_type;
+            element.created_at_text = formatPostedTime(new Date(element.created_at).getTime(), lang);
             element.resource = {
                 // company_resource_id?: number;
                 // company_resource_name?: string;
                 // url?: string;
                 company_icon: element.company_resource_icon ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.COMPANY_ICON}/${element.company_resource_icon}` : null,
             }
+            element.job_type = {
+                job_type_id: element.job_type_id,
+                job_type_name: element.job_type_name,
+            }
             delete element.company_resource_icon;
+            delete element.job_type_name;
+            delete element.job_type_id;
 
             // GET IMAGE
             if (element.image === null) {
