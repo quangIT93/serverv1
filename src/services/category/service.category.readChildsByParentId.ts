@@ -12,7 +12,7 @@ const readChildCategoriesByParentCategoryId = async (
         const query =
             "SELECT id, " +
             `${lang === "vi" ? "name " : lang === "en" ? "name_en as name " : "name_kor as name "}` + 
-            "FROM child_categories WHERE parent_category_id = ?";
+            "FROM child_categories WHERE parent_category_id = ? AND status = 1";
         const params = [parentCategoryId];
         const res = await executeQuery(query, params);
         return res ? res : null;
