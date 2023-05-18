@@ -15,6 +15,7 @@ const searchByQueryV2Service = async (
     startDate : number | undefined | null,
     endDate : number | undefined | null,
     moneyType: number | undefined | null,
+    job_type_id: number | undefined | null,
     accountId: string | undefined | null,
 ) => {
     try {
@@ -93,6 +94,7 @@ const searchByQueryV2Service = async (
             `${isRemotely !== null ? "AND posts.is_remotely = ? " : ""}` +
             `${startDate !== null ? "AND posts.start_date >= ? " : ""}` +
             `${endDate !== null ? "AND posts.end_date <= ? " : ""}` +
+            `${job_type_id !== null ? "AND posts.job_type = ? " : ""}` +
             "AND (posts.expired_date IS NULL OR " +
             "posts.expired_date >= NOW()) " +
             "GROUP BY posts.id " + 

@@ -40,7 +40,6 @@ const readSubmittedApplicationByAccountId = async (req: Request, res: Response, 
 
 
         applications = await Promise.all(applications.map(async (post) => {
-            
             const applicationStatus = +post.application_status;
             const post_status = post.post_status;
             post = await formatPostBeforeReturn(post, req.query.lang.toString());

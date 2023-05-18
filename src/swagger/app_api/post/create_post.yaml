@@ -71,6 +71,9 @@ paths:
                                         - 1
                                         - 2
                                     example: 1
+                                jobTypeId:
+                                    type: number
+                                    example: 1
                                 description:
                                     type: string
                                     example: "Mô tả công việc"

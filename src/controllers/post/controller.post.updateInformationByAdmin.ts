@@ -39,7 +39,11 @@ const updatePostInformationByAdminController = async (
         const salaryMax = +req.body.salaryMax;
         const salaryType = +req.body.salaryType;
         const description = req.body.description ? req.body.description.toString().trim() : null;
-        const categoryIds = req.body.categoryIds ? req.body.categoryIds : null;
+        const categoryIds = req.body.categoryIds
+            ? typeof req.body.categoryIds === "string"
+                ? [req.body.categoryIds]
+                : req.body.categoryIds
+            : null;
         const moneyType = req.body.moneyType ? +req.body.moneyType : null;
         const enabledImageIds = req.body.enabledImageIds
             ? req.body.enabledImageIds

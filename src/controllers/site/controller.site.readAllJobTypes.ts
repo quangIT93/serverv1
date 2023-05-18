@@ -12,7 +12,7 @@ const readAllJobTypesController = async (
         logging.info("Read all job types controller start ...");
 
         // READ ALL SALARY TYPES
-        const jobTypes = await readAllJobTypesService();
+        const jobTypes = await readAllJobTypesService(req.query.lang as string);
         if (!jobTypes) {
             return next(createError(500));
         }

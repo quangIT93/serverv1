@@ -29,7 +29,7 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
         const { is_remotely } = req.query;
         const { start_date } = req.query;
         const { end_date } = req.query;
-
+        const { jobTypeId: job_type_id } = req.query;
 
         // VALIDATION
         // FORMAT query to string
@@ -162,6 +162,10 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
         if (page && !Number.isInteger(parseInt(page as string))) {
             return next(createError(400, 'Invalid page'));
         }
+
+        if (job_type_id && !Number.isInteger(parseInt(job_type_id as string))) {
+            return next(createError(400, 'Invalid job_type_id'));
+        }
     
         // REMOVE SPACE
         q = (q as string).trim();
@@ -185,6 +189,7 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
             startDate,
             endDate,
             money_type ? +money_type : null,
+            job_type_id ? +job_type_id : null,
             id,
         );
 

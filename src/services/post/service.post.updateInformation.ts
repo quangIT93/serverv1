@@ -23,7 +23,8 @@ const updateInformation = async (
     phoneNumber: string | null = null,
     moneyType: number,
     email: string | null = null,
-    expiredDate: Date | null = null
+    expiredDate: Date | null = null,
+    jobTypeId: number | null = null,
 ) => {
     try {
         logging.info("Update post information service start ...");
@@ -49,58 +50,85 @@ const updateInformation = async (
             "phone_contact = ?, " +
             "money_type = ?, " +
             "email = ?, " +
-            "expired_date = ? " +
+            "expired_date = ?, " +
+            "job_type = ? " +
             "WHERE id = ?";
 
-        const params = isDatePeriod
-            ? [
-                title,
-                companyName,
-                wardId,
-                address,
-                latitude,
-                longitude,
-                isDatePeriod,
-                startDate,
-                endDate,
-                startTime,
-                endTime,
-                isWorkingWeekend,
-                isRemotely.toString(),
-                salaryMin,
-                salaryMax,  
-                salaryType,
-                description,
-                phoneNumber,
-                moneyType,
-                email,
-                expiredDate,
-                postId,
-              ]
-            : [
-                title,
-                companyName,
-                wardId,
-                address,
-                latitude,
-                longitude,
-                isDatePeriod,
-                null,
-                null,
-                startTime,
-                endTime,
-                isWorkingWeekend,
-                isRemotely.toString(),
-                salaryMin,
-                salaryMax,
-                salaryType,
-                description,
-                phoneNumber,
-                moneyType,
-                email,
-                expiredDate,
-                postId,
-              ];
+
+        const params = [
+            title,
+            companyName,
+            wardId,
+            address,
+            latitude,
+            longitude,
+            isDatePeriod,
+            startDate,
+            endDate,
+            startTime,
+            endTime,
+            isWorkingWeekend,
+            isRemotely.toString(),
+            salaryMin,
+            salaryMax,
+            salaryType,
+            description,
+            phoneNumber,
+            moneyType,
+            email,
+            expiredDate,
+            jobTypeId,
+            postId,
+        ];
+        // const params = isDatePeriod
+        //     ? [
+        //         title,
+        //         companyName,
+        //         wardId,
+        //         address,
+        //         latitude,
+        //         longitude,
+        //         isDatePeriod,
+        //         startDate,
+        //         endDate,
+        //         startTime,
+        //         endTime,
+        //         isWorkingWeekend,
+        //         isRemotely.toString(),
+        //         salaryMin,
+        //         salaryMax,  
+        //         salaryType,
+        //         description,
+        //         phoneNumber,
+        //         moneyType,
+        //         email,
+        //         expiredDate,
+        //         postId,
+        //       ]
+        //     : [
+        //         title,
+        //         companyName,
+        //         wardId,
+        //         address,
+        //         latitude,
+        //         longitude,
+        //         isDatePeriod,
+        //         null,
+        //         null,
+        //         startTime,
+        //         endTime,
+        //         isWorkingWeekend,
+        //         isRemotely.toString(),
+        //         salaryMin,
+        //         salaryMax,
+        //         salaryType,
+        //         description,
+        //         phoneNumber,
+        //         moneyType,
+        //         email,
+        //         expiredDate,
+        //         postId,
+        //       ];
         const res = await executeQuery(query, params);
         // return res ? res.affectedRows === 1 : false;
         return res ? res.affectedRows === 1 ? true : 2 : false;

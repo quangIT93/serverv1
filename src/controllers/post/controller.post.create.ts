@@ -92,7 +92,7 @@ const createPostController = async (
             
             const companyResourceId = req.body.companyResourceId ? req.body.companyResourceId : null;
             
-            const jobTypeId = req.body.jobTypeId ? req.body.jobTypeId : 3;
+            const jobTypeId = req.body.jobTypeId ? req.body.jobTypeId : null;
             
             const expiredDate = Number.isInteger(+req.body.expiredDate) ? +req.body.expiredDate : null;
             //
@@ -255,6 +255,7 @@ const createPostController = async (
             }
 
             let isValidCategoryId = true;
+            console.log(categoryIds);
             if (categoryIds.length > 2) {
                 return next(createError(400, "Maximum 2 categories"));
             }

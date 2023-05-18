@@ -63,16 +63,19 @@ const updatePostInformationController = async (
             const description = req.body.description
                 ? req.body.description.toString().trim()
                 : null;
-            const categoryIds = req.body.categoryIds ? req.body.categoryIds : null;
+            const categoryIds = req.body.categoryIds
+                ? typeof req.body.categoryIds === "string"
+                    ? [req.body.categoryIds]
+                    : req.body.categoryIds
+                : null;
             let deletedImages = req.body.deletedImages
                 ? req.body.deletedImages
                 : null;
             let phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : null;
             let moneyType = req.body.moneyType ? +req.body.moneyType : null;
             let email = req.body.email ? req.body.email : "";
-
             const expiredDate = Number.isInteger(+req.body.expiredDate) ? +req.body.expiredDate : null;
-
+            let jobTypeId = req.body.jobTypeId ? +req.body.jobTypeId : null;
 
             // PARSE DATA
             if (Array.isArray(deletedImages)) {
@@ -182,10 +185,10 @@ const updatePostInformationController = async (
             phoneNumber = phoneNumber.replace(/^\+/, "");
 
 
-            if (phoneNumber && !helper.checkPhoneNumberFormat(phoneNumber)) {
-                logging.warning("Invalid phone number format");
-                return next(createError(400));
-            }
+            // if (phoneNumber && !helper.checkPhoneNumberFormat(phoneNumber)) {
+            //     logging.warning("Invalid phone number format");
+            //     return next(createError(400));
+            // }
 
             if (!moneyType) {
                 return next(createError(400, "Type of money is required"));
@@ -206,6 +209,7 @@ const updatePostInformationController = async (
 
             let isValidCategoryId = true;
             if (categoryIds.length > 2) {
+                console.log(categoryIds.length);
                 return next(createError(400, "Maximum 2 categories"));
             }
             for (let i = 0; i < categoryIds.length; i++) {
@@ -213,6 +217,10 @@ const updatePostInformationController = async (
                     isValidCategoryId = false;
                     break;
                 }
+            }
+
+            if (req.body.jobTypeId && !Number.isInteger(req.body.jobTypeId)) {
+                return next(createError(400, "Invalid jobTypeId"));
             }
 
             if (!isValidCategoryId) {
@@ -281,6 +289,7 @@ const updatePostInformationController = async (
                 moneyType,
                 email.toString().trim(),
                 newExpireDate,
+                jobTypeId,
             );
 
             if (!isUpdateSuccess) {
