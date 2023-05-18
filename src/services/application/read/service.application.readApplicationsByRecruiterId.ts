@@ -43,6 +43,8 @@ const readApplicationsByRecruiterIdService = async (
                     ? "salary_types.value_en"
                     : "salary_types.value_ko"
             } as salary_type,` +
+            "posts.job_type," +
+            `${lang === "vi" ? "job_types.name" : lang === "en" ? "job_types.name_en" : "job_types.name_ko"} as job_type_name,` +
             "COUNT(applications.id) as num_of_application " +
             "FROM posts " +
             "LEFT JOIN salary_types ON posts.salary_type = salary_types.id " +
@@ -52,6 +54,7 @@ const readApplicationsByRecruiterIdService = async (
             "LEFT JOIN provinces ON provinces.id = districts.province_id " +
             "LEFT JOIN (SELECT DISTINCT post_id, image FROM post_images GROUP BY post_id) " +
             "AS post_images ON post_images.post_id = posts.id " +
+            "LEFT JOIN job_types ON job_types.id = posts.job_type " +
             "WHERE posts.account_id = ? " +
             ` ${threshold ? "AND posts.id < ? " : ""}` +
             "GROUP BY posts.id ORDER BY posts.id DESC " +

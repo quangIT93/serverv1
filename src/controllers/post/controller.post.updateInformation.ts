@@ -219,7 +219,7 @@ const updatePostInformationController = async (
                 }
             }
 
-            if (req.body.jobTypeId && !Number.isInteger(req.body.jobTypeId)) {
+            if (!req.body.jobTypeId || !Number.isInteger(+req.body.jobTypeId)) {
                 return next(createError(400, "Invalid jobTypeId"));
             }
 
