@@ -32,17 +32,17 @@ const createPostController = async (
             // GET ROLE OF USER
             const { role } = req.user;
 
-            if (role === 0) {
-                // CHECK LIMITATION OF POST QUANTITY
-                const postQuantity = await countPostQuantityByDayByAccountId(
-                    req.user.id
-                );
+            // if (role === 0) {
+            //     // CHECK LIMITATION OF POST QUANTITY
+            //     const postQuantity = await countPostQuantityByDayByAccountId(
+            //         req.user.id
+            //     );
 
-                if (parseInt(postQuantity[0].quantity) >= 3 && role === 0) {
-                    logging.warning("Post quantity limit");
-                    return next(createError(400, "You only can post 3 jobs/day"));
-                }
-            }
+            //     if (parseInt(postQuantity[0].quantity) >= 3 && role === 0) {
+            //         logging.warning("Post quantity limit");
+            //         return next(createError(400, "You only can post 3 jobs/day"));
+            //     }
+            // }
 
             // GET DATA
             const accountId = req.user.id;
@@ -315,7 +315,7 @@ const createPostController = async (
                 salaryMax,
                 salaryType,
                 description.toString().trim(),
-                phoneNumber ? phoneNumber.toString().replace(/ /g, "").replace(/-/g, "").replace(/\+/g, ""): null,
+                helper.formatPhoneNumber(phoneNumber),
                 moneyType,
                 role,
                 +jobTypeId,
