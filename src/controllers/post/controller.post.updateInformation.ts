@@ -181,14 +181,14 @@ const updatePostInformationController = async (
             const helper = new Helper();
 
             // remove char + at head of phone number
-            phoneNumber = phoneNumber.replace(/^84\+/, "");
-            phoneNumber = phoneNumber.replace(/^\+/, "");
+            // phoneNumber = phoneNumber.replace(/^84\+/, "");
+            // phoneNumber = phoneNumber.replace(/^\+/, "");
 
 
-            // if (phoneNumber && !helper.checkPhoneNumberFormat(phoneNumber)) {
-            //     logging.warning("Invalid phone number format");
-            //     return next(createError(400));
-            // }
+            if (phoneNumber && !helper.checkPhoneNumberFormat(phoneNumber)) {
+                // logging.warning("Invalid phone number format");
+                return next(createError(400, "Invalid phone number format"));
+            }
 
             if (!moneyType) {
                 return next(createError(400, "Type of money is required"));

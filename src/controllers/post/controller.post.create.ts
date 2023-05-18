@@ -205,15 +205,14 @@ const createPostController = async (
             //HELPER
             const helper = new Helper();
 
-            // if (phoneNumber && !helper.checkPhoneNumberFormat(phoneNumber)) {
-            //     logging.warning("Invalid phone number format");
-            //     return next(
-            //         createError(
-            //             400,
-            //             "Please enter a valid Vietnamese phone number"
-            //         )
-            //     );
-            // }
+            if (phoneNumber && !helper.checkPhoneNumberFormat(phoneNumber)) {
+                return next(
+                    createError(
+                        400,
+                        "Please enter a valid Vietnamese phone number"
+                    )
+                );
+            }
 
             if (email && !helper.checkEmailFormat(email)) {
                 logging.warning("Invalid email format");
@@ -316,7 +315,7 @@ const createPostController = async (
                 salaryMax,
                 salaryType,
                 description.toString().trim(),
-                helper.formatPhoneNumber(phoneNumber),
+                phoneNumber ? phoneNumber.toString().replace(/ /g, "").replace(/-/g, "").replace(/\+/g, ""): null,
                 moneyType,
                 role,
                 +jobTypeId,

@@ -1,4 +1,5 @@
 import { generate } from 'otp-generator';
+import isNumeric from 'validator/lib/isNumeric';
 
 
 class Helper {
@@ -10,9 +11,11 @@ class Helper {
   }
 
   checkPhoneNumberFormat(phoneNumber: string): boolean {
-    const phoneNumberRegexWith0 = new RegExp(/^(0[2|3|5|7|8|9])+([0-9]{8,9})\b$/)
-    const phoneNumberRegexWith84 = new RegExp(/^(84)+([0-9]{9,11})\b$/)
-    return phoneNumberRegexWith0.test(phoneNumber) || phoneNumberRegexWith84.test(phoneNumber);
+    // const phoneNumberRegexWith0 = new RegExp(/^(0[2|3|5|7|8|9])+([0-9]{8,9})\b$/)
+    // const phoneNumberRegexWith84 = new RegExp(/^(84)+([0-9]{9,11})\b$/)
+
+    // return phoneNumberRegexWith0.test(phoneNumber) || phoneNumberRegexWith84.test(phoneNumber);
+    return isNumeric(phoneNumber.replace(/ /g, "").replace(/-/g, "").replace(/\+/g, ""));
   }
 
   formatPhoneNumber(phoneNumber: string): string | null {
@@ -24,34 +27,40 @@ class Helper {
     if (!phoneNumber) {
       return null;
     }
-    phoneNumber = phoneNumber.replace(/ /g, "").replace(/-/g, "").replace(/\+/g, "");
     if (phoneNumber.startsWith("0")) {
-      //if phone number start with 0 and length is 10
+    //   phoneNumber = phoneNumber.replace(/ /g, "").replace(/-/g, "").replace(/\+/g, "");
+    //   //if phone number start with 0 and length is 10
+    //   //replace 0 with +84
+    //   if (phoneNumber.length === 10 || phoneNumber.length === 11) {
+    //     phoneNumber = "84" + phoneNumber.substring(1);
+    //   } else {
+    //     return "";
+    //   }
+    // } else {
+    //   if (phoneNumber.startsWith("84")) {
+    //     if (phoneNumber.length === 12 && phoneNumber.startsWith("840")) {
+    //       //+84 0 and length is 13
+    //       phoneNumber = "84" + phoneNumber.substring(3);
+    //     }
+    //     else {
+    //       if (phoneNumber.length === 11 || phoneNumber.length === 12) {
+    //         phoneNumber = phoneNumber;
+    //       } else {
+    //         return "";
+    //       }
+    //     }
+    //   } else {
+    //     return "";
+    //   }
+    // }
+    if (phoneNumber.startsWith("0")) {
       //replace 0 with +84
-      if (phoneNumber.length === 10 || phoneNumber.length === 11) {
-        phoneNumber = "84" + phoneNumber.substring(1);
-      } else {
-        return "";
-      }
-    } else {
-      if (phoneNumber.startsWith("84")) {
-        if (phoneNumber.length === 12 && phoneNumber.startsWith("840")) {
-          //+84 0 and length is 13
-          phoneNumber = "84" + phoneNumber.substring(3);
-        }
-        else {
-          if (phoneNumber.length === 11 || phoneNumber.length === 12) {
-            phoneNumber = phoneNumber;
-          } else {
-            return "";
-          }
-        }
-      } else {
-        return "";
-      }
+      phoneNumber = "84" + phoneNumber.substring(1);
+      return phoneNumber.replace(/ /g, "").replace(/-/g, "").replace(/\+/g, "")
     }
     return phoneNumber.replace(/ /g, "").replace(/-/g, "").replace(/\+/g, "");
   }
+}
 
   // generateOTP(): string {
   //   let OTP: string = "";
