@@ -77,7 +77,7 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
                     company_icon: resource.icon ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.COMPANY_ICON}/${resource.icon}` : null
                 }
             }
-            a.created_at_text = formatPostedTime(a.created_at)
+            a.created_at_text = formatPostedTime(a.created_at, req.query.lang.toString());
             return a;
         }));
         
