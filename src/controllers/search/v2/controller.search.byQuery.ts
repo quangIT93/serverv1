@@ -51,6 +51,7 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
                 if (!isNumeric(district_ids as string)) {
                     return next(createError(400, 'Invalid district_ids'));
                 }
+                districtIds.push(district_ids as string);
             }
         }
 
@@ -69,6 +70,23 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
                     return next(createError(400, 'Invalid category_ids'));
                 }
                 categoryIds.push(parseInt(category_ids as string));
+            }
+        }
+
+        const jobTypeIds: number[] = []
+        if (job_type_id) {
+            if (Array.isArray(job_type_id)) {
+                for (let i = 0; i < job_type_id.length; i++) {
+                    if (!isNumeric(job_type_id[i] as string)) {
+                        return next(createError(400, 'Invalid job_type_id'));
+                    }
+                    jobTypeIds.push(parseInt(job_type_id[i] as string));
+                }
+            } else {
+                if (!isNumeric(job_type_id as string)) {
+                    return next(createError(400, 'Invalid job_type_id'));
+                }
+                jobTypeIds.push(parseInt(job_type_id as string));
             }
         }
 
@@ -162,10 +180,6 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
         if (page && !Number.isInteger(parseInt(page as string))) {
             return next(createError(400, 'Invalid page'));
         }
-
-        if (job_type_id && !Number.isInteger(parseInt(job_type_id as string))) {
-            return next(createError(400, 'Invalid job_type_id'));
-        }
     
         // REMOVE SPACE
         q = (q as string).trim();
@@ -189,7 +203,7 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
             startDate,
             endDate,
             money_type ? +money_type : null,
-            job_type_id ? +job_type_id : null,
+            jobTypeIds,
             id,
         );
 

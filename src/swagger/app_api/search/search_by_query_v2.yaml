@@ -100,6 +100,15 @@ paths:
           schema:
             type: integer
             # format: time
+        - name: jobTypeId
+          in: query
+          description: Job type
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+          example: [1, 2]
       responses:
         '200':
           description: OK

@@ -15,7 +15,7 @@ const searchByQueryV2Service = async (
     startDate : number | undefined | null,
     endDate : number | undefined | null,
     moneyType: number | undefined | null,
-    job_type_id: number | undefined | null,
+    job_type_id: number[] | undefined | null,
     accountId: string | undefined | null,
 ) => {
     try {
@@ -94,7 +94,7 @@ const searchByQueryV2Service = async (
             `${isRemotely !== null ? "AND posts.is_remotely = ? " : ""}` +
             `${startDate !== null ? "AND posts.start_date >= ? " : ""}` +
             `${endDate !== null ? "AND posts.end_date <= ? " : ""}` +
-            `${job_type_id !== null ? "AND posts.job_type = ? " : ""}` +
+            `${job_type_id.length > 0 ? `AND posts.job_type IN (${job_type_id.join(",")}) ` : ''}` +
             "AND (posts.expired_date IS NULL OR " +
             "posts.expired_date >= NOW()) " +
             "GROUP BY posts.id " + 
@@ -111,8 +111,7 @@ const searchByQueryV2Service = async (
         .concat(isRemotely !== null ? [isRemotely.toString()] : [])
         .concat(startDate !== null ? [startDate] : [])
         .concat(endDate !== null ? [endDate] : [])
-        // console.log(query);
-        // console.log(params);
+        // .concat(job_type_id.length > 0 ? job_type_id : []);
         const res = await executeQuery(query, params);
         return res ? res : null;
     } catch (error) {
