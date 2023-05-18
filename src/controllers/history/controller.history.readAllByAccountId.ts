@@ -9,6 +9,7 @@ import { readDefaultPostImageByPostId } from '../../services/category/_service.c
 import ImageBucket from '../../enum/imageBucket.enum';
 import applicationStatusHandler from '../application/handler/applicationStatusHandler';
 import readCompanyInformationByPostId from '../../services/postResource/service.postResource.readCompanyByPostId';
+import formatPostedTime from '../../helpers/formatData/formatPostedTime';
 
 const readAllByAccountId = async (req: Request, res: Response, next: NextFunction) => {
     logging.info('Read All by account id controller start ...');
@@ -47,6 +48,10 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
                 a.end_date = +a.end_date || null;
                 a.application_status = applicationStatusHandler(+a.status)
                 a.is_inhouse_data = +a.is_inhouse_data;
+                a.job_type = {
+                    job_type_id: +a.job_type,
+                    job_type_name: a.job_type_name
+                }
                 delete a.num_of_application;
                 if (a.image === null) {
                     const firstParentCategoryImage =
@@ -72,6 +77,7 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
                     company_icon: resource.icon ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.COMPANY_ICON}/${resource.icon}` : null
                 }
             }
+            a.created_at_text = formatPostedTime(a.created_at)
             return a;
         }));
         

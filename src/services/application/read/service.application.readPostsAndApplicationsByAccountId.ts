@@ -20,7 +20,8 @@ const readPostsAndApplicationsBYAccountIdService = async (
         provinces.id as province_id, 
         post_images.image as image, 
         ${lang === "vi" ? "salary_types.value"  
-        : lang === "en" ? "salary_types.value_en" : "salary_types.value_ko" } as salary_type
+        : lang === "en" ? "salary_types.value_en" : "salary_types.value_ko" } as salary_type,
+        ${lang === "vi" ? "job_types.name" : lang === "en" ? "job_types.name_en" : "job_types.name_ko"} as job_type_name
         FROM ( 
         SELECT 
         applications.id, 
@@ -42,7 +43,8 @@ const readPostsAndApplicationsBYAccountIdService = async (
         posts.money_type, 
         posts.status as post_status,
         applications.updated_at,
-        posts.is_inhouse_data
+        posts.is_inhouse_data,
+        posts.job_type
         FROM applications 
         LEFT JOIN posts ON applications.post_id = posts.id 
         WHERE applications.account_id = ? 
@@ -66,7 +68,8 @@ const readPostsAndApplicationsBYAccountIdService = async (
         posts.money_type, 
         posts.status as post_status,
         COALESCE((SELECT MAX(updated_at) FROM applications WHERE post_id = posts.id), posts.created_at) as updated_at,
-        posts.is_inhouse_data
+        posts.is_inhouse_data,
+        posts.job_type
         FROM posts 
         LEFT JOIN applications ON applications.post_id = posts.id 
         WHERE posts.account_id = ? 
@@ -78,6 +81,7 @@ const readPostsAndApplicationsBYAccountIdService = async (
         LEFT JOIN provinces ON provinces.id = districts.province_id 
         LEFT JOIN (SELECT DISTINCT post_id, image FROM post_images GROUP BY post_id) 
         as post_images ON post_images.post_id = t.post_id 
+        LEFT JOIN job_types ON job_types.id = t.job_type
         ORDER BY updated_at DESC 
         LIMIT ? OFFSET ?
         `;
