@@ -12,8 +12,8 @@ const updateInformation = async (
     isDatePeriod: number,
     isWorkingWeekend: number,
     isRemotely: number,
-    startDate: number | null,
-    endDate: number | null,
+    startDate: number | null = null,
+    endDate: number | null = null,
     startTime: number,
     endTime: number,
     salaryMin: number,
@@ -80,6 +80,7 @@ const updateInformation = async (
             jobTypeId,
             postId,
         ];
+
         // const params = isDatePeriod
         //     ? [
         //         title,
