@@ -33,7 +33,7 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
 
         // VALIDATION
         // FORMAT query to string
-        if (!q || !isAscii(q as string)) {
+        if (!q) {
             return next(createError(400, 'Invalid search keyword'));
         }
 
