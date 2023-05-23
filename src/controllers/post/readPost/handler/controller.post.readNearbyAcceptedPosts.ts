@@ -5,7 +5,7 @@ import * as postServices from "../../../../services/post/_service.post";
 import { formatPostBeforeReturn } from "../../_controller.post.formatPostBeforeReturn";
 import { isArrayNumber, isNumber } from "../../../../helpers/checkData/checkTypeOfData";
 import { formatToArrayNumber, formatToStringNumberArray } from "../../../../helpers/formatData/formatArray";
-import {PostResponse, PostService} from "../../../../interface/Post";
+import {PostResponse, PostService} from "../../../../models/interface/Post";
 import { checkBookmark } from "../../../../middlewares/checkBookmark";
 
 const readNearbyAcceptedPostsController = async (

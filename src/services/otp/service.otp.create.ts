@@ -1,4 +1,4 @@
-import { executeQuery } from "../../configs/database";
+import { executeQuery } from "../../configs/database/database";
 import logging from "../../utils/logging";
 
 const createOtpService = async (otp: string, account: string, type: '1' | '2') => {

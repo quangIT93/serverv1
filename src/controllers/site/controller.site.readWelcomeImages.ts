@@ -2,7 +2,7 @@ import createError from "http-errors";
 import { NextFunction, Request, Response } from "express";
 import logging from "../../utils/logging";
 import readAllWelcomeImages from "../../services/welcomeImages/service.welcomeImages";
-import ImageBucket from "../../enum/imageBucket.enum";
+import ImageBucket from "../../models/enum/imageBucket.enum";
 
 const readWellComeImagesController = async (
     req: Request,

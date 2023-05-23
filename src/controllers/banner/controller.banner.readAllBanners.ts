@@ -3,7 +3,7 @@ import createError from "http-errors";
 import logging from "../../utils/logging";
 import * as bannerServices from "../../services/banner/_service.banner";
 import { formatBannerResponse } from "./handler/formatBannerResponse";
-import ImageBucket from "../../enum/imageBucket.enum";
+import ImageBucket from "../../models/enum/imageBucket.enum";
 
 const readAllBannersController = async (
     req: Request,

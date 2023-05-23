@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import createError from "http-errors";
 import logging from "../../../utils/logging";
 import { createOtpService } from "../../../services/otp/_service.otp";
-import { sendEmailToUser } from "../../../transport/transport";
+import { sendEmailToUser } from '../../../configs/transport/transport';
 import removeUnnecessaryDots from '../../../helpers/formatData/removeUnnecessaryDotsInEmail';
 import isEmail from 'validator/lib/isEmail';
 

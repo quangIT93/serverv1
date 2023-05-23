@@ -8,9 +8,9 @@ import * as postCategoryServices from "../../../../services/postCategory/_servic
 import * as postImageServices from "../../../../services/postImage/_service.postImage";
 import * as bookmarkServices from "../../../../services/bookmark/_service.bookmark";
 import applicationServices from "../../../../services/application/_service.application";
-import ApplicationStatus from "../../../../enum/application.enum";
+import ApplicationStatus from "../../../../models/enum/application.enum";
 import { formatPostBeforeReturn } from "../../_controller.post.formatPostBeforeReturn";
-import ImageBucket from "../../../../enum/imageBucket.enum";
+import ImageBucket from "../../../../models/enum/imageBucket.enum";
 import applicationStatusHandler from "../../../application/handler/applicationStatusHandler";
 
 interface Payload {

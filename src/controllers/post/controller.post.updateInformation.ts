@@ -8,7 +8,7 @@ import * as postImageServices from "../../services/postImage/_service.postImage"
 import * as postCategoryServices from "../../services/postCategory/_service.postCategory";
 import * as awsServices from "../../services/aws/_service.aws";
 import Helper from "../../helpers/helper.class";
-import ImageBucket from "../../enum/imageBucket.enum";
+import ImageBucket from "../../models/enum/imageBucket.enum";
 
 const updatePostInformationController = async (
     req: Request,

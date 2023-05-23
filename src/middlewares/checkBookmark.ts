@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import createError from 'http-errors';
 import { NextFunction } from 'express';
 import { Request } from 'express';
-import { PostResponse, PostService } from "../interface/Post";
+import { PostResponse, PostService } from "../models/interface/Post";
 import logging from '../utils/logging';
 import { readByAccountId } from '../services/bookmark/_service.bookmark';
 

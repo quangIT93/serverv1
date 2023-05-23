@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import logging from "../../../utils/logging";
 import createError from "http-errors";
 import applicationService from "../../../services/application/_service.application";
-import ImageBucket from "../../../enum/imageBucket.enum";
-import ProfilesBucket from "../../../enum/profileBucket.enum";
+import ImageBucket from "../../../models/enum/imageBucket.enum";
+import ProfilesBucket from "../../../models/enum/profileBucket.enum";
 
 const readApplicationByIdController = async (
     req: Request,

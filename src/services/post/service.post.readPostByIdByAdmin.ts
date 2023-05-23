@@ -1,5 +1,5 @@
 import logging from "../../utils/logging";
-import { executeQuery } from "../../configs/database";
+import { executeQuery } from "../../configs/database/database";
 import { initQueryReadDetailPost } from "./_service.post.initQuery";
 
 const readPostByIdByAdminService = async (postId: number, lang: string = "vi",) => {

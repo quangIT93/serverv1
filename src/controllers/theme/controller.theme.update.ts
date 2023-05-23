@@ -4,7 +4,7 @@ import logging from "../../utils/logging";
 import * as awsServices from "../../services/aws/_service.aws";
 import * as themeServices from "../../services/theme/_service.theme";
 import * as themeLocationServices from "../../services/themeLocation/_service.themeLocation";
-import ImageBucket from "../../enum/imageBucket.enum";
+import ImageBucket from "../../models/enum/imageBucket.enum";
 
 const updateThemeController = async (
     req: Request,

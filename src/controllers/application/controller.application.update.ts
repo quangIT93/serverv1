@@ -4,7 +4,7 @@ import logging from '../../utils/logging';
 import applicationService from '../../services/application/_service.application';
 import * as notificationService from '../../services/notification/_service.notification';
 import { createNotificationContent, NotificationContent } from '../notification/createNotificationContent/createForApplication';
-import pushNotification from '../../configs/firebase/push-notification';
+import pushNotification from '../../configs/transport/notification/push-notification';
 
 const updateApplicationController = async (req: Request, res: Response, next: NextFunction) => {
     try {

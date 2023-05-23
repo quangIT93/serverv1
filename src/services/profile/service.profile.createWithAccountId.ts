@@ -1,4 +1,4 @@
-import { executeQuery } from "../../configs/database";
+import { executeQuery } from "../../configs/database/database";
 import logging from "../../utils/logging";
 
 const createProfileWithAccountIdService = async (accountId: string, email: string = null, phone: string = null, name: string = null) => {

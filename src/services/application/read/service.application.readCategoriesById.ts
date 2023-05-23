@@ -1,5 +1,5 @@
 import logging from "../../../utils/logging";
-import { executeQuery } from "../../../configs/database";
+import { executeQuery } from "../../../configs/database/database";
 
 const readApplicationCategoriesByIdService = async (lang: string, applicationId: number) => {
     try {

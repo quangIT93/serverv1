@@ -1,6 +1,6 @@
-import mariadb, { PoolConnection, SqlErrorConstructor } from "mariadb";
+import mariadb, { PoolConnection } from "mariadb";
 import dotenv from "dotenv";
-import logging from "../utils/logging";
+import logging from "../../utils/logging";
 
 dotenv.config();
 

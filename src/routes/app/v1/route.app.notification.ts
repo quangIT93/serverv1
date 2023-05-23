@@ -19,4 +19,16 @@ router.put('/update',
     notificationController.updateStatus
 );
 
+router.post(
+    '/keyword', 
+    verifyAccessToken,
+    notificationController.keyword.create
+);
+
+router.put(
+    '/keyword/update-status',
+    verifyAccessToken,
+    notificationController.keyword.updateStatus
+);
+
 export default router;

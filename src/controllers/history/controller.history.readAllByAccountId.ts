@@ -1,12 +1,12 @@
 import {Request, Response, NextFunction} from 'express';
 import createError from 'http-errors';
-import ApplicationStatus from '../../enum/application.enum';
+import ApplicationStatus from '../../models/enum/application.enum';
 import applicationService from '../../services/application/_service.application';
 import logging from '../../utils/logging';
 import {formatPostBeforeReturn} from '../post/_controller.post.formatPostBeforeReturn';
-import MoneyType from '../../enum/money_type.enum';
+import MoneyType from '../../models/enum/money_type.enum';
 import { readDefaultPostImageByPostId } from '../../services/category/_service.category';
-import ImageBucket from '../../enum/imageBucket.enum';
+import ImageBucket from '../../models/enum/imageBucket.enum';
 import applicationStatusHandler from '../application/handler/applicationStatusHandler';
 import readCompanyInformationByPostId from '../../services/postResource/service.postResource.readCompanyByPostId';
 import formatPostedTime from '../../helpers/formatData/formatPostedTime';

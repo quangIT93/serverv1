@@ -1,7 +1,7 @@
 import * as admin from "firebase-admin";
-import readFcmTokenService from "../../services/fcm-token/service.fcm-token.readByAccountId";
-import serviceAccount from "../../keys/serviceAccountKey.json";
-import logging from "../../utils/logging";
+import readFcmTokenService from "../../../services/fcm-token/service.fcm-token.readByAccountId";
+import serviceAccount from "../../../keys/serviceAccountKey.json";
+import logging from "../../../utils/logging";
 
 interface TokenResult {
     token: string;
@@ -25,7 +25,8 @@ const initializeApp = () => {
             ),
         }) as admin.app.App | null;
     };
-let app = initializeApp();
+// let app = initializeApp();
+let app: any;
     
     
 const pushNotification = async (

@@ -7,7 +7,7 @@ import * as bookmarkServices from "../../../../services/bookmark/_service.bookma
 // import MoneyType from "../../enum/money_type.enum";
 import { formatPostBeforeReturn } from "../../_controller.post.formatPostBeforeReturn";
 import { isArrayNumber, isNumber } from "../../../../helpers/checkData/checkTypeOfData";
-import { PostResponse, PostService } from "../../../../interface/Post";
+import { PostResponse, PostService } from "../../../../models/interface/Post";
 import { formatToArrayNumber, formatToStringNumberArray } from "../../../../helpers/formatData/formatArray";
 import { checkBookmark } from "../../../../middlewares/checkBookmark";
 

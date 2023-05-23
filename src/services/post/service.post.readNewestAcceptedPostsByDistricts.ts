@@ -1,5 +1,5 @@
 import logging from "../../utils/logging";
-import { executeQuery } from "../../configs/database";
+import { executeQuery } from "../../configs/database/database";
 import { expiredDateCondition, initQueryReadPost } from "./_service.post.initQuery";
 import { query } from "express";
 

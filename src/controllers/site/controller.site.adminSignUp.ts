@@ -6,7 +6,7 @@ import sgMail from "@sendgrid/mail";
 import logging from "../../utils/logging";
 import * as accountServices from "../../services/account/_service.account";
 import createProfileWithAccountIdService from "../../services/profile/service.profile.createWithAccountId";
-import { sendEmailToUser } from "../../transport/transport";
+import { sendEmailToUser } from "../../configs/transport/transport";
 
 interface Payload {
     id: string;

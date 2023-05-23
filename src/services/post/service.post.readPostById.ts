@@ -1,5 +1,5 @@
 import logging from "../../utils/logging";
-import { executeQuery } from "../../configs/database";
+import { executeQuery } from "../../configs/database/database";
 import { expiredDateCondition, initQueryReadDetailPost } from "./_service.post.initQuery";
 
 const readPostByIdService = async (postId: number, lang: string | null = "vi",) => {

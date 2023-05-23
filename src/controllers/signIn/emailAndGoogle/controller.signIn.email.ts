@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from "express";
 
 import logging from "../../../utils/logging";
 import { createOtpService } from "../../../services/otp/_service.otp";
-import { sendEmailToUser } from "../../../transport/transport";
+import { sendEmailToUser } from "../../../configs/transport/transport";
 import generateOTPMail from "../../../html/mail/generateOTPMail";
 
 const signInWithEmailController = async (

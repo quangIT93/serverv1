@@ -1,5 +1,5 @@
 import { DeleteObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import ProfilesBucket from "../../enum/profileBucket.enum";
+import ProfilesBucket from "../../models/enum/profileBucket.enum";
 export const bucketParams = { Bucket: "BUCKET_NAME", Key: "KEY" };
 
 const deleteCv = async (uid: string, url: string) => {

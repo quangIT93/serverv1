@@ -11,7 +11,7 @@ import * as bookmarkServices from "../../services/bookmark/_service.bookmark";
 // import ApplicationStatus from "../../enum/application.enum";
 // import MoneyType from "../../enum/money_type.enum";
 import { formatPostBeforeReturn } from "./_controller.post.formatPostBeforeReturn";
-import ImageBucket from "../../enum/imageBucket.enum";
+import ImageBucket from "../../models/enum/imageBucket.enum";
 
 interface Payload {
     id: string;

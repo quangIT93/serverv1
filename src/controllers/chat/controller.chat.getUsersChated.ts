@@ -3,10 +3,10 @@ import createError from "http-errors";
 import logging from "../../utils/logging";
 import * as chatServices from "../../services/chat/_service.chat";
 import redisClient from "../../configs/redis";
-import MoneyType from "../../enum/money_type.enum";
-import ApplicationStatus from "../../enum/application.enum";
+import MoneyType from "../../models/enum/money_type.enum";
+import ApplicationStatus from "../../models/enum/application.enum";
 import { readDefaultPostImageByPostId } from "../../services/category/_service.category";
-import ImageBucket from "../../enum/imageBucket.enum";
+import ImageBucket from "../../models/enum/imageBucket.enum";
 
 const getUsersChattedController = async (
     req: Request,

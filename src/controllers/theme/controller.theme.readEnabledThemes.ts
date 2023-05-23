@@ -4,7 +4,7 @@ import { NextFunction, Request, Response } from "express";
 
 import logging from "../../utils/logging";
 import * as themeServices from "../../services/theme/_service.theme";
-import ImageBucket from "../../enum/imageBucket.enum";
+import ImageBucket from "../../models/enum/imageBucket.enum";
 import readAllByProfileId from '../../services/profileLocation/service.profileLocation.readAllByProfileId';
 import { getRandom } from '../../utils/shuffleArray';
 

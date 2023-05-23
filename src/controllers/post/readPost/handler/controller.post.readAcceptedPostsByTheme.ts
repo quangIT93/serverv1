@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from "express";
 import logging from "../../../../utils/logging";
 import * as postServices from "../../../../services/post/_service.post";
 import { formatPostBeforeReturn } from "../../_controller.post.formatPostBeforeReturn";
-import { PostResponse, PostService } from "../../../../interface/Post";
+import { PostResponse, PostService } from "../../../../models/interface/Post";
 
 const readAcceptedPostsByThemeController = async (
     req: Request,

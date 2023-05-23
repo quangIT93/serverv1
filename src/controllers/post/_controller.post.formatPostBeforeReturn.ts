@@ -1,7 +1,7 @@
-import ImageBucket from "../../enum/imageBucket.enum";
-import MoneyType from "../../enum/money_type.enum";
+import ImageBucket from "../../models/enum/imageBucket.enum";
+import MoneyType from "../../models/enum/money_type.enum";
 import formatPostedTime from "../../helpers/formatData/formatPostedTime";
-import { PostService, PostResponse } from "../../interface/Post";
+import { PostService, PostResponse } from "../../models/interface/Post";
 import { readDefaultPostImageByPostId } from "../../services/category/_service.category";
 
 async function formatPostBeforeReturn(post: PostService, lang: string = "vi") {

@@ -1,0 +1,88 @@
+import * as admin from "firebase-admin";
+import { INotificationTransporter } from "../interface/notification.transporter.interface";
+import { Notification } from 'firebase-admin/lib/messaging/messaging-api';
+import readFcmTokenService from "../../../services/fcm-token/service.fcm-token.readByAccountId";
+import logging from "../../../utils/logging";
+import { INotification } from "../interface/notification.interface";
+import serviceAccount from "../../../keys/serviceAccountKey.json";
+import { NotificationData } from "./notificationData.class";
+
+
+
+export class NotificationTransporter implements INotificationTransporter {
+    
+    public static transporter: admin.app.App | null = null;
+
+    fcmTokens: string[] = [];
+    
+    // constructor(transporter: any) {
+    //     this.transporter = transporter;
+    // }
+
+    // this method is used to initialize the transporter
+    // the transporter is the firebase admin app
+    async initialize(): Promise<void> {
+        try {
+            if (!NotificationTransporter.transporter) {
+                NotificationTransporter.transporter = admin.initializeApp({
+                    credential: admin.credential.cert(
+                        serviceAccount as admin.ServiceAccount
+                    ),
+                }) as admin.app.App | null;
+            }
+        } catch (error) {
+            logging.error(error, " NotificationTransporter");
+            return;
+        }
+    }
+
+    // this method is used to send the notification to the user
+    // the content is the notification content
+    // the data is the data that will be sent to the user
+    async send(body: INotification, account_id: string): Promise<any> {
+        try {
+            if (!NotificationTransporter.transporter) {
+                await this.initialize();
+            }
+    
+            if (!(this.fcmTokens[0] !== undefined) || !(this.fcmTokens[0] !== null) || !this.fcmTokens[0]) {
+                await this.getFcmTokens(account_id);
+            }
+
+            // console.log(NotificationTransporter.transporter, " NotificationTransporter");
+            // console.log(this.fcmTokens, " NotificationTransporter");
+            // console.log(body, " NotificationTransporter");
+    
+            await NotificationTransporter.transporter.messaging().sendMulticast({
+                tokens: this.fcmTokens,
+                notification: body.content,
+                data: NotificationData.toKeyValue(body.data),
+            });
+            // logging.info("Notification sent successfully");
+            return;
+
+        }
+        catch (error) {
+            console.log(error, " NotificationTransporter");
+            return;
+        }
+    }
+
+    // this method is used to get the fcm tokens of the user
+    // set the fcm tokens to the fcmTokens property
+    async getFcmTokens(account_id: string): Promise<string[]> {
+        try {
+            if (!account_id) {
+                return [];
+            }
+            const res = await readFcmTokenService(account_id);
+            this.fcmTokens = res.map((item: any) => item.token);
+            return this.fcmTokens;
+        } catch (error) {
+            console.log(error, " NotificationTransporter");
+            return [];
+        }
+    }
+
+}
+    

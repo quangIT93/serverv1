@@ -6,10 +6,11 @@ import readProfileByIdService from '../../services/profile/service.profile.readB
 import applicationService from '../../services/application/_service.application'; 
 import * as notificationService from '../../services/notification/_service.notification';
 import { createNotificationContent, NotificationContent } from '../notification/createNotificationContent/createForApplication';
-import pushNotification from '../../configs/firebase/push-notification';
 import copyFileService from '../../services/aws/service.aws.copyFile';
-import ProfilesBucket from '../../enum/profileBucket.enum';
-import ImageBucket from '../../enum/imageBucket.enum';
+import ProfilesBucket from '../../models/enum/profileBucket.enum';
+import ImageBucket from '../../models/enum/imageBucket.enum';
+import createNotificationForApplication from '../notification/createNotificationContent/createForApplication.test';
+import pushNotification from '../notification/push/push';
 const createApplicationController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // GET DATA
@@ -150,29 +151,50 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
             return;
         }
 
-        const content: NotificationContent = {
-            application_id: applicationIdNumber,
-            post_id: +postId,
-            type: 1,
-            applicationStatus: 0,
-            postTitle: postStatusAndAccountId.title,
-            companyName: postStatusAndAccountId.company_name,
-            name: userProfile.name,
-            notificationId: insertId
-        }
+        //for push notification
 
-        const notificationContent = createNotificationContent(
-            req.query.lang.toString(),
-            content
-        );
+        const body = createNotificationForApplication(
+            {
+                applicationId: applicationIdNumber,
+                postId: +postId,
+                type: 1,
+                applicationStatus: 0,
+                postTitle: postStatusAndAccountId.title,
+                companyName: postStatusAndAccountId.company_name,
+                name: userProfile.name,
+                notificationId: insertId,
+                lang: req.query.lang.toString()
+            }
+        )
 
         pushNotification(
             postStatusAndAccountId.account_id,
-            notificationContent.title,
-            notificationContent.body_push,
-            // "",
-            notificationContent.data
+            body
         );
+
+        // const content: NotificationContent = {
+        //     application_id: applicationIdNumber,
+        //     post_id: +postId,
+        //     type: 1,
+        //     applicationStatus: 0,
+        //     postTitle: postStatusAndAccountId.title,
+        //     companyName: postStatusAndAccountId.company_name,
+        //     name: userProfile.name,
+        //     notificationId: insertId
+        // }
+
+        // const notificationContent = createNotificationContent(
+        //     req.query.lang.toString(),
+        //     content
+        // );
+
+        // pushNotification(
+        //     postStatusAndAccountId.account_id,
+        //     notificationContent.title,
+        //     notificationContent.body_push,
+        //     // "",
+        //     notificationContent.data
+        // );
 
         return;
     } catch (error) {

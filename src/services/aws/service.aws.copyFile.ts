@@ -1,8 +1,8 @@
 import { S3Client, CopyObjectCommand } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
-import ImageBucket from "../../enum/imageBucket.enum";
+import ImageBucket from "../../models/enum/imageBucket.enum";
 import logging from "../../utils/logging";
-import ProfilesBucket from "../../enum/profileBucket.enum";
+import ProfilesBucket from "../../models/enum/profileBucket.enum";
 
 // This function will be used to copy file from folder to another folder in aws s3
 // example: when user apply for a job, we will copy cv from cv folder to application folder

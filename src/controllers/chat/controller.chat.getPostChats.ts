@@ -3,7 +3,7 @@ import createError from "http-errors";
 import logging from "../../utils/logging";
 import * as chatServices from "../../services/chat/_service.chat";
 import * as chatImageServices from "../../services/chatImage/_service.chatImage";
-import ImageBucket from "../../enum/imageBucket.enum";
+import ImageBucket from "../../models/enum/imageBucket.enum";
 
 const getPostChatsController = async (
     req: Request,
