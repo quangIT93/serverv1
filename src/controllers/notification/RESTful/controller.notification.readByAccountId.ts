@@ -1,9 +1,9 @@
 import console from 'console';
 import { NextFunction, Request, Response } from 'express';
 import createHttpError from 'http-errors';
-import * as notificationService from '../../services/notification/_service.notification';
-import logging from '../../utils/logging';
-import { createNotificationContent, NotificationContent } from './createNotificationContent/createForApplication';
+import * as notificationService from '../../../services/notification/_service.notification';
+import logging from '../../../utils/logging';
+import { createNotificationContent, NotificationContent } from '../createNotificationContent/createForApplication';
 
 const readAllNotificationsByAccountIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {

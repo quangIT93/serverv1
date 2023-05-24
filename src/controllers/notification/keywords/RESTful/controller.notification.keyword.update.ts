@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { UpdateKeywordNotificationStatusDto } from "../../../models/notification/keyword/dto/keyword-update.dto";
+import { UpdateKeywordNotificationStatusDto } from "../../../../models/notification/keyword/dto/keyword-update.dto";
 import createHttpError from "http-errors";
-import updateKeywordNotificationStatusService from "../../../services/notification/keyword/service.notification.keyword.update";
-import logging from "../../../utils/logging";
+import updateKeywordNotificationStatusService from "../../../../services/notification/keyword/service.notification.keyword.update";
+import logging from "../../../../utils/logging";
 
 const updateKeywordNotificationStatusController = async (
   req: Request,

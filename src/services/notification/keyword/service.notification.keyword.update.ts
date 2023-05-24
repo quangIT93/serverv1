@@ -9,6 +9,7 @@ const updateKeywordNotificationStatusService = async (dto: UpdateKeywordNotifica
             UPDATE keywords_notification
             SET district_status = ?
             AND category_status = ?
+            AND status = ?
             WHERE id = ?
             AND account_id = ?
         `;
@@ -17,6 +18,7 @@ const updateKeywordNotificationStatusService = async (dto: UpdateKeywordNotifica
             dto.districtStatus,
             dto.categoryStatus,
             dto.keywordNotificationId,
+            dto.status,
             dto.accountId,
         ];
     

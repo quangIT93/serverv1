@@ -1,6 +1,6 @@
 import createHttpError from 'http-errors';
-import createKeywordNotificationService from '../../../services/notification/keyword/service.notification.keyword.create';
-import { CreateKeywordNotificationDto } from '../../../models/notification/keyword/dto/keyword-create.dto';
+import createKeywordNotificationService from '../../../../services/notification/keyword/service.notification.keyword.create';
+import { CreateKeywordNotificationDto } from '../../../../models/notification/keyword/dto/keyword-create.dto';
 
 import { NextFunction, Request, Response } from "express";
 

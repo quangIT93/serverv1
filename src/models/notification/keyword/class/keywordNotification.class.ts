@@ -2,7 +2,7 @@ import { Notification } from "firebase-admin/lib/messaging/messaging-api";
 import { INotification } from "../../interface/notification.interface";
 import { NotificationData } from "../../class/notificationData.class";
 
-export class KeywordNotificationEntity implements INotification {
+export class KeywordNotification implements INotification {
     data: NotificationData;
     content: Notification;
 

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import notificationController from '../../../controllers/notification/_controller.notification';
+import notificationController from '../../../controllers/notification/RESTful/_controller.notification';
 import verifyAccessToken from '../../../middlewares/middleware.verifyAccessToken';
 const router = Router();
 
@@ -19,6 +19,12 @@ router.put('/update',
     notificationController.updateStatus
 );
 
+router.get(
+    '/keyword',
+    verifyAccessToken,
+    notificationController.keyword.read
+);
+
 router.post(
     '/keyword', 
     verifyAccessToken,
@@ -29,6 +35,12 @@ router.put(
     '/keyword/update-status',
     verifyAccessToken,
     notificationController.keyword.updateStatus
+);
+
+router.delete(
+    '/keyword/delete',
+    verifyAccessToken,
+    notificationController.keyword.delete
 );
 
 export default router;

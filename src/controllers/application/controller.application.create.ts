@@ -10,7 +10,7 @@ import copyFileService from '../../services/aws/service.aws.copyFile';
 import ProfilesBucket from '../../models/enum/profileBucket.enum';
 import ImageBucket from '../../models/enum/imageBucket.enum';
 import createNotificationForApplication from '../notification/createNotificationContent/createForApplication.test';
-import pushNotification from '../notification/push/push';
+import pushNotification from '../../services/pushNotification/push';
 const createApplicationController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // GET DATA

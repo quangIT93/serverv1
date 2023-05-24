@@ -4,16 +4,18 @@ export class UpdateKeywordNotificationStatusDto {
   constructor(
     public keywordNotificationId: number,
     public accountId: string,
-    public districtStatus: boolean,
-    public categoryStatus: boolean
-  ) {}
+    public districtStatus: number,
+    public categoryStatus: number,
+    public status?: number
+  ) { }
 
   public static fromRequest(req: Request): UpdateKeywordNotificationStatusDto {
     return new UpdateKeywordNotificationStatusDto(
       +req.body.id,
       req.user.id,
-      Boolean(req.body.districtStatus),
-      Boolean(req.body.categoryStatus)
+      +req.body.district_status,
+      +req.body.category_status,
+      +req.body.status
     );
   }
 
@@ -22,15 +24,17 @@ export class UpdateKeywordNotificationStatusDto {
       !dto.keywordNotificationId ||
       !dto.accountId ||
       dto.districtStatus === undefined ||
-      dto.categoryStatus === undefined
+      dto.categoryStatus === undefined ||
+      dto.status === undefined
     ) {
       return false;
     }
     if (
       isNaN(+dto.keywordNotificationId) ||
       typeof dto.accountId !== "string" ||
-      typeof dto.categoryStatus !== "boolean" ||
-      typeof dto.districtStatus !== "boolean"
+      (dto.districtStatus !== 0 && dto.districtStatus !== 1) ||
+      (dto.categoryStatus !== 0 && dto.categoryStatus !== 1) ||
+      (dto.status !== 0 && dto.status !== 1)
     ) {
       return false;
     }
@@ -44,7 +48,8 @@ export class UpdateKeywordNotificationStatusDto {
       +dto.keywordNotificationId,
       dto.accountId,
       dto.districtStatus,
-      dto.categoryStatus
+      dto.categoryStatus,
+      dto.status
     );
   }
 
@@ -55,7 +60,8 @@ export class UpdateKeywordNotificationStatusDto {
       +dto.keywordNotificationId,
       dto.accountId,
       dto.districtStatus,
-      dto.categoryStatus
+      dto.categoryStatus,
+      dto.status
     );
   }
 }

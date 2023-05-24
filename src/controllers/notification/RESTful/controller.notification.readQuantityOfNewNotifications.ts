@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import logging from '../../utils/logging';
+import logging from '../../../utils/logging';
 import createError from 'http-errors';
-import * as notificationService from '../../services/notification/_service.notification';
+import * as notificationService from '../../../services/notification/_service.notification';
 
 const readQuantityOfNewNotificationsController = async (req: Request, res: Response, next: NextFunction) => {
     try {
