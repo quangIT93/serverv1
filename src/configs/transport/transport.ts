@@ -1,4 +1,4 @@
-import logging from "../utils/logging";
+import logging from "../../utils/logging";
 const nodemailer = require("nodemailer");
 
 const nodeMailerTransporter = nodemailer.createTransport({

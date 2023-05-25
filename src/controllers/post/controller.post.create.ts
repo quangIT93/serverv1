@@ -8,9 +8,10 @@ import * as postServices from "../../services/post/_service.post";
 import * as postImageServices from "../../services/postImage/_service.postImage";
 import * as postCategoryServices from "../../services/postCategory/_service.postCategory";
 import Helper from "../../helpers/helper.class";
-import ImageBucket from "../../enum/imageBucket.enum";
+import ImageBucket from "../../models/enum/imageBucket.enum";
 import countPostQuantityByDayByAccountId from "../../services/post/service.post.countPostQuantityByDayByAccountId";
 import createPostResourceService from "../../services/postResource/service.postResource.create";
+import createNotificationKeywordForUsers from "../notification/keywords/createNotification/createNotificationForKeyword";
 
 const createPostController = async (
     req: Request,
@@ -374,11 +375,22 @@ const createPostController = async (
             }
 
             // SUCCESS
-            return res.status(200).json({
+            res.status(200).json({
                 code: 200,
                 success: true,
                 message: "Successfully",
             });
+
+
+            // CREATE NOTIFICATION KEYWORD FOR USERS
+            createNotificationKeywordForUsers(
+                {
+                    postTitle: title,
+                    postId: postIdCreated,
+                    wardId: wardId,
+                    categoryId: categoryIds,
+                }
+            )
         });
     } catch (error) {
         logging.error("Create post controller has error: ", error);

@@ -1,5 +1,5 @@
 import logging from "../../../utils/logging";
-import { executeQuery } from "../../../configs/database";
+import { executeQuery } from "../../../configs/database/database";
 
 const updateLikeStatusApplicationByIdService = async (applicationId: number, liked: number) => {
     try {

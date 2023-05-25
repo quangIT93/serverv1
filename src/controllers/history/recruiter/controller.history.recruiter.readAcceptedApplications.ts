@@ -1,6 +1,6 @@
 import {Request, Response, NextFunction} from 'express';
 import createError from 'http-errors';
-import ImageBucket from '../../../enum/imageBucket.enum';
+import ImageBucket from '../../../models/enum/imageBucket.enum';
 import applicationService from '../../../services/application/_service.application';
 import logging from '../../../utils/logging';
 

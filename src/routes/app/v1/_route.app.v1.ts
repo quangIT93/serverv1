@@ -13,7 +13,7 @@ import themeRouter from './route.app.theme';
 import bannerRouter from './route.app.banner';
 import appApplicationRouter from './route.app.application';
 import appSearchRouter from './route.app.search';
-import appNotificationRouter from './route.app.notification';
+import appNotificationRouter from '../v1/route.app.notification';
 import chatRouter from './route.app.chat';
 import fcmRouter from './route.app.fcm-token';
 

@@ -1,0 +1,95 @@
+import { Notification } from "firebase-admin/lib/messaging/messaging-api";
+import { NotificationData } from "../../../../models/notification/class/notificationData.class";
+import { SystemNotification } from "../../../../models/notification/system/class/system.notification";
+import generateTitle from "./generateTitle";
+import generateBody from "./generateBody";
+import logging from "../../../../utils/logging";
+
+const createNewNotificationForApplication = (
+    {
+        applicationId,
+        postId,
+        type,
+        // type_text,
+        applicationStatus,
+        postTitle,
+        companyName,
+        name,
+        notificationId,
+        isRead,
+        createdAt = new Date().getTime(),
+        lang = "vi"
+    }: {
+        applicationId: number;
+        postId: number;
+        type: number;
+        applicationStatus: number;
+        postTitle: string;
+        companyName: string;
+        name: string;
+        notificationId: number;
+        isRead?: boolean;
+        createdAt?: number;
+        lang?: string;
+    }
+): SystemNotification => {
+    // DATA
+    try {
+
+        const data: NotificationData = {
+            notificationId,
+            applicationId,
+            postId,
+            type,
+            applicationStatus,
+            isRead,
+            createdAt,
+            typeText: type === 0 ? "applicator" : "recruiter"
+        }
+    
+        // CONTENT
+        const content: Notification = {
+            title: generateTitle({
+                type,
+                applicationStatus,
+                lang
+            }),
+            body: generateBody({
+                type,
+                applicationStatus,
+                postTitle,
+                companyName,
+                name,
+                lang
+            }),
+        }
+    
+        const content_app = {
+            title: generateTitle({
+                type,
+                applicationStatus,
+                lang
+            }),
+            body: generateBody({
+                type,
+                applicationStatus,
+                postTitle,
+                companyName,
+                name,
+                lang
+            }),
+        }
+    
+    
+        // CREATE NOTIFICATION
+        const notification = new SystemNotification(data, content, content_app);
+    
+        return notification;
+    } catch (error) {
+        logging.error(error);
+        return;
+    }
+
+}
+
+export default createNewNotificationForApplication;

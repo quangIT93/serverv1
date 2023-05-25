@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import createHttpError from 'http-errors';
-import * as notificationService from '../../services/notification/_service.notification';
-import logging from '../../utils/logging';
+import * as notificationService from '../../../services/notification/_service.notification';
+import logging from '../../../utils/logging';
 
 const updateNotificationStatus = async (req: Request, res: Response, next: NextFunction) => {
     const { id: accountId } = req.user;

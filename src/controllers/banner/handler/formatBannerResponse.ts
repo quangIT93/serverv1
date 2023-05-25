@@ -1,4 +1,4 @@
-import ImageBucket from "../../../enum/imageBucket.enum";
+import ImageBucket from "../../../models/enum/imageBucket.enum";
 
 const formatBannerResponse = (banner) => {
     return {

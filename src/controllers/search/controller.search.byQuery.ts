@@ -6,9 +6,9 @@ import * as searchService from '../../services/search/_service.search';
 // import * as postServices from "../../services/post/_service.post";
 import * as bookmarkServices from "../../services/bookmark/_service.bookmark";
 // import * as categoryServices from "../../services/category/_service.category";
-import MoneyType from '../../enum/money_type.enum';
+import MoneyType from '../../models/enum/money_type.enum';
 import readDefaultPostImageByPostId from '../../services/category/service.category.readDefaultPostImageByPostId';
-import ImageBucket from '../../enum/imageBucket.enum';
+import ImageBucket from '../../models/enum/imageBucket.enum';
 interface Payload {
     id: string;
     role: number;

@@ -4,8 +4,8 @@ import logging from '../../../utils/logging';
 
 import applicationService from '../../../services/application/_service.application';
 import * as postService from '../../../services/post/_service.post';
-import ApplicationStatus from '../../../enum/application.enum';
-import ImageBucket from '../../../enum/imageBucket.enum';
+import ApplicationStatus from '../../../models/enum/application.enum';
+import ImageBucket from '../../../models/enum/imageBucket.enum';
 import applicationStatusHandler from '../../application/handler/applicationStatusHandler';
 // import MoneyType from '../../../enum/money_type.enum';
 

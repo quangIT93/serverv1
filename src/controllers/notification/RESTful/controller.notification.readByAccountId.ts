@@ -1,9 +1,9 @@
 import console from 'console';
 import { NextFunction, Request, Response } from 'express';
 import createHttpError from 'http-errors';
-import * as notificationService from '../../services/notification/_service.notification';
-import logging from '../../utils/logging';
-import { createNotificationContent, NotificationContent } from './createNotificationContent/createForApplication';
+import * as notificationService from '../../../services/notification/_service.notification';
+import logging from '../../../utils/logging';
+import { createNotificationContent, NotificationContent } from '../createNotificationContent/application/createForApplication';
 
 const readAllNotificationsByAccountIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -16,6 +16,10 @@ const readAllNotificationsByAccountIdController = async (req: Request, res: Resp
         }
 
         let result = await notificationService.readAllNotificationsByAccountIdService(accountId, +page);
+
+        // const postNotifications = await readNotificationForKeywordService(accountId, req.query.lang.toString());
+
+        // console.log(postNotifications, " postNotifications");
 
         if (!result || result.length === 0) {
             return res.status(200).json({
@@ -55,6 +59,8 @@ const readAllNotificationsByAccountIdController = async (req: Request, res: Resp
                 content: content.body,
             }
         })
+
+        
 
         // console.log(result[0]);
         return res.status(200).json({

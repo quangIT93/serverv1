@@ -1,5 +1,5 @@
 import logging from "../../utils/logging";
-import { executeQuery } from "../../configs/database";
+import { executeQuery } from "../../configs/database/database";
 
 const removePostsFromTheme = async (themeId: number, postIds: number[]) => {
     try {

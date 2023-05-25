@@ -7,7 +7,7 @@ import * as chatServices from '../services/chat/_service.chat';
 import * as awsServices from '../services/aws/_service.aws';
 import * as chatImageServices from '../services/chatImage/_service.chatImage';
 import redisClient from './redis';
-import ImageBucket from '../enum/imageBucket.enum';
+import ImageBucket from '../models/enum/imageBucket.enum';
 
 interface Payload {
   id: string;

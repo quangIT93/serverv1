@@ -1,8 +1,8 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
-import ImageBucket from "../../enum/imageBucket.enum";
+import ImageBucket from "../../models/enum/imageBucket.enum";
 import logging from "../../utils/logging";
-import ProfilesBucket from "../../enum/profileBucket.enum";
+import ProfilesBucket from "../../models/enum/profileBucket.enum";
 
 
 const uploadCVToS3Service = async (

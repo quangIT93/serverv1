@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import logging from "../../utils/logging";
 import * as awsServices from "../../services/aws/_service.aws";
 import * as bannerServices from "../../services/banner/_service.banner";
-import ImageBucket from "../../enum/imageBucket.enum";
+import ImageBucket from "../../models/enum/imageBucket.enum";
 
 const updateBannerController = async (
     req: Request,

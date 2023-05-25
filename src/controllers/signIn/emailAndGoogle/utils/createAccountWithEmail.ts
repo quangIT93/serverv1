@@ -1,8 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 import readAccountByEmailService from "../../../../services/account/service.account.readByEmail";
 import createAccountWithEmailService from "../../../../services/account/service.account.createWithEmail";
-import { sendEmailToUser } from "../../../../transport/transport";
+
 import generateWelcomeMail from "../../../../html/mail/generateWelcomeMail";
+import { sendEmailToUser } from "../../../../configs/transport/transport";
 
 const createAccountWithEmail = async (
     { 

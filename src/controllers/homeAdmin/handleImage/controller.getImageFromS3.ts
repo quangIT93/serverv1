@@ -1,6 +1,6 @@
 import Path from 'path';
 import axios from 'axios';
-import { executeQuery } from './../../../configs/database';
+import { executeQuery } from '../../../configs/database/database';
 import { Request, Response } from 'express';
 import fs from 'fs';
 import uploadImages from '../../../services/aws/service.aws.uploadImages';

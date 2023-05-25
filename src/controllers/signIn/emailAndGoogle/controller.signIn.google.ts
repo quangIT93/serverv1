@@ -16,20 +16,26 @@ const signInWithGoogleController = async (
         const idToken: string = req.body.idToken
             ? req.body.idToken.toString().trim()
             : "";
-        const isIOS: boolean = req.body.isIOS;
+        const isIOS: boolean = req.body.isIOS ? req.body.isIOS : false;
+        const isWeb: boolean = req.body.isWeb ? req.body.isWeb : false;
 
         if (!idToken) {
             return next(createError(400, "Invalid id token"));
         }
 
-        if (!(isIOS === true || isIOS === false)) {
+        if (!(isIOS === true || isIOS === false || isWeb === true || isWeb === false)) {
             return next(createError(400, "Invalid isIOS value"));
         }
 
+        let CLIENT_ID: string = "";
         // INIT CLIENT ID
-        const CLIENT_ID = isIOS
-            ? process.env.GOOGLE_CLIENT_ID_FOR_IOS
-            : process.env.GOOGLE_CLIENT_ID_FOR_ANDROID;
+        if (isIOS) {
+            CLIENT_ID = process.env.GOOGLE_CLIENT_ID_IOS;
+        } else if (isWeb) {
+            CLIENT_ID = process.env.GOOGLE_CLIENT_ID_WEB;
+        } else {
+            CLIENT_ID = process.env.GOOGLE_CLIENT_ID_FOR_ANDROID;
+        }
 
         // INIT OAUTH2 CLIENT
         const client = new OAuth2Client(CLIENT_ID);

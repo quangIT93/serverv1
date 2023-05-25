@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { multerUploadPdf } from "../../../configs/multer";
 import createHttpError from "http-errors";
 import uploadCVToS3Service from "../../../services/aws/service.aws.uploadCv";
-import ProfilesBucket from "../../../enum/profileBucket.enum";
+import ProfilesBucket from "../../../models/enum/profileBucket.enum";
 import updateCV from "../../../services/profile/service.profile.updateCv";
 import logging from "../../../utils/logging";
 import readProfileByIdService from "../../../services/profile/service.profile.readById";

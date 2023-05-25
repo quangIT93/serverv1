@@ -1,4 +1,4 @@
-import { executeQuery } from "../../configs/database";
+import { executeQuery } from "../../configs/database/database";
 import logging from "../../utils/logging";
 
 const deleteEducationOfProfile = async (educationId: number) => {

@@ -1,5 +1,5 @@
 import logging from "../../../utils/logging";
-import { executeQuery } from "../../../configs/database";
+import { executeQuery } from "../../../configs/database/database";
 
 const createApplicationEducationsService = async (applicationId: number, accountId: string) => {
     try {

@@ -8,8 +8,8 @@ import * as profileLocationServices from "../../../services/profileLocation/_ser
 import * as profileEducationServices from "../../../services/profileEducation/_service.profileEducation";
 import * as profileExperienceServices from "../../../services/profileExperience/_service.profileExperience";
 import * as profileSocialServices from "../../../services/profileSocial/_service.profileSocial";
-import ImageBucket from "../../../enum/imageBucket.enum";
-import ProfilesBucket from "../../../enum/profileBucket.enum";
+import ImageBucket from "../../../models/enum/imageBucket.enum";
+import ProfilesBucket from "../../../models/enum/profileBucket.enum";
 import readAccountByIdService from "../../../services/account/service.account.readAccountById";
 
 const readProfileByIdController = async (
