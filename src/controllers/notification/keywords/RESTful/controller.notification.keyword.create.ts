@@ -22,9 +22,9 @@ const createKeywordNotification = async (req: Request, res: Response, next: Next
             message: 'Create keyword notification successfully',
             data: isCreateSuccess,
             success: true
-        });        
+        });
 
-    } catch (error) {
+    } catch (error) {   
         return res.status(500).send('Internal server error');
     } 
 };

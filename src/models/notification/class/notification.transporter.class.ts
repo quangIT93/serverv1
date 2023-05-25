@@ -6,6 +6,7 @@ import logging from "../../../utils/logging";
 import { INotification } from "../interface/notification.interface";
 import serviceAccount from "../../../keys/serviceAccountKey.json";
 import { NotificationData } from "./notificationData.class";
+import readFcmTokenMultipleAccountIdsService from "../../../services/fcm-token/service.fcm-token.readByMutipleAccountIds";
 
 
 
@@ -48,6 +49,9 @@ export class NotificationTransporter implements INotificationTransporter {
             if (!(this.fcmTokens[0] !== undefined) || !(this.fcmTokens[0] !== null) || !this.fcmTokens[0]) {
                 await this.getFcmTokens(account_id);
             }
+            if (this.fcmTokens.length === 0) {
+                return;
+            }
 
             // console.log(NotificationTransporter.transporter, " NotificationTransporter");
             // console.log(this.fcmTokens, " NotificationTransporter");
@@ -68,6 +72,39 @@ export class NotificationTransporter implements INotificationTransporter {
         }
     }
 
+    async sendMultiple(body: INotification, account_ids: string[]): Promise<any> {
+        try {
+            if (!NotificationTransporter.transporter) {
+                await this.initialize();
+            }
+
+            if (!(this.fcmTokens[0] !== undefined) || !(this.fcmTokens[0] !== null) || !this.fcmTokens[0]) {
+                await this.getFcmTokensByMultipleAccountIds(account_ids);
+            }
+
+            // console.log(NotificationTransporter.transporter, " NotificationTransporter");
+            console.log(this.fcmTokens, " NotificationTransporter");
+
+            if (this.fcmTokens.length === 0) {
+                return;
+            }
+
+            await NotificationTransporter.transporter.messaging().sendMulticast({
+                tokens: this.fcmTokens,
+                notification: body.content,
+                data: NotificationData.toKeyValue(body.data),
+            });
+            // logging.info("Notification sent successfully");
+            return;
+
+        }
+        catch (error) {
+            console.log(error, " NotificationTransporter");
+            return;
+        }
+    }
+
+
     // this method is used to get the fcm tokens of the user
     // set the fcm tokens to the fcmTokens property
     async getFcmTokens(account_id: string): Promise<string[]> {
@@ -76,6 +113,21 @@ export class NotificationTransporter implements INotificationTransporter {
                 return [];
             }
             const res = await readFcmTokenService(account_id);
+            this.fcmTokens = res.map((item: any) => item.token);
+            return this.fcmTokens;
+        } catch (error) {
+            console.log(error, " NotificationTransporter");
+            return [];
+        }
+    }
+
+    async getFcmTokensByMultipleAccountIds(account_ids: string[]): Promise<string[]> {
+        try {
+            if (!account_ids) {
+                return [];
+            }
+            const res = await readFcmTokenMultipleAccountIdsService(account_ids);
+            console.log(res, " NotificationTransporter");
             this.fcmTokens = res.map((item: any) => item.token);
             return this.fcmTokens;
         } catch (error) {
