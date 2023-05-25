@@ -38,14 +38,19 @@ export class KeywordNotificationEntity {
             id: entity.id,
             account_id: entity.accountId,
             keyword: entity.keyword,
-            district_id: entity.districtId,
-            district_name: entity.districtName,
-            district_status: entity.districtStatus,
-            province_id: entity.provinceId,
-            province_name: entity.provinceName,
-            category_id: entity.categoryId,
-            category_name: entity.categoryName,
-            category_status: entity.categoryStatus,
+            district: {
+                id: entity.districtId,
+                name: entity.districtName,
+                status: entity.districtStatus,
+            },
+            province: {
+                name: entity.provinceName,
+            },
+            category: {
+                id: entity.categoryId,
+                name: entity.categoryName,
+                status: entity.categoryStatus,
+            },
             status: entity.status,
             created_at: entity.createdAt.getTime(),
         };
