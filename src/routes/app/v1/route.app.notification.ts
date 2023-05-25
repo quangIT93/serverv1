@@ -43,4 +43,10 @@ router.delete(
     notificationController.keyword.delete
 );
 
+router.put(
+    '/update-platform',
+    verifyAccessToken,
+    notificationController.updateTypeOfNotificationPlatform
+)
+
 export default router;

@@ -3,6 +3,8 @@ import createKeywordNotificationService from '../../../../services/notification/
 import { CreateKeywordNotificationDto } from '../../../../models/notification/keyword/dto/keyword-create.dto';
 
 import { NextFunction, Request, Response } from "express";
+import readTypeOfNotificationPlatformService from '../../../../services/notification/keyword/service.readTypeOfNotificationPlatform';
+import createDefaultPlatformNotificationService from '../../../../services/notification/keyword/service.createDefaultPlatformForNotification';
 
 const createKeywordNotification = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -16,6 +18,16 @@ const createKeywordNotification = async (req: Request, res: Response, next: Next
     
         if (!isCreateSuccess) {
             return next(createHttpError(500, 'Internal server error'));
+        }
+
+        const defaultPlatform = await readTypeOfNotificationPlatformService({accountId: dto.accountId});
+
+        if (!defaultPlatform) {
+            const isCreateDefaultPlatformSuccess = await createDefaultPlatformNotificationService(dto.accountId);
+
+            if (!isCreateDefaultPlatformSuccess) {
+                return next(createHttpError(500, 'Internal server error'));
+            }
         }
 
         return res.status(201).json({
