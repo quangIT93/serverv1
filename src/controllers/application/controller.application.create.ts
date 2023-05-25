@@ -5,11 +5,10 @@ import readStatusAndAccountIdById from '../../services/post/service.post.readSta
 import readProfileByIdService from '../../services/profile/service.profile.readById';
 import applicationService from '../../services/application/_service.application'; 
 import * as notificationService from '../../services/notification/_service.notification';
-import { createNotificationContent, NotificationContent } from '../notification/createNotificationContent/createForApplication';
 import copyFileService from '../../services/aws/service.aws.copyFile';
 import ProfilesBucket from '../../models/enum/profileBucket.enum';
 import ImageBucket from '../../models/enum/imageBucket.enum';
-import createNotificationForApplication from '../notification/createNotificationContent/createForApplication.test';
+import createNewNotificationForApplication from '../notification/createNotificationContent/application/createForApplication.test';
 import pushNotification from '../../services/pushNotification/push';
 const createApplicationController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -153,7 +152,7 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
 
         //for push notification
 
-        const body = createNotificationForApplication(
+        const body = createNewNotificationForApplication(
             {
                 applicationId: applicationIdNumber,
                 postId: +postId,
@@ -171,30 +170,6 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
             postStatusAndAccountId.account_id,
             body
         );
-
-        // const content: NotificationContent = {
-        //     application_id: applicationIdNumber,
-        //     post_id: +postId,
-        //     type: 1,
-        //     applicationStatus: 0,
-        //     postTitle: postStatusAndAccountId.title,
-        //     companyName: postStatusAndAccountId.company_name,
-        //     name: userProfile.name,
-        //     notificationId: insertId
-        // }
-
-        // const notificationContent = createNotificationContent(
-        //     req.query.lang.toString(),
-        //     content
-        // );
-
-        // pushNotification(
-        //     postStatusAndAccountId.account_id,
-        //     notificationContent.title,
-        //     notificationContent.body_push,
-        //     // "",
-        //     notificationContent.data
-        // );
 
         return;
     } catch (error) {

@@ -4,7 +4,7 @@ import { NotificationData } from "../class/notificationData.class";
 export interface INotification {
     data: NotificationData;
     content: Notification;
-
+    // dataContent: NotificationData;
     [key: string]: any;
 }
 

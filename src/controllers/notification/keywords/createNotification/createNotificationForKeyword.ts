@@ -1,4 +1,5 @@
 import readKeywordByPostDetailService from "../../../../services/notification/keyword/service.notification.keyword.getKeywordByPost";
+import createNotificationForKeywordService from "../../../../services/notification/service.notification.createNotificationForKeyword";
 import pushNotification from "../../../../services/pushNotification/push";
 
 const createNotificationKeywordForUsers = async (
@@ -51,6 +52,12 @@ const createNotificationKeywordForUsers = async (
             data: {
                 postId: postId,
             }
+        }
+
+        const isCreated = await createNotificationForKeywordService(accountIds, postId);
+
+        if (!isCreated) {
+            throw new Error("createNotificationForKeywordService failed");
         }
 
         pushNotification(

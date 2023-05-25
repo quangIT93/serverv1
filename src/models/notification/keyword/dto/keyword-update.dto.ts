@@ -4,8 +4,8 @@ export class UpdateKeywordNotificationStatusDto {
   constructor(
     public keywordNotificationId: number,
     public accountId: string,
-    public districtStatus: number,
-    public categoryStatus: number,
+    // public districtStatus: number,
+    // public categoryStatus: number,
     public status?: number
   ) { }
 
@@ -13,8 +13,8 @@ export class UpdateKeywordNotificationStatusDto {
     return new UpdateKeywordNotificationStatusDto(
       +req.body.id,
       req.user.id,
-      +req.body.district_status,
-      +req.body.category_status,
+      // +req.body.district_status,
+      // +req.body.category_status,
       +req.body.status
     );
   }
@@ -23,8 +23,8 @@ export class UpdateKeywordNotificationStatusDto {
     if (
       !dto.keywordNotificationId ||
       !dto.accountId ||
-      dto.districtStatus === undefined ||
-      dto.categoryStatus === undefined ||
+      // dto.districtStatus === undefined ||
+      // dto.categoryStatus === undefined ||
       dto.status === undefined
     ) {
       return false;
@@ -32,8 +32,8 @@ export class UpdateKeywordNotificationStatusDto {
     if (
       isNaN(+dto.keywordNotificationId) ||
       typeof dto.accountId !== "string" ||
-      (dto.districtStatus !== 0 && dto.districtStatus !== 1) ||
-      (dto.categoryStatus !== 0 && dto.categoryStatus !== 1) ||
+      // (dto.districtStatus !== 0 && dto.districtStatus !== 1) ||
+      // (dto.categoryStatus !== 0 && dto.categoryStatus !== 1) ||
       (dto.status !== 0 && dto.status !== 1)
     ) {
       return false;
@@ -47,8 +47,8 @@ export class UpdateKeywordNotificationStatusDto {
     return new UpdateKeywordNotificationStatusDto(
       +dto.keywordNotificationId,
       dto.accountId,
-      dto.districtStatus,
-      dto.categoryStatus,
+      // dto.districtStatus,
+      // dto.categoryStatus,
       dto.status
     );
   }
@@ -59,8 +59,8 @@ export class UpdateKeywordNotificationStatusDto {
     return new UpdateKeywordNotificationStatusDto(
       +dto.keywordNotificationId,
       dto.accountId,
-      dto.districtStatus,
-      dto.categoryStatus,
+      // dto.districtStatus,
+      // dto.categoryStatus,
       dto.status
     );
   }

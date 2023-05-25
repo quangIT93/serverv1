@@ -3,8 +3,9 @@ import { Response, Request, NextFunction } from 'express';
 import logging from '../../utils/logging';
 import applicationService from '../../services/application/_service.application';
 import * as notificationService from '../../services/notification/_service.notification';
-import { createNotificationContent, NotificationContent } from '../notification/createNotificationContent/createForApplication';
-import pushNotification from '../../configs/transport/notification/push-notification';
+import { createNotificationContent, NotificationContent } from '../notification/createNotificationContent/application/createForApplication';
+import pushNotification from '../../services/pushNotification/push';
+import createNewNotificationForApplication from '../notification/createNotificationContent/application/createForApplication.test';
 
 const updateApplicationController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -73,31 +74,26 @@ const updateApplicationController = async (req: Request, res: Response, next: Ne
 
         
         if (status !== 3 && createNotificationStatus) {
-            const content: NotificationContent = {
-                application_id: +applicationId,
-                post_id: postInformation.post_id,
-                applicationStatus: +status,
-                type: 0,
-                postTitle: postInformation.title,
-                companyName: postInformation.company_name,
-                name: postInformation.name,
-                notificationId: +createNotificationStatus
-            }
-            const notificationContent = createNotificationContent(
-                req.query.lang.toString(),
-                content
+            const body = createNewNotificationForApplication(
+                {
+                    applicationId: +applicationId,
+                    postId: +postInformation.post_id,
+                    type: 0,
+                    applicationStatus: +status,
+                    postTitle: postInformation.title,
+                    companyName: postInformation.company_name,
+                    name: "",
+                    notificationId: 0,
+                    lang: req.query.lang.toString()
+                }
             )
-
-            // SEND NOTIFICATION
+            
             pushNotification(
                 postInformation.account_id,
-                notificationContent.title,
-                notificationContent.body_push,
-                notificationContent.data
-            )
+                body
+            );
         }
         return;
-
     }
     catch (error) {
         logging.error(error);

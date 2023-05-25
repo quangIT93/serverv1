@@ -9,8 +9,11 @@ const generateTitle = (
         applicationStatus: number
     }
 ): string => {
+    
     switch (type) {
         case 0:
+            console.log("type: ", type);
+            console.log("applicationStatus: ", applicationStatus);
             switch (applicationStatus) {
                 case 2:
                     switch (lang) {
@@ -35,6 +38,7 @@ const generateTitle = (
 
                     }
                 }
+            break;
         case 1:
             switch (lang) {
                 case "vi":

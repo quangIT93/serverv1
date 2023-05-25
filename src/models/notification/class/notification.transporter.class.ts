@@ -62,7 +62,10 @@ export class NotificationTransporter implements INotificationTransporter {
                 notification: body.content,
                 data: NotificationData.toKeyValue(body.data),
             });
-            // logging.info("Notification sent successfully");
+            console.log("tokens: ", this.fcmTokens);
+            console.log("notification: ", body.content);
+            console.log("data: ", NotificationData.toKeyValue(body.data));
+            logging.info("Notification sent successfully");
             return;
 
         }

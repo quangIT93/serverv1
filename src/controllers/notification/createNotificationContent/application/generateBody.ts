@@ -39,6 +39,7 @@ const generateBody = ({
                             return `Chúc mừng bạn! Bạn đã được nhà tuyển dụng xác nhận tuyển cho vị trí ${postTitle} cho ${companyName}.`;
                     }
             }
+            break;
         case 1:
             switch (lang) {
                 case "vi":

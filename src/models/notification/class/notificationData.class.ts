@@ -16,7 +16,9 @@ export class NotificationData implements INotificationData {
     public static toKeyValue(data: NotificationData) {
         const result: any = {};
         for (const key in data) {
-            result[key] = data[key].toString();
+            if (data[key] !== undefined && data[key] !== null) {
+                result[key] = data[key].toString();
+            }
         }
         return result;
     }
