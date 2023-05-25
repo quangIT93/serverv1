@@ -1,7 +1,3 @@
--- limit 10 keyword for a user
--- if user add 11th keyword, return error
--- denied to add new keyword
-
 CREATE TRIGGER limit_keyword BEFORE INSERT ON keywords_notification
 FOR EACH ROW
 BEGIN

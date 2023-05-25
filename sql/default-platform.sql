@@ -1,6 +1,3 @@
--- TRIGGER
--- Auto add new record to type of platform when user register first keyword
---
 CREATE TRIGGER auto_add_platform AFTER INSERT ON keywords_notification
 FOR EACH ROW
 BEGIN
