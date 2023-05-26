@@ -30,11 +30,12 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
         const { start_date } = req.query;
         const { end_date } = req.query;
         const { jobTypeId: job_type_id } = req.query;
+        const { only_company } = req.query;
 
         // VALIDATION
         // FORMAT query to string
         if (!q) {
-            return next(createError(400, 'Invalid search keyword'));
+            q = '';
         }
 
         // DISTRICT IDS
@@ -176,6 +177,11 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
             return next(createError(400, "Money type must be 1 (VND) or 2 (USD)"));
         }
 
+        // search by only company name
+        if (only_company && (only_company !== '0' && only_company !== '1')) {
+            return next(createError(400, "only_company must be 0 or 1"));
+        }
+
         
         if (page && !Number.isInteger(parseInt(page as string))) {
             return next(createError(400, 'Invalid page'));
@@ -204,6 +210,7 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
             endDate,
             money_type ? +money_type : null,
             jobTypeIds,
+            only_company ? +only_company : 0,
             id,
         );
 

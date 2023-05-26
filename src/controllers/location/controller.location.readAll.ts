@@ -83,7 +83,7 @@ const readAllLocationsController = async (
             } else {
 
               // get list wards vn
-              const wards = await locationServices.readWardsByDistrict(
+              const wards = await locationServices.readWardsByDistrictService(
                 district.id
               );
               // Sort

@@ -16,6 +16,7 @@ const searchByQueryV2Service = async (
     endDate : number | undefined | null,
     moneyType: number | undefined | null,
     job_type_id: number[] | undefined | null,
+    onlyCompany: number | undefined | null,
     accountId: string | undefined | null,
 ) => {
     try {
@@ -79,8 +80,12 @@ const searchByQueryV2Service = async (
             "LEFT JOIN job_types " +
             "ON posts.job_type = job_types.id " +
             "WHERE posts.status = 1 " +
-            "AND (title LIKE ? OR " +
-            "company_name LIKE ?) " +
+            "AND " +
+            // If onlyCompany is not null, then only search for posts that have company name or title
+            // If onlyCompany is null, then search for posts that have company name
+            `${onlyCompany !== 0 ? "posts.company_name LIKE ? " : "(posts.company_name LIKE ? OR posts.title LIKE ?) "}` +
+            // "AND (title LIKE ? OR " +
+            // "company_name LIKE ?) " +
             `${districtIds.length > 0 ? `AND wards.district_id IN (${districtIds.join(",")}) ` : ''}` +
             `${categoryIds.length > 0 ? 
                 `AND posts.id IN (SELECT post_id 
@@ -102,7 +107,7 @@ const searchByQueryV2Service = async (
             "LIMIT 20 " +
             `OFFSET ${page ? (page - 1) * 20 : 0}`;
         const params = []
-        .concat([`%${q}%`, `%${q}%`])
+        .concat(onlyCompany !== 0 ? [`%${q}%`] : [`%${q}%`, `%${q}%`])
         .concat(accountId !== null ? [accountId] : [])
         .concat(salaryMin !== null ? [salaryMin] : [])
         .concat(salaryMax !== null ? [salaryMax] : [])
@@ -112,7 +117,13 @@ const searchByQueryV2Service = async (
         .concat(startDate !== null ? [startDate] : [])
         .concat(endDate !== null ? [endDate] : [])
         // .concat(job_type_id.length > 0 ? job_type_id : []);
+
+        // console.log("query: ", query);
+        // console.log("params: ", params);
+        
         const res = await executeQuery(query, params);
+
+        
         return res ? res : null;
     } catch (error) {
         logging.error("Search by query service has error: ", error);

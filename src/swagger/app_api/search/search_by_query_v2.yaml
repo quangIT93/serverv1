@@ -12,7 +12,6 @@ paths:
         - name: q
           in: query
           description: Query
-          required: true
           schema:
             type: string
         - name: page
@@ -109,6 +108,16 @@ paths:
             items:
               type: integer
           example: [1, 2]
+        - name: only_company
+          in: query
+          description: Only company
+          required: false
+          schema:
+            type: integer
+            enum:
+              - 0
+              - 1
+          example: 1
       responses:
         '200':
           description: OK

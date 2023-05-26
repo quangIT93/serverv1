@@ -29,6 +29,8 @@ components:
                     type: string
                 isIOS:
                     type: boolean
+                isWeb:
+                    type: boolean
             required:
                 - idToken
                 - isIOS
