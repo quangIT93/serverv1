@@ -54,16 +54,20 @@ const createNotificationKeywordForUsers = async (
             }
         }
 
-        const isCreated = await createNotificationForKeywordService(accountIds, postId);
-
-        if (!isCreated) {
-            throw new Error("createNotificationForKeywordService failed");
+        if (accountIds.length > 0) {
+            const isCreated = await createNotificationForKeywordService(accountIds, postId);
+            if (!isCreated) {
+                throw new Error("createNotificationForKeywordService failed");
+            }
+            pushNotification(
+                accountIds,
+                body
+            ) 
+        } else {
+            console.log("No user has subscribed to this keyword");
         }
 
-        pushNotification(
-            accountIds,
-            body
-        ) 
+
 
     } catch (error) {
         console.log(error, " createNotificationKeywordForUsers");

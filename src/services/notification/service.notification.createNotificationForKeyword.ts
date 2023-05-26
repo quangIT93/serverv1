@@ -12,6 +12,7 @@ const createNotificationForKeywordService = async (
 
         const params = account_id.map((item: string) => [item, post_id]).flat();
 
+        // console.log(params)
 
         const result = await executeQuery(query, params);
         

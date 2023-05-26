@@ -22,7 +22,7 @@ const createKeywordNotification = async (req: Request, res: Response, next: Next
 
         const defaultPlatform = await readTypeOfNotificationPlatformService({accountId: dto.accountId});
 
-        if (!defaultPlatform) {
+        if (!defaultPlatform[0]?.type) {
             const isCreateDefaultPlatformSuccess = await createDefaultPlatformNotificationService(dto.accountId);
 
             if (!isCreateDefaultPlatformSuccess) {

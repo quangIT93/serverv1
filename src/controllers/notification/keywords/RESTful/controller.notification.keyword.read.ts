@@ -30,7 +30,7 @@ const readKeywordNotification = async (req: Request, res: Response, next: NextFu
         return res.status(200).json({
             message: "Read keyword notification successfully",
             data: {
-                type: typeOfPlatform[0].type,
+                type: typeOfPlatform[0]?.type ? typeOfPlatform[0].type : null,
                 keywords: response,
             },
             success: true,
