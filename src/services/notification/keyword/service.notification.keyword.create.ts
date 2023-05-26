@@ -7,7 +7,7 @@ const createKeywordNotificationService = async (dto: CreateKeywordNotificationDt
 
         const query = "INSERT INTO keywords_notification " +
         "(keyword, category_id, category_status, district_id, district_status, account_id) " +
-        "VALUES (?, ?, ?, ?) RETURNING *";
+        "VALUES (?, ?, ?, ?, ?, ?) RETURNING *";
         
         const values = [
             dto.keyword,
