@@ -4,6 +4,7 @@ import { SystemNotification } from "../../../../models/notification/system/class
 import generateTitle from "./generateTitle";
 import generateBody from "./generateBody";
 import logging from "../../../../utils/logging";
+import generateBodyHTML from "./generateBodyHTML";
 
 const createNewNotificationForApplication = (
     {
@@ -70,7 +71,7 @@ const createNewNotificationForApplication = (
                 applicationStatus,
                 lang
             }),
-            body: generateBody({
+            body: generateBodyHTML({
                 type,
                 applicationStatus,
                 postTitle,

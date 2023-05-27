@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
+import updateTypeOfNotificationPlatformService from "../../../../services/notification/keyword/service.updateTypeOfNotificationPlatform";
 
 
 //this function is called from router
@@ -19,8 +20,15 @@ const updateTypeOfNotificationPlatform = async (req: Request, res: Response, nex
             return next(createHttpError(400, 'Invalid data'));
         }
 
+        const isUpdateSuccess = await updateTypeOfNotificationPlatformService({accountId, type: +type});
+
+        if (!isUpdateSuccess) {
+            return next(createHttpError(500, 'Internal server error'));
+        }
+        
+
         return res.status(201).json({
-            message: 'Create keyword notification successfully',
+            message: 'Update type of notification platform successfully',
             // data: isCreateSuccess,
             success: true
         });

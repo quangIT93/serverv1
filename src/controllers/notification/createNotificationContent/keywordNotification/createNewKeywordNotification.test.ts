@@ -15,6 +15,15 @@ const createNewKeywordNotification = (
         isRead,
         createdAt,
         image,
+        districtId = null,
+        districtName = null,
+        provinceId = null,
+        provinceName = null,
+        category = null,
+        jobTypeId = null,
+        jobTypeName = null,
+        companyResourceId = null,
+        companyResourceLogo = null,
         lang = "vi",
     }: {
         postId: number;
@@ -25,6 +34,15 @@ const createNewKeywordNotification = (
         isRead: boolean;
         createdAt: number;
         image?: string;
+        districtId?: number;
+        districtName?: string;
+        provinceId?: number;
+        provinceName?: string;
+        category?: any[];
+        jobTypeId?: number;
+        jobTypeName?: string;
+        companyResourceId?: number;
+        companyResourceLogo?: string;
         lang?: string;
     }
 ): KeywordNotification => {
@@ -35,10 +53,30 @@ const createNewKeywordNotification = (
             // applicationId,
             notificationId,
             postId,
+            postTitle,
             type,
             isRead,
             createdAt,
             image,
+            location: {
+                district: {
+                    id: districtId,
+                    name: districtName
+                },
+                province: {
+                    id: provinceId,
+                    name: provinceName
+                }
+            },
+            category,
+            jobType: {
+                id: jobTypeId,
+                name: jobTypeName
+            },
+            companyResource: {
+                id: companyResourceId,
+                logo: companyResourceLogo
+            },
             typeText: "keyword"
         }
     

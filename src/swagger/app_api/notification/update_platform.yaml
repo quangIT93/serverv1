@@ -1,5 +1,5 @@
 paths:
-  /api/v1/notification/keyword/platform:
+  /api/v1/notification/update-platform:
     put:
       tags:
         - Notification/Keyword

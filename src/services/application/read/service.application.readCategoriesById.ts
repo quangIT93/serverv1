@@ -1,7 +1,7 @@
 import logging from "../../../utils/logging";
 import { executeQuery } from "../../../configs/database/database";
 
-const readApplicationCategoriesByIdService = async (lang: string, applicationId: number) => {
+const readApplicationCategoriesByIdService = async (lang: string = "vi", applicationId: number) => {
     try {
         logging.info("Read application categories service start ...");
         // read application_id from applications_categories table

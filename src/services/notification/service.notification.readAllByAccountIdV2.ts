@@ -21,14 +21,12 @@ const readAllNotificationsByAccountIdV2Service = async (
                     posts.title as post_title,
                     posts.company_name,
                     posts.id as post_id,
-                    null as salary_min,
-                    null as salary_max,
-                    null as salary_type,
-                    null as money_type,
                     null as image,
                     null as district,
                     null as province,
                     null as salary_type_name,
+                    null as job_type,
+                    null as company_resource_logo,
                     notifications.account_id
 
                     FROM notifications
@@ -47,14 +45,13 @@ const readAllNotificationsByAccountIdV2Service = async (
                     posts.title as post_title,
                     posts.company_name,
                     posts.id as post_id,
-                    posts.salary_min,
-                    posts.salary_max,
-                    posts.salary_type,
-                    posts.money_type,
                     post_images.image AS image,
                     ${lang === "vi" ? "districts.full_name" :  "districts.full_name_en"} as district,
                     ${lang === "vi" ? "provinces.full_name" :  "provinces.full_name_en"} as province,
                     ${lang === "vi" ? "salary_types.value" : lang === "en" ? "salary_types.value_en" : "salary_types.value_ko"} as salary_type,
+                    ${lang === "vi" ? "job_types.name" : lang === "en" ? "job_types.name_en" : "job_types.name_ko"} as job_type,
+                    company_resource.icon as company_resource_logo,
+
                     post_notification.account_id
                     FROM post_notification
                     LEFT JOIN posts ON posts.id = post_notification.post_id
@@ -70,6 +67,10 @@ const readAllNotificationsByAccountIdV2Service = async (
                     ON post_images.post_id = posts.id
                     LEFT JOIN job_types
                     ON job_types.id = posts.job_type
+                    LEFT JOIN post_resource
+                    ON post_resource.post_id = posts.id
+                    LEFT JOIN company_resource
+                    ON company_resource.id = post_resource.company
                 ) as t
                 WHERE t.account_id = ?
                 ORDER BY created_at DESC

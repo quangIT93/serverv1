@@ -7,6 +7,8 @@ import createNewKeywordNotification from "../../createNotificationContent/keywor
 import createNewNotificationForApplication from "../../createNotificationContent/application/createForApplication.test";
 import readDefaultPostImageByPostId from "../../../../services/category/service.category.readDefaultPostImageByPostId";
 import ImageBucket from "../../../../models/enum/imageBucket.enum";
+import { readCategoriesById } from "../../../../services/application/read/_service.application.read";
+import readCategoriesOfPost from "../../../../services/postCategory/service.postCategory.readByPostId";
 
 const readAllNotificationsByAccountIdV2Controller = async (
   req: Request,
@@ -53,7 +55,7 @@ const readAllNotificationsByAccountIdV2Controller = async (
     // Interface INotification
 
     await Promise.all(
-      result.map(async (item) => {
+      result.map(async (item, index: number) => {
         let notification: INotification;
         // Notification type 3: Keyword
         if (item.image === null) {
@@ -61,9 +63,11 @@ const readAllNotificationsByAccountIdV2Controller = async (
             item.post_id
           );
         }
+        const categories = await readCategoriesOfPost(String(req.query.lang), item.post_id);
         if (+item.type === 3) {
             // image need to use when get notification type 3 by mobile
             // No need image when push notification type 3 to mobile
+
 
           notification = createNewKeywordNotification({
             notificationId: item.id,
@@ -77,6 +81,15 @@ const readAllNotificationsByAccountIdV2Controller = async (
               ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.POST_IMAGES}/${item.post_id}/` +
                 item.image
               : item.defaultImage.image,
+            // districtId: item.district_id,
+            districtName: item.district as string,
+            provinceId: item.province_id,
+            provinceName: item.province as string,
+            category: categories,
+            jobTypeId: item.job_type_id,
+            jobTypeName: item.job_type,
+            // companyResourceId: item.company_resource_id,
+            companyResourceLogo: item.company_resource_logo,
             lang: req.query.lang.toString(),
           });
         } else {
@@ -98,6 +111,7 @@ const readAllNotificationsByAccountIdV2Controller = async (
         }
 
         notifications.push(notification);
+        
       })
     );
 
