@@ -4,6 +4,7 @@ import generateTitle from "./generateTitle";
 import generateBody from "./generateBody";
 import { KeywordNotification } from "../../../../models/notification/keyword/class/keywordNotification.class";
 import logging from "../../../../utils/logging";
+import ImageBucket from "../../../../models/enum/imageBucket.enum";
 
 const createNewKeywordNotification = (
     {
@@ -75,7 +76,7 @@ const createNewKeywordNotification = (
             },
             companyResource: {
                 id: companyResourceId,
-                logo: companyResourceLogo
+                logo: `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.COMPANY_ICON}/${companyResourceLogo}`
             },
             typeText: "keyword"
         }
