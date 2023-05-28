@@ -7,7 +7,6 @@ import createNewKeywordNotification from "../../createNotificationContent/keywor
 import createNewNotificationForApplication from "../../createNotificationContent/application/createForApplication.test";
 import readDefaultPostImageByPostId from "../../../../services/category/service.category.readDefaultPostImageByPostId";
 import ImageBucket from "../../../../models/enum/imageBucket.enum";
-import { readCategoriesById } from "../../../../services/application/read/_service.application.read";
 import readCategoriesOfPost from "../../../../services/postCategory/service.postCategory.readByPostId";
 
 const readAllNotificationsByAccountIdV2Controller = async (

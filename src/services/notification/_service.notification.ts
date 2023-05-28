@@ -5,3 +5,4 @@ export { default as createSystemNotificationService } from './service.notificati
 export { default as readAllNotificationsByAccountIdV2Service } from './service.notification.readAllByAccountIdV2';
 export { default as readAllNotificationsByAccountIdService } from './service.notification.readAllByAccountId';
 export { default as readQuantityOfNewNotificationsService } from './service.notification.readQuantityOfNewNotifications';
+export { default as updateNotificationKeywordService } from './service.notification.updateNotificationKeyword';

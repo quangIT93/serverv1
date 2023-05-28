@@ -7,6 +7,7 @@ const updateNotificationStatus = async (req: Request, res: Response, next: NextF
     const { id: accountId } = req.user;
     const { notification_id: notificationId } = req.body;
     const { is_read: isRead } = req.body;
+    const { typeText } = req.body;
 
     try {
 
@@ -19,8 +20,15 @@ const updateNotificationStatus = async (req: Request, res: Response, next: NextF
             return next(createHttpError(400, "Is read is required"));
         }
 
-        const result = await notificationService.updateNotificationService(isRead, notificationId, accountId);
-        
+        let result = null;
+
+
+        if (typeText && typeText === "keyword") {
+            result = await notificationService.updateNotificationKeywordService(isRead, notificationId, accountId);
+        } else {
+            result = await notificationService.updateNotificationService(isRead, notificationId, accountId);
+        }
+
         if (result.affectedRows === 0) {
             return res.status(200).json({
                 code: 200,

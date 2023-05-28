@@ -22,6 +22,11 @@ paths:
                 is_read:
                   type: integer
                   format: int64
+                typeText:
+                  type: string
+                  description: Notification type
+                  example: 'keyword'
+                
       responses:
         '200':
           description: OK

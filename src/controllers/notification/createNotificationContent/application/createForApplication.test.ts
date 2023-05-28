@@ -37,15 +37,26 @@ const createNewNotificationForApplication = (
     // DATA
     try {
 
+        // const data: NotificationData = {
+        //     notificationId,
+        //     applicationId,
+        //     postId,
+        //     type,
+        //     applicationStatus,
+        //     isRead,
+        //     createdAt,
+        //     typeText: type === 0 ? "applicator" : "recruiter"
+        // }
+
         const data: NotificationData = {
-            notificationId,
-            applicationId,
-            postId,
-            type,
-            applicationStatus,
-            isRead,
-            createdAt,
-            typeText: type === 0 ? "applicator" : "recruiter"
+            type: type.toString(),
+            type_text: type === 0 ? "applicator" : "recruiter",
+            application_id: applicationId.toString(),
+            post_id: postId.toString(),
+            notification_id: notificationId.toString(),
+            is_read: isRead ? "1" : "0",
+            application_status: applicationStatus.toString(),
+            created_at: createdAt.toString()
         }
     
         // CONTENT
