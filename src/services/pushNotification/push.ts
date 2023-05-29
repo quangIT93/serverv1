@@ -8,6 +8,8 @@ const pushNotification = async (
         const pusher = new NotificationTransporter();
         await pusher.initialize();
 
+        console.log(account_ids, " account_ids");
+
         if (typeof account_ids === "string") {
             await pusher.send(body, account_ids);
             // console.log(account_ids, " account_ids");

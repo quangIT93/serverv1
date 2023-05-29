@@ -22,10 +22,15 @@ export class SystemNotification implements INotification {
             "post_id": String(this.data.postId),
             "notification_id": String(this.data.notificationId),
             "application_status": String(this.data.applicationStatus),
-            "is_read": String(this.data.isRead) === "true" ? "1" : "0",
-            "created_at": String(this.data.createdAt)
         }
     }
+
+    // "type": data.type.toString(),
+        // "type_text": data.type_text,
+        // "application_id": data.applicationId.toString(),
+        // "post_id": data.postId.toString(),
+        // "notification_id": data.notificationId.toString(),
+        // "application_status": data.applicationStatus.toString(),
 
     // this method is used to get the notification data
     getData(): NotificationData {

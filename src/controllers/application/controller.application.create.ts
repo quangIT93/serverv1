@@ -9,9 +9,9 @@ import copyFileService from '../../services/aws/service.aws.copyFile';
 import ProfilesBucket from '../../models/enum/profileBucket.enum';
 import ImageBucket from '../../models/enum/imageBucket.enum';
 import createNewNotificationForApplication from '../notification/createNotificationContent/application/createForApplication.test';
-import pushNotification from '../../services/pushNotification/push';
+import pushNotificationV2 from '../../services/pushNotification/push';
 import { NotificationContent, createNotificationContent } from '../notification/createNotificationContent/application/createForApplication';
-// import pushNotification from '../../configs/transport/notification/push-notification';
+import pushNotification from '../../configs/transport/notification/push-notification';
 const createApplicationController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // GET DATA
@@ -164,11 +164,12 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
                 companyName: postStatusAndAccountId.company_name,
                 name: userProfile.name,
                 notificationId: insertId,
-                lang: req.query.lang.toString()
+                lang: req.query.lang.toString(),
+                isRead: false
             }
         )
 
-        pushNotification(
+        pushNotificationV2(
             postStatusAndAccountId.account_id,
             body
         );

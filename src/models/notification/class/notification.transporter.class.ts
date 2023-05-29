@@ -60,15 +60,40 @@ export class NotificationTransporter implements INotificationTransporter {
             // console.log(this.fcmTokens, " NotificationTransporter");
             // console.log(body, " NotificationTransporter");
     
-            await NotificationTransporter.transporter.messaging().sendMulticast({
+            await NotificationTransporter.transporter.messaging().sendEachForMulticast({
                 tokens: this.fcmTokens,
                 notification: body.content,
                 data: body.getDataForPush(),
+                // data: {
+                //     "type": body.data.type.toString(),
+                //     "type_text": body.data.typeText,
+                //     "application_id": body.data.applicationId.toString(),
+                //     "post_id": body.data.postId.toString(),
+                //     "notification_id": body.data.notificationId.toString(),
+                //     "application_status": body.data.applicationStatus.toString(),
+                // }
             });
-            console.log("tokens: ", this.fcmTokens);
-            console.log("notification: ", body.content);
+
+            // "type": data.type.toString(),
+            // "type_text": data.type_text,
+            // "application_id": data.applicationId.toString(),
+            // "post_id": data.postId.toString(),
+            // "notification_id": data.notificationId.toString(),
+            // "application_status": data.applicationStatus.toString(),
+            // console.log("tokens: ", this.fcmTokens);
+            // console.log("notification: ", body.content);
             // console.log("data: ", NotificationData.toKeyValue(body.data));
-            console.log("data: ", body.getDataForPush());
+            // console.log("data: ", body.getDataForPush());
+            // console.log("data: ", {
+            //     "type": body.data.type.toString(),
+            //     "type_text": body.data.typeText,
+            //     "application_id": body.data.applicationId.toString(),
+            //     "post_id": body.data.postId.toString(),
+            //     "notification_id": body.data.notificationId.toString(),
+            //     "application_status": body.data.applicationStatus.toString(),
+            //     // "is_read": body.data.isRead.toString(),
+            //     "created_at": body.data.createdAt.toString(),
+            // });
             logging.info("Notification sent successfully");
             return;
 
@@ -96,7 +121,7 @@ export class NotificationTransporter implements INotificationTransporter {
                 return;
             }
 
-            await NotificationTransporter.transporter.messaging().sendMulticast({
+            await NotificationTransporter.transporter.messaging().sendEachForMulticast({
                 tokens: this.fcmTokens,
                 notification: body.content,
                 data: body.getDataForPush(),

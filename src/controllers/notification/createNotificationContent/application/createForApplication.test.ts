@@ -46,10 +46,12 @@ const createNewNotificationForApplication = (
             postId,
             type,
             applicationStatus,
-            isRead,
+            // isRead,
             createdAt,
             typeText: type === 0 ? "applicator" : "recruiter"
         }
+
+        console.log(data, "data");
 
         // const data: NotificationData = {
         //     type: type.toString(),
