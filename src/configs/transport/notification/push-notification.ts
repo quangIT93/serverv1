@@ -1,7 +1,7 @@
-import * as admin from "firebase-admin";
+// import * as admin from "firebase-admin";
 import readFcmTokenService from "../../../services/fcm-token/service.fcm-token.readByAccountId";
-import serviceAccount from "../../../keys/serviceAccountKey.json";
-import logging from "../../../utils/logging";
+// import serviceAccount from "../../../keys/serviceAccountKey.json";
+// import logging from "../../../utils/logging";
 import { NotificationTransporter } from "../../../models/notification/class/notification.transporter.class";
 
 interface TokenResult {
@@ -57,7 +57,7 @@ const pushNotification = async (
 
     
 
-    await NotificationTransporter.transporter.messaging().sendEachForMulticast({
+    await NotificationTransporter.transporter.messaging().sendMulticast({
         tokens: tokens,
         notification: {
             title: title || "",
