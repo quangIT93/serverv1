@@ -60,7 +60,7 @@ export class NotificationTransporter implements INotificationTransporter {
             // console.log(this.fcmTokens, " NotificationTransporter");
             // console.log(body, " NotificationTransporter");
     
-            await NotificationTransporter.transporter.messaging().sendEachForMulticast({
+            await NotificationTransporter.transporter.messaging().sendMulticast({
                 tokens: this.fcmTokens,
                 notification: body.content,
                 data: body.getDataForPush(),
@@ -121,7 +121,7 @@ export class NotificationTransporter implements INotificationTransporter {
                 return;
             }
 
-            await NotificationTransporter.transporter.messaging().sendEachForMulticast({
+            await NotificationTransporter.transporter.messaging().sendMulticast({
                 tokens: this.fcmTokens,
                 notification: body.content,
                 data: body.getDataForPush(),
