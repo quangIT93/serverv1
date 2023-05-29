@@ -9,8 +9,8 @@ const readFcmTokenMultipleAccountIdsService = async (
       SELECT * FROM fcm_tokens 
       WHERE account_id IN (${accountIds.map(() => '?').join(', ')})
     `;
-    console.log(query, ' query');
-    console.log(accountIds, ' accountIds');
+    // console.log(query, ' query');
+    // console.log(accountIds, ' accountIds');
     const res = await executeQuery(query, [...accountIds]);
     return res ? res : null;
   } catch (error) {

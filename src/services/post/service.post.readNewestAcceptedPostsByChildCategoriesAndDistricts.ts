@@ -14,7 +14,7 @@ const readNewestAcceptedPostsByChildCategoriesAndDistricts = async (
             "Read newest accepted posts by child categories and districts service start ..."
         );
 
-        console.log(chilCategoryIds, districtIds, limit, threshold);
+        // console.log(chilCategoryIds, districtIds, limit, threshold);
 
         let query =
             initQueryReadPost(lang) +

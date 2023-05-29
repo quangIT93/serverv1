@@ -16,14 +16,17 @@ export class NotificationTransporter implements INotificationTransporter {
 
     fcmTokens: string[] = [];
     
-    // constructor(transporter: any) {
-    //     this.transporter = transporter;
-    // }
+    constructor() {
+        this.initialize();
+    }
+
+    // this method is used to get the fcm tokens of the user
 
     // this method is used to initialize the transporter
     // the transporter is the firebase admin app
     async initialize(): Promise<void> {
         try {
+            console.log("initialize");
             if (!NotificationTransporter.transporter) {
                 NotificationTransporter.transporter = admin.initializeApp({
                     credential: admin.credential.cert(
@@ -57,14 +60,15 @@ export class NotificationTransporter implements INotificationTransporter {
             // console.log(this.fcmTokens, " NotificationTransporter");
             // console.log(body, " NotificationTransporter");
     
-            await NotificationTransporter.transporter.messaging().sendMulticast({
+            await NotificationTransporter.transporter.messaging().sendEachForMulticast({
                 tokens: this.fcmTokens,
                 notification: body.content,
-                data: NotificationData.toKeyValue(body.data),
+                data: body.getDataForPush(),
             });
             console.log("tokens: ", this.fcmTokens);
             console.log("notification: ", body.content);
-            console.log("data: ", NotificationData.toKeyValue(body.data));
+            // console.log("data: ", NotificationData.toKeyValue(body.data));
+            console.log("data: ", body.getDataForPush());
             logging.info("Notification sent successfully");
             return;
 
@@ -86,18 +90,22 @@ export class NotificationTransporter implements INotificationTransporter {
             }
 
             // console.log(NotificationTransporter.transporter, " NotificationTransporter");
-            console.log(this.fcmTokens, " NotificationTransporter");
+            // console.log(this.fcmTokens, " NotificationTransporter");
 
             if (this.fcmTokens.length === 0) {
                 return;
             }
 
-            await NotificationTransporter.transporter.messaging().sendMulticast({
+            await NotificationTransporter.transporter.messaging().sendEachForMulticast({
                 tokens: this.fcmTokens,
                 notification: body.content,
-                data: NotificationData.toKeyValue(body.data),
+                data: body.getDataForPush(),
             });
             // logging.info("Notification sent successfully");
+            // console.log("tokens: ", this.fcmTokens);
+            // console.log("notification: ", body.content);
+            // console.log("data: ", body.getDataForPush());
+            logging.info("Notification sent multiple successfully");
             return;
 
         }
@@ -130,7 +138,7 @@ export class NotificationTransporter implements INotificationTransporter {
                 return [];
             }
             const res = await readFcmTokenMultipleAccountIdsService(account_ids);
-            console.log(res, " NotificationTransporter");
+            // console.log(res, " NotificationTransporter");
             this.fcmTokens = res.map((item: any) => item.token);
             return this.fcmTokens;
         } catch (error) {

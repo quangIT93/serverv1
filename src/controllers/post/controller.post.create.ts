@@ -255,7 +255,7 @@ const createPostController = async (
             }
 
             let isValidCategoryId = true;
-            console.log(categoryIds);
+            // console.log(categoryIds);
             if (categoryIds.length > 2) {
                 return next(createError(400, "Maximum 2 categories"));
             }

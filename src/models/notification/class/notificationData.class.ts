@@ -13,15 +13,15 @@ export class NotificationData implements INotificationData {
     /*
     {a: 1, b: 2, c: 3} => {"a": "1", "b": "2", "c": "3"}
     */
-    public static toKeyValue(data: NotificationData) {
-        const result: any = {};
-        for (const key in data) {
-            if (data[key] !== undefined && data[key] !== null) {
-                result[key] = data[key].toString();
-            }
-        }
-        return result;
-    }
+    // public static toKeyValue(data: NotificationData) {
+    //     const result: any = {};
+    //     for (const key in data) {
+    //         if (data[key] !== undefined && data[key] !== null) {
+    //             result[key] = data[key].toString();
+    //         }
+    //     }
+    //     return result;
+    // }
 
     // to json
     // static fromJson(data: INotificationData): NotificationData {

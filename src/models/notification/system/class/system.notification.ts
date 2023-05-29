@@ -14,6 +14,19 @@ export class SystemNotification implements INotification {
         this.content_app = content_app;
     }
 
+    getDataForPush(): { [key: string]: string; } {
+        return {
+            "type": String(this.data.type),
+            "type_text": String(this.data.typeText),
+            "application_id": String(this.data.applicationId),
+            "post_id": String(this.data.postId),
+            "notification_id": String(this.data.notificationId),
+            "application_status": String(this.data.applicationStatus),
+            "is_read": String(this.data.isRead) === "true" ? "1" : "0",
+            "created_at": String(this.data.createdAt)
+        }
+    }
+
     // this method is used to get the notification data
     getData(): NotificationData {
         return this.data;

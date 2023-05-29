@@ -12,8 +12,8 @@ const generateTitle = (
     
     switch (type) {
         case 0:
-            console.log("type: ", type);
-            console.log("applicationStatus: ", applicationStatus);
+            // console.log("type: ", type);
+            // console.log("applicationStatus: ", applicationStatus);
             switch (applicationStatus) {
                 case 2:
                     switch (lang) {

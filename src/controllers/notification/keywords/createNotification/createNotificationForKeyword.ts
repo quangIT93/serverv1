@@ -1,3 +1,5 @@
+import { NotificationData } from "../../../../models/notification/class/notificationData.class";
+import { KeywordNotification } from "../../../../models/notification/keyword/class/keywordNotification.class";
 import readKeywordByPostDetailService from "../../../../services/notification/keyword/service.notification.keyword.getKeywordByPost";
 import createNotificationForKeywordService from "../../../../services/notification/service.notification.createNotificationForKeyword";
 import pushNotification from "../../../../services/pushNotification/push";
@@ -23,7 +25,7 @@ const createNotificationKeywordForUsers = async (
     // send the notification to the user's mobile device
     
     try {
-        console.log("createNotificationKeywordForUsers");
+        // console.log("createNotificationKeywordForUsers");
         // console.log(postTitle, " postTitle");
         // console.log(postId, " postId");
         // console.log(wardId, " wardId");
@@ -39,20 +41,26 @@ const createNotificationKeywordForUsers = async (
             accountIds.push(item.account_id);
         });
     
-        console.log(accountIds, " accountIds");
+        // console.log(accountIds, " accountIds");
     
         // create a notification for each user
         // send the notification to the user's mobile device
 
-        const body = {
-            content: {
-                title: "Bạn có một việc làm mới",
-                body: `${postTitle}`,
-            },
-            data: {
-                postId: postId,
-            }
+        const data: NotificationData = new NotificationData({
+            postId: postId,
+        })
+
+        const content = {
+            title: "Bạn có một việc làm mới",
+            body: postTitle,
         }
+
+        const content_app = {
+            title: "Bạn có một việc làm mới",
+            body: postTitle,
+        }
+
+        const body: KeywordNotification = new KeywordNotification(data, content, content_app);
 
         if (accountIds.length > 0) {
             const isCreated = await createNotificationForKeywordService(accountIds, postId);

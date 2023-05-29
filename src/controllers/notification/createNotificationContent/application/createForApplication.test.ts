@@ -35,29 +35,32 @@ const createNewNotificationForApplication = (
     }
 ): SystemNotification => {
     // DATA
+
+    // console.log("createNewNotificationForApplication");
+
     try {
 
-        // const data: NotificationData = {
-        //     notificationId,
-        //     applicationId,
-        //     postId,
-        //     type,
-        //     applicationStatus,
-        //     isRead,
-        //     createdAt,
-        //     typeText: type === 0 ? "applicator" : "recruiter"
-        // }
-
         const data: NotificationData = {
-            type: type.toString(),
-            type_text: type === 0 ? "applicator" : "recruiter",
-            application_id: applicationId.toString(),
-            post_id: postId.toString(),
-            notification_id: notificationId.toString(),
-            is_read: isRead ? "1" : "0",
-            application_status: applicationStatus.toString(),
-            created_at: createdAt.toString()
+            notificationId,
+            applicationId,
+            postId,
+            type,
+            applicationStatus,
+            isRead,
+            createdAt,
+            typeText: type === 0 ? "applicator" : "recruiter"
         }
+
+        // const data: NotificationData = {
+        //     type: type.toString(),
+        //     type_text: type === 0 ? "applicator" : "recruiter",
+        //     application_id: applicationId.toString(),
+        //     post_id: postId.toString(),
+        //     notification_id: notificationId.toString(),
+        //     is_read: isRead ? "1" : "0",
+        //     application_status: applicationStatus.toString(),
+        //     created_at: createdAt.toString()
+        // }
     
         // CONTENT
         const content: Notification = {
@@ -96,6 +99,10 @@ const createNewNotificationForApplication = (
         // CREATE NOTIFICATION
         const notification = new SystemNotification(data, content, content_app);
     
+
+        // console.log(notification);
+        // console.log("notification");
+
         return notification;
     } catch (error) {
         logging.error(error);

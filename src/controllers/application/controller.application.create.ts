@@ -10,6 +10,8 @@ import ProfilesBucket from '../../models/enum/profileBucket.enum';
 import ImageBucket from '../../models/enum/imageBucket.enum';
 import createNewNotificationForApplication from '../notification/createNotificationContent/application/createForApplication.test';
 import pushNotification from '../../services/pushNotification/push';
+import { NotificationContent, createNotificationContent } from '../notification/createNotificationContent/application/createForApplication';
+// import pushNotification from '../../configs/transport/notification/push-notification';
 const createApplicationController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // GET DATA
@@ -170,6 +172,30 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
             postStatusAndAccountId.account_id,
             body
         );
+
+        // const content: NotificationContent = {
+        //     application_id: applicationIdNumber,
+        //     post_id: +postId,
+        //     type: 1,
+        //     applicationStatus: 0,
+        //     postTitle: postStatusAndAccountId.title,
+        //     companyName: postStatusAndAccountId.company_name,
+        //     name: userProfile.name,
+        //     notificationId: insertId
+        // }
+
+        // const notificationContent = createNotificationContent(
+        //     req.query.lang.toString(),
+        //     content
+        // );
+
+        // pushNotification(
+        //     postStatusAndAccountId.account_id,
+        //     notificationContent.title,
+        //     notificationContent.body_push,
+        //     // "",
+        //     notificationContent.data
+        // );
 
         return;
     } catch (error) {

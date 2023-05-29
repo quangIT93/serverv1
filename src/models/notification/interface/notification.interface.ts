@@ -6,6 +6,9 @@ export interface INotification {
     content: Notification;
     // dataContent: NotificationData;
     [key: string]: any;
+
+    // get data to json
+    getDataForPush(): { [key: string]: string };
 }
 
 

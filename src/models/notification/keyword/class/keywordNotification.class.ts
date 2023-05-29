@@ -13,6 +13,14 @@ export class KeywordNotification implements INotification {
         this.content_app = content_app;
     }
 
+    getDataForPush(): { [key: string]: string; } {
+        return {
+            "post_id": this.data.postId.toString(),
+            "type": "3",
+            "type_text": "keyword",
+        }
+    }
+
     // this method is used to get the notification data
     getData(): NotificationData {
         return this.data;
