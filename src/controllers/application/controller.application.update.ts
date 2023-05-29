@@ -83,7 +83,7 @@ const updateApplicationController = async (req: Request, res: Response, next: Ne
                     postTitle: postInformation.title,
                     companyName: postInformation.company_name,
                     name: "",
-                    notificationId: 0,
+                    notificationId: +createNotificationStatus,
                     lang: req.query.lang.toString()
                 }
             )
