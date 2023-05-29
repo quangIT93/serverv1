@@ -15,6 +15,12 @@ paths:
           schema:
             type: integer
             format: int64
+        - name: limit
+          in: query
+          description: limit number (default 10, max 20)
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':
           description: OK

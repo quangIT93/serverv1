@@ -83,7 +83,7 @@ const searchByQueryV2Service = async (
             "AND " +
             // If onlyCompany is not null, then only search for posts that have company name or title
             // If onlyCompany is null, then search for posts that have company name
-            `${onlyCompany !== 0 ? "posts.company_name LIKE ? " : "(posts.company_name LIKE ? OR posts.title LIKE ?) "}` +
+            `${onlyCompany !== 0 ? "company_name LIKE ? " : "(company_name LIKE ? OR title LIKE ?) "}` +
             // "AND (title LIKE ? OR " +
             // "company_name LIKE ?) " +
             `${districtIds.length > 0 ? `AND wards.district_id IN (${districtIds.join(",")}) ` : ''}` +
@@ -107,8 +107,8 @@ const searchByQueryV2Service = async (
             "LIMIT 20 " +
             `OFFSET ${page ? (page - 1) * 20 : 0}`;
         const params = []
-        .concat(onlyCompany !== 0 ? [`%${q}%`] : [`%${q}%`, `%${q}%`])
         .concat(accountId !== null ? [accountId] : [])
+        .concat(onlyCompany !== 0 ? [`%${q}%`] : [`%${q}%`, `%${q}%`])
         .concat(salaryMin !== null ? [salaryMin] : [])
         .concat(salaryMax !== null ? [salaryMax] : [])
         .concat(moneyType !== null ? [moneyType] : [])

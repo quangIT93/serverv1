@@ -4,6 +4,7 @@ import { executeQuery } from '../../configs/database/database';
 const readAllNotificationsByAccountIdV2Service = async (
     accountId: string,
     page: number,
+    limit: number,
     lang: string = "vi",
 ) => {
     try {
@@ -72,11 +73,11 @@ const readAllNotificationsByAccountIdV2Service = async (
                 ) as t
                 WHERE t.account_id = ?
                 ORDER BY created_at DESC
-                ${page ? ` LIMIT 10 OFFSET ${page * 10}` : 'LIMIT 10'}
+                ${page ? ` LIMIT ? OFFSET ${page * 10}` : 'LIMIT ?'}
             `
 
         // console.log(query);
-        const params = [accountId];
+        const params = [accountId, limit];
         const result = await executeQuery(query, params);
         return result;
     } catch (error) {

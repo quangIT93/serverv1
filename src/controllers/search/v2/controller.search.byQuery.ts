@@ -8,6 +8,7 @@ import ImageBucket from '../../../models/enum/imageBucket.enum';
 import isNumeric from 'validator/lib/isNumeric';
 import isAscii from 'validator/lib/isAscii';
 import formatPostedTime from '../../../helpers/formatData/formatPostedTime';
+import saveHistorySearchService from '../../../services/search/service.search.saveHistory';
 
 const searchByQueryV2Controller = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -275,8 +276,10 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
             isOver = true;
         }
 
+        
+
         // SUCCESS
-        return res.status(200).json({
+        res.status(200).json({
             success: true,
             message: "Search successfully",
             data: {
@@ -285,6 +288,12 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
                 is_over: isOver,
             },
         });
+
+        if (id && q) {
+            saveHistorySearchService(q as string, id);
+        }
+
+        return;
     } catch (error) {
         logging.error('Search controller has error: ', error);
         return next(createError(500));

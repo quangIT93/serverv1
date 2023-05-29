@@ -27,8 +27,15 @@ const readAllNotificationsByAccountIdV2Controller = async (
 
     const { page } = req.query;
 
+    const { limit = 10 } = req.query;
+
     if (page && isNaN(+page)) {
       return next(createHttpError(400, "Page must be a number"));
+    }
+
+    // limit must be a number and greater than 0 and less than 21
+    if (isNaN(+limit) || +limit < 0 || +limit > 20) {
+      return next(createHttpError(400, "Limit must be a number"));
     }
 
     // Call service
@@ -36,7 +43,9 @@ const readAllNotificationsByAccountIdV2Controller = async (
     let result =
       await notificationService.readAllNotificationsByAccountIdV2Service(
         accountId,
-        +page
+        +page,
+        +limit,
+        String(req.query.lang)
       );
 
     if (!result || result.length === 0) {
@@ -45,6 +54,7 @@ const readAllNotificationsByAccountIdV2Controller = async (
         success: true,
         message: "No notifications found",
         data: [],
+        is_over: true,
       });
     }
     // const notifications: INotification[] = [];
@@ -123,6 +133,7 @@ const readAllNotificationsByAccountIdV2Controller = async (
       data: {
         total: result.total,
         notifications: notifications,
+        is_over: notifications.length < +limit ? true : false,
       },
     });
   } catch (error) {
