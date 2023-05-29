@@ -1,11 +1,11 @@
 import * as admin from "firebase-admin";
 import { INotificationTransporter } from "../interface/notification.transporter.interface";
-import { Notification } from 'firebase-admin/lib/messaging/messaging-api';
+// import { Notification } from 'firebase-admin/lib/messaging/messaging-api';
 import readFcmTokenService from "../../../services/fcm-token/service.fcm-token.readByAccountId";
 import logging from "../../../utils/logging";
 import { INotification } from "../interface/notification.interface";
 import serviceAccount from "../../../keys/serviceAccountKey.json";
-import { NotificationData } from "./notificationData.class";
+// import { NotificationData } from "./notificationData.class";
 import readFcmTokenMultipleAccountIdsService from "../../../services/fcm-token/service.fcm-token.readByMutipleAccountIds";
 
 
@@ -60,7 +60,7 @@ export class NotificationTransporter implements INotificationTransporter {
             // console.log(this.fcmTokens, " NotificationTransporter");
             // console.log(body, " NotificationTransporter");
     
-            await NotificationTransporter.transporter.messaging().sendEachForMulticast({
+            await NotificationTransporter.transporter.messaging().sendMulticast({
                 tokens: this.fcmTokens,
                 notification: body.content,
                 data: body.getDataForPush(),
@@ -96,7 +96,7 @@ export class NotificationTransporter implements INotificationTransporter {
                 return;
             }
 
-            await NotificationTransporter.transporter.messaging().sendEachForMulticast({
+            await NotificationTransporter.transporter.messaging().sendMulticast({
                 tokens: this.fcmTokens,
                 notification: body.content,
                 data: body.getDataForPush(),
