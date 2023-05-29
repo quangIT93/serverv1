@@ -47,13 +47,13 @@ const readAllNotificationsByAccountIdV2Controller = async (
         data: [],
       });
     }
-    const notifications: INotification[] = [];
+    // const notifications: INotification[] = [];
 
     // Format data
     // After format, data will be implemented to notifications array
     // Interface INotification
 
-    await Promise.all(
+    const notifications: INotification[] = await Promise.all(
       result.map(async (item, index: number) => {
         let notification: INotification;
         // Notification type 3: Keyword
@@ -109,7 +109,9 @@ const readAllNotificationsByAccountIdV2Controller = async (
           });
         }
 
-        notifications.push(notification);
+        // notifications.push(notification);
+
+        return notification;
         
       })
     );

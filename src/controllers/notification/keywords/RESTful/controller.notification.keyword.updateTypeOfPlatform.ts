@@ -12,7 +12,7 @@ const updateTypeOfNotificationPlatform = async (req: Request, res: Response, nex
         const { id: accountId } = req.user;
         const { type } = req.body;
 
-        if (!type || !accountId) {
+        if (!accountId) {
             return next(createHttpError(400, 'Invalid data'));
         }
 
