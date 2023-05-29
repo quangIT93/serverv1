@@ -6,6 +6,7 @@ import readAllSalaryTypesController from "./controller.site.readAllSalaryTypes";
 import readAllJobTypesController from "./controller.site.readAllJobTypes";
 import readAllCompanyResourceController from "./controller.site.readAllCompanyResource";
 import readWellComeImagesController from "./controller.site.readWelcomeImages";
+import checkAppVersionValidController from "./controller.site.checkAppVersionValid";
 
 const siteController = {
     signOut: signOutController,
@@ -16,6 +17,7 @@ const siteController = {
     readAllJobTypes: readAllJobTypesController,
     readAllCompanyResource: readAllCompanyResourceController,
     readAllWelcomeImages: readWellComeImagesController,
+    checkAppVersionValid: checkAppVersionValidController
 };
 
 export default siteController;

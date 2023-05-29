@@ -11,4 +11,5 @@ router.post("/admin/sign-out", siteController.adminSignOut); // Admin role
 router.post("/reset-access-token", siteController.resetAccessToken);
 router.post("/admin/signup", siteController.adminSignUp);
 router.get("/welcome-images", siteController.readAllWelcomeImages);
+router.get("/app-version", siteController.checkAppVersionValid);
 export default router;
