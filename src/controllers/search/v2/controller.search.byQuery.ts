@@ -95,7 +95,7 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
                 const currentCategories = await readAllByProfileId("vi", userId);
                 if (currentCategories) {
                     for (let i = 0; i < currentCategories.length; i++) {
-                        categoryIds.push(+currentCategories[i].parent_category_id);
+                        categoryIds.push(+currentCategories[i].child_category_id);
                     }
                 }
             }
