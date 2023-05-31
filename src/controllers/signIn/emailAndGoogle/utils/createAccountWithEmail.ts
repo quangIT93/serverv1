@@ -36,7 +36,7 @@ const createAccountWithEmail = async (
 
         sendEmailToUser({
             to: email,
-            subject: "Welcome to HiJob!",
+            subject: "Chào mừng bạn đến với HiJob",
             html: generateWelcomeMail(email),
         })
     }

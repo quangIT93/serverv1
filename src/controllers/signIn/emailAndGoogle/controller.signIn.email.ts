@@ -37,7 +37,7 @@ const signInWithEmailController = async (
         // SEND EMAIL
         sendEmailToUser({
             to: email,
-            subject: "Verify email",
+            subject: "Mã xác thực Hijob của bạn",
             html: generateOTPMail(otp, email),
         });
         // SUCCESS

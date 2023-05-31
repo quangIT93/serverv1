@@ -5,6 +5,8 @@ import { CreateKeywordNotificationDto } from '../../../../models/notification/ke
 import { NextFunction, Request, Response } from "express";
 import readTypeOfNotificationPlatformService from '../../../../services/notification/keyword/service.readTypeOfNotificationPlatform';
 import createDefaultPlatformNotificationService from '../../../../services/notification/keyword/service.createDefaultPlatformForNotification';
+// import readKeywordNotification from './controller.notification.keyword.read';
+import readKeywordNotificationByAccountIdService from '../../../../services/notification/keyword/service.notification.keyword.read';
 
 const createKeywordNotification = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -14,6 +16,14 @@ const createKeywordNotification = async (req: Request, res: Response, next: Next
             return next(createHttpError(400, 'Bad request'));
         }
     
+        const limitKeyword = 10;
+
+        const countKeyword = await readKeywordNotificationByAccountIdService(dto.accountId);
+
+        if (countKeyword.length >= limitKeyword) {
+            return next(createHttpError(400, `You can only create ${limitKeyword} keywords`));
+        }
+
         const isCreateSuccess = await createKeywordNotificationService(dto);
     
         if (!isCreateSuccess) {

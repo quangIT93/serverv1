@@ -1,5 +1,5 @@
 import logging from "../../utils/logging";
-const nodemailer = require("nodemailer");
+import nodemailer from "nodemailer";
 
 const nodeMailerTransporter = nodemailer.createTransport({
     service: "gmail",
@@ -13,9 +13,14 @@ const sendEmailToUser = (options: any, callback: Function = () => { }) => {
     logging.info("Send OTP start ...")
 
     const mailOptions = {
-        from: process.env.NODE_MAILER_EMAIL,
+        from: {
+            name: "HiJob",
+            address: process.env.NODE_MAILER_EMAIL
+        },
         ...options
     };
+
+    console.log(mailOptions)
 
     nodeMailerTransporter.sendMail(mailOptions, (error, info) => {
         if (error) {
