@@ -16,7 +16,11 @@ const readKeywordByPostDetailService = async (
             ON wards.id = ?
             LEFT JOIN child_categories
             ON child_categories.id IN (${categoryId.map(() => '?').join(', ')})
-            WHERE ? LIKE CONCAT('%', keywords_notification.keyword, '%')
+            LEFT JOIN type_notification_platform
+            ON type_notification_platform.account_id = keywords_notification.account_id
+            WHERE ? LIKE CONCAT('%', keywords_notification.keyword, '%') 
+            AND keywords_notification.status = 1
+            AND type_notification_platform.type = 0
             AND (keywords_notification.district_status = 0 OR keywords_notification.district_id = wards.district_id)
             AND (keywords_notification.category_status = 0 OR keywords_notification.category_id = child_categories.parent_category_id)
             GROUP BY keywords_notification.account_id

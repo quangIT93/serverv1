@@ -9,6 +9,8 @@ import isNumeric from 'validator/lib/isNumeric';
 import isAscii from 'validator/lib/isAscii';
 import formatPostedTime from '../../../helpers/formatData/formatPostedTime';
 import saveHistorySearchService from '../../../services/search/service.search.saveHistory';
+import readCurrentLocationsById from '../../../services/profileLocation/service.profile.readCurrentLocationsById';
+import readAllByProfileId from '../../../services/profileCategory/service.profileCategory.readAllByProfileId';
 
 const searchByQueryV2Controller = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -42,6 +44,7 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
         // DISTRICT IDS
         const districtIds: string[] = []
         if (district_ids) {
+            console.log(district_ids);
             if (Array.isArray(district_ids)) {
                 for (let i = 0; i < district_ids.length; i++) {
                     if (!isNumeric(district_ids[i] as string)) {
@@ -51,15 +54,28 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
                 }
             } else {
                 if (!isNumeric(district_ids as string)) {
-                    return next(createError(400, 'Invalid district_ids'));
+                    districtIds.push(district_ids as string);
                 }
-                districtIds.push(district_ids as string);
+            }
+        } else {
+            // get district from profile location
+            if (req.user) {
+                const { id: userId } = req.user;
+                const currentLocations = await readCurrentLocationsById(userId);
+                if (currentLocations) {
+                    for (let i = 0; i < currentLocations.length; i++) {
+                        districtIds.push(currentLocations[i].district_id);
+                    }
+                }
             }
         }
+
+        console.log(districtIds);
 
         // CATEGORY IDS
         const categoryIds: number[] = []
         if (category_ids) {
+            // console.log(category_ids);
             if (Array.isArray(category_ids)) {
                 for (let i = 0; i < category_ids.length; i++) {
                     if (!isNumeric(category_ids[i] as string)) {
@@ -69,11 +85,24 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
                 }
             } else {
                 if (!isNumeric(category_ids as string)) {
-                    return next(createError(400, 'Invalid category_ids'));
+                    categoryIds.push(parseInt(category_ids as string));
                 }
-                categoryIds.push(parseInt(category_ids as string));
+            }
+        } else {
+            // get category from profile
+            if (req.user) {
+                const { id: userId } = req.user;
+                const currentCategories = await readAllByProfileId("vi", userId);
+                if (currentCategories) {
+                    for (let i = 0; i < currentCategories.length; i++) {
+                        categoryIds.push(+currentCategories[i].parent_category_id);
+                    }
+                }
             }
         }
+
+
+        console.log(categoryIds);
 
         const jobTypeIds: number[] = []
         if (job_type_id) {

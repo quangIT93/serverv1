@@ -21,6 +21,12 @@ router.get(
     searchController.readHistorySearch
 );
 
+router.delete(
+    '/history',
+    verifyAccessToken,
+    searchController.deleteHistorySearch
+);
+
 router.get(
     '/suggest',
     // verifyAccessToken,

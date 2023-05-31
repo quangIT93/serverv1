@@ -3,7 +3,7 @@ paths:
     get:
       summary: Search by query v2
       description: Search by query v2 (add expired_at time in response)
-      operationId: searchByQuery
+      operationId: searchByQueryV2
       security:
         - bearerAuth: []
       tags:

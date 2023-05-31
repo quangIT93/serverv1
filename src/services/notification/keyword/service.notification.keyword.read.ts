@@ -29,7 +29,8 @@ const readKeywordNotificationByAccountIdService = async (
             LEFT JOIN parent_categories
             ON parent_categories.id = keywords_notification.category_id
             WHERE account_id = ?
-
+            GROUP BY keywords_notification.id
+            ORDER BY keywords_notification.created_at DESC
         `;
 
         const values = [
