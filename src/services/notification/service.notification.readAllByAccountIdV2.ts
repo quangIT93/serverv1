@@ -73,8 +73,9 @@ const readAllNotificationsByAccountIdV2Service = async (
                 ) as t
                 WHERE t.account_id = ?
                 ORDER BY created_at DESC
-                ${page ? ` LIMIT ? OFFSET ${page * 10}` : 'LIMIT ?'}
-            `
+                LIMIT 20
+                `
+                // ${page ? ` LIMIT ? OFFSET ${page * 10}` : 'LIMIT ?'}
 
         // console.log(query);
         const params = [accountId, limit];

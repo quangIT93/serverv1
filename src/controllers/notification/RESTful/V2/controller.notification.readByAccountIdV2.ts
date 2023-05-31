@@ -27,7 +27,7 @@ const readAllNotificationsByAccountIdV2Controller = async (
 
     const { page } = req.query;
 
-    const { limit = 10 } = req.query;
+    const { limit = 20 } = req.query;
 
     if (page && isNaN(+page)) {
       return next(createHttpError(400, "Page must be a number"));
@@ -133,7 +133,8 @@ const readAllNotificationsByAccountIdV2Controller = async (
       data: {
         total: result.total,
         notifications: notifications,
-        is_over: notifications.length < +limit ? true : false,
+        // is_over: notifications.length < +limit ? true : false,
+        is_over: true,
       },
     });
   } catch (error) {
