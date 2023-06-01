@@ -18,7 +18,7 @@ const deleteHistoryKeywordController = async (
 
         // Call service
         // Delete keyword from database
-        const isDeleteSuccess = await deleteHistorySearchService(accountId, keyword);
+        const isDeleteSuccess = await deleteHistorySearchService(accountId, keyword.toString());
 
         if (!isDeleteSuccess) {
             return next(createHttpError(500, "Internal server error"));

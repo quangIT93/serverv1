@@ -99,4 +99,11 @@ router.put("/sta", verifyAccessToken, postController.updateStatus);
 //
 router.get("/filter/post", postController.filterPostByAddress);
 
+//Related posts
+router.get(
+    "/related/:postId", 
+    postController.readRelatedPosts, 
+    checkBookmark
+);
+
 export default router;

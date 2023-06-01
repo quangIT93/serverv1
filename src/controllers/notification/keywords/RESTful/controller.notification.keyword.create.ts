@@ -21,7 +21,7 @@ const createKeywordNotification = async (req: Request, res: Response, next: Next
         const countKeyword = await readKeywordNotificationByAccountIdService(dto.accountId);
 
         if (countKeyword.length >= limitKeyword) {
-            return next(createHttpError(400, `You can only create ${limitKeyword} keywords`));
+            return next(createHttpError(413, `You can only create ${limitKeyword} keywords`));
         }
 
         const isCreateSuccess = await createKeywordNotificationService(dto);

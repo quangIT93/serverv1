@@ -31,6 +31,9 @@ const readEnabledBannersController = async (
 
         banners = shuffle(banners);
 
+        // FORMAT RESPONSE
+        // 
+
         // SUCCESS
         return res.status(200).json({
             code: 200,

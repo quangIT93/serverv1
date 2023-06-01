@@ -16,6 +16,7 @@ import updatePostStatusController from "./controller.post.updateStatus";
 import updateStatusOfManyPostsController from "./controller.post.updateStatusOfManyPosts";
 import readPostByIdByAdminController from "./controller.post.readPostByIdByAdmin";
 import filterPostByAddressController from "./controller.post.filterPostByAddress";
+import readRelatedPostsController from "./readPost/handler/controller.post.readRelatedPosts";
 
 const postController = {
     // READ ALL POSTS
@@ -48,6 +49,9 @@ const postController = {
 
     // READ POST BY ID BY ADMIN
     readPostByIdByAdmin: readPostByIdByAdminController,
+
+    //RELATED POSTS
+    readRelatedPosts: readRelatedPostsController,
 
     // COUNT BY ADMIN
     countPostQuantityByAdmin: countPostQuantityByAdminController,
