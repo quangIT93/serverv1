@@ -30,14 +30,14 @@ const readRelatedPostByPostIdService = async (
 
         let params = [postId, postId, postId];
 
-        console.log(query)
+        // console.log(query)
 
         const res = await executeQuery(query, params);
 
-        logging.info(
-            "Read newest accepted posts by provinces service stopped with result: ",
-            res
-        );
+        // logging.info(
+        //     "Read newest accepted posts by provinces service stopped with result: ",
+        //     res
+        // );
 
 
         return res ? res : null;
