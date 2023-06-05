@@ -56,7 +56,6 @@ const createNewKeywordNotification = ({
             isRead,
             createdAt,
             image,
-            companyName,
             location: {
                 district: {
                     id: districtId,
@@ -75,6 +74,8 @@ const createNewKeywordNotification = ({
             companyResource: {
                 id: companyResourceId,
                 logo: `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.COMPANY_ICON}/${companyResourceLogo}`,
+                companyName,
+
             },
             typeText: "keyword",
         };
