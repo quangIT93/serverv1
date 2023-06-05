@@ -3,7 +3,7 @@ import { Response, Request, NextFunction } from 'express';
 import logging from '../../utils/logging';
 import applicationService from '../../services/application/_service.application';
 import * as notificationService from '../../services/notification/_service.notification';
-import { createNotificationContent, NotificationContent } from '../notification/createNotificationContent/application/createForApplication';
+// import { createNotificationContent, NotificationContent } from '../notification/createNotificationContent/application/createForApplication';
 import pushNotification from '../../services/pushNotification/push';
 import createNewNotificationForApplication from '../notification/createNotificationContent/application/createForApplication.test';
 

@@ -3,7 +3,7 @@ import createHttpError from "http-errors";
 import * as notificationService from "../../../../services/notification/_service.notification";
 import logging from "../../../../utils/logging";
 import { INotification } from "../../../../models/notification/interface/notification.interface";
-import createNewKeywordNotification from "../../createNotificationContent/keywordNotification/createNewKeywordNotification.test";
+import createNewKeywordNotification from "../../createNotificationContent/keywordNotification/createNewKeywordNotification";
 import createNewNotificationForApplication from "../../createNotificationContent/application/createForApplication.test";
 import readDefaultPostImageByPostId from "../../../../services/category/service.category.readDefaultPostImageByPostId";
 import ImageBucket from "../../../../models/enum/imageBucket.enum";

@@ -10,8 +10,8 @@ import ProfilesBucket from '../../models/enum/profileBucket.enum';
 import ImageBucket from '../../models/enum/imageBucket.enum';
 import createNewNotificationForApplication from '../notification/createNotificationContent/application/createForApplication.test';
 import pushNotificationV2 from '../../services/pushNotification/push';
-import { NotificationContent, createNotificationContent } from '../notification/createNotificationContent/application/createForApplication';
-import pushNotification from '../../configs/transport/notification/push-notification';
+// import { NotificationContent, createNotificationContent } from '../notification/createNotificationContent/application/createForApplication';
+// import pushNotification from '../../configs/transport/notification/push-notification';
 const createApplicationController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // GET DATA

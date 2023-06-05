@@ -56,6 +56,7 @@ const createNewKeywordNotification = ({
             isRead,
             createdAt,
             image,
+            companyName,
             location: {
                 district: {
                     id: districtId,
