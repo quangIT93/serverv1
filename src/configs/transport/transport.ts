@@ -20,7 +20,7 @@ const sendEmailToUser = (options: any, callback: Function = () => { }) => {
         ...options
     };
 
-    console.log(mailOptions)
+    // console.log(mailOptions)
 
     nodeMailerTransporter.sendMail(mailOptions, (error, info) => {
         if (error) {

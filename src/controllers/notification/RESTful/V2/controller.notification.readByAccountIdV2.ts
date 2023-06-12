@@ -44,7 +44,7 @@ const readAllNotificationsByAccountIdV2Controller = async (
       await notificationService.readAllNotificationsByAccountIdV2Service(
         accountId,
         +page,
-        +limit,
+        +limit + 1,
         String(req.query.lang)
       );
 
@@ -133,8 +133,8 @@ const readAllNotificationsByAccountIdV2Controller = async (
       data: {
         total: result.total,
         notifications: notifications,
-        // is_over: notifications.length < +limit ? true : false,
-        is_over: true,
+        is_over: notifications.length <= +limit ? true : false,
+        // is_over: limit < result.length ? false : true,
       },
     });
   } catch (error) {

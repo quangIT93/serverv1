@@ -73,7 +73,8 @@ const readAllNotificationsByAccountIdV2Service = async (
                 ) as t
                 WHERE t.account_id = ?
                 ORDER BY created_at DESC
-                LIMIT 20
+                LIMIT ${limit}
+                OFFSET ${page * limit}
                 `
                 // ${page ? ` LIMIT ? OFFSET ${page * 10}` : 'LIMIT ?'}
 
