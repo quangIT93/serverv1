@@ -137,8 +137,8 @@ const readAllNotificationsByAccountIdV2Controller = async (
       data: {
         total: total,
         notifications: notifications,
-        is_over: notifications.length <= +limit ? true : false,
-        // is_over: limit < result.length ? false : true,
+        // is_over: notifications.length <= +limit ? true : false,
+        is_over: true,
       },
     });
   } catch (error) {
