@@ -48,6 +48,8 @@ const readAllNotificationsByAccountIdV2Controller = async (
         String(req.query.lang)
       );
 
+    
+
     if (!result || result.length === 0) {
       return res.status(200).json({
         code: 200,
@@ -62,6 +64,8 @@ const readAllNotificationsByAccountIdV2Controller = async (
     // Format data
     // After format, data will be implemented to notifications array
     // Interface INotification
+
+    const total = parseInt(result[0].total) || 0;
 
     const notifications: INotification[] = await Promise.all(
       result.map(async (item, index: number) => {
@@ -131,7 +135,7 @@ const readAllNotificationsByAccountIdV2Controller = async (
       success: true,
       message: "Read all notifications by account id successfully",
       data: {
-        total: result.total,
+        total: total,
         notifications: notifications,
         is_over: notifications.length <= +limit ? true : false,
         // is_over: limit < result.length ? false : true,

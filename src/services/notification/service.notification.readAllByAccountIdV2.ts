@@ -10,7 +10,8 @@ const readAllNotificationsByAccountIdV2Service = async (
     try {
         const query =
             `
-                SELECT t.*
+                SELECT t.*,
+                COUNT(*) OVER() as total
                 FROM (
                     SELECT notifications.id,
                     notifications.application_id,
