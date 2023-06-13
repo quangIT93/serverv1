@@ -6,6 +6,7 @@ const readPostsAndApplicationsBYAccountIdService = async (
     accountId: String, 
     page: number = 0
 ) => {
+    // only created 1 month ago
     try {
         logging.info('Read posts and applications applications by recruiter id service start ...');
         const query = 
@@ -82,6 +83,8 @@ const readPostsAndApplicationsBYAccountIdService = async (
         LEFT JOIN (SELECT DISTINCT post_id, image FROM post_images GROUP BY post_id) 
         as post_images ON post_images.post_id = t.post_id 
         LEFT JOIN job_types ON job_types.id = t.job_type
+        WHERE t.post_status = 1
+        AND t.created_at >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
         ORDER BY updated_at DESC 
         LIMIT ? OFFSET ?
         `;
