@@ -57,8 +57,8 @@ const updatePostInformationController = async (
             const endDate = req.body.endDate ? +req.body.endDate : null;
             const startTime = +req.body.startTime;
             const endTime = +req.body.endTime;
-            const salaryMin = +req.body.salaryMin;
-            const salaryMax = +req.body.salaryMax;
+            const salaryMin = +req.body.salaryMin || 0;
+            const salaryMax = +req.body.salaryMax || 0;
             const salaryType = +req.body.salaryType;
             const description = req.body.description
                 ? req.body.description.toString().trim()
@@ -160,14 +160,14 @@ const updatePostInformationController = async (
                 return next(createError(400, "Invalid isRemotely value"));
             }
 
-            if (!Number.isInteger(salaryMin) || salaryMin <= 0) {
+            if (!Number.isInteger(salaryMin) || salaryMin < 0) {
                 logging.warning("Invalid salary value");
                 return next(createError(400, "Invalid salary value"));
             }
 
             if (
                 !Number.isInteger(salaryMax) ||
-                salaryMax <= 0 ||
+                salaryMax < 0 ||
                 !Number.isInteger(salaryType) ||
                 salaryType <= 0
             ) {
