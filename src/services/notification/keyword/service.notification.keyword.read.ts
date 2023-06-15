@@ -20,7 +20,7 @@ const readKeywordNotificationByAccountIdService = async (
             keywords_notification.created_at,
             ${lang === "vi" ? "districts.full_name" :  "districts.full_name_en"} as district_name, 
             ${lang === "vi" ? "provinces.full_name" :  "provinces.full_name_en"} as province_name,
-            ${lang === "vi" ? "parent_categories.name" : lang === "en" ? "parent_categories.name_en" : "parent_categories.name_ko"} as category_name
+            ${lang === "vi" ? "parent_categories.name" : lang === "en" ? "parent_categories.name_en" : "parent_categories.name_kor"} as category_name
             FROM keywords_notification
             LEFT JOIN districts
             ON districts.id = keywords_notification.district_id

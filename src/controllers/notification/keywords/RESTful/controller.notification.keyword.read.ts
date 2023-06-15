@@ -9,9 +9,11 @@ const readKeywordNotification = async (req: Request, res: Response, next: NextFu
     try {
         const { id: accountId } = req.user;
 
+        const { lang = "vi" } = req.query;
+
         const data: KeywordNotificationEntity[] = [];
 
-        const objects = await readKeywordNotificationByAccountIdService(accountId);
+        const objects = await readKeywordNotificationByAccountIdService(accountId, lang as string);
 
         if (!objects) {
             return next(createHttpError(500, "Internal server error"));

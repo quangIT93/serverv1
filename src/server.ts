@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import rateLimit from "express-rate-limit";
 import path from "path";
-import firebaseAdmin from "firebase-admin";
+// import firebaseAdmin from "firebase-admin";
 import helmet from "helmet";
 import http from "http";
 
@@ -50,7 +50,11 @@ app.use(express.static(path.join(__dirname, "public")));
 // );
 
 // Cors middlewares
-app.use(cors());
+app.use(cors(
+    {
+        origin: "*",
+    }
+));
 app.use(helmet());
 
 // Middlewares to get POST request body
