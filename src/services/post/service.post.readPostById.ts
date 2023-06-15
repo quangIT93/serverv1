@@ -8,7 +8,7 @@ const readPostByIdService = async (postId: number, lang: string | null = "vi",) 
         const query =
             initQueryReadDetailPost(lang) +
             "WHERE posts.id = ? " +
-            expiredDateCondition() +
+            // expiredDateCondition() +
             "GROUP BY posts.id";
         const params = [postId];
         const res = await executeQuery(query, params);
