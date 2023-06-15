@@ -50,6 +50,7 @@ const readPostByIdController = async (
             return next(createError(404, "Post not found."));
         }
 
+        console.log(postData);
         // CHANGE TIMESTAMP
         postData = await formatPostBeforeReturn(postData[0], req.query.lang.toString());
 

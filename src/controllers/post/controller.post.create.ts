@@ -68,8 +68,8 @@ const createPostController = async (
                 : null;
             const startTime = +req.body.startTime;
             const endTime = +req.body.endTime;
-            const salaryMin = +req.body.salaryMin;
-            const salaryMax = +req.body.salaryMax;
+            const salaryMin = +req.body.salaryMin || 0;
+            const salaryMax = +req.body.salaryMax || 0;
             const salaryType = +req.body.salaryType;
             const description = req.body.description
                 ? req.body.description.toString().trim()
@@ -181,12 +181,12 @@ const createPostController = async (
                 return next(createError(400, "Invalid time value"));
             }
 
-            if (!Number.isInteger(salaryMin) || salaryMin <= 0) {
+            if (!Number.isInteger(salaryMin) || salaryMin < 0) {
                 logging.warning("Invalid salary value");
                 return next(createError(400, "Salary must be greater than 0"));
             }
 
-            if (!Number.isInteger(salaryMax) || salaryMax <= 0) {
+            if (!Number.isInteger(salaryMax) || salaryMax < 0) {
                 logging.warning("Invalid salary value");
                 return next(createError(400, "Salary must be greater than 0"));
             }
