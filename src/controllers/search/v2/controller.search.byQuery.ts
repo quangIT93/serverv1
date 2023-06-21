@@ -53,7 +53,7 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
                     districtIds.push(district_ids[i] as string);
                 }
             } else {
-                if (!isNumeric(district_ids as string)) {
+                if (isNumeric(district_ids as string)) {
                     districtIds.push(district_ids as string);
                 }
             }
