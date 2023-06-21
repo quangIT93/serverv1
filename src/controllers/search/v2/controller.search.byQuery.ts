@@ -22,8 +22,8 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
         // GET SEARCH KEYWORD
         let { q, page } = req.query;
  
-        const { district_ids = null } = req.query;
-        const { category_ids = null } = req.query;
+        const { district_ids } = req.query;
+        const { category_ids } = req.query;
         const { salary_min } = req.query;
         const { salary_max } = req.query;
         const { salary_type } = req.query;
@@ -46,7 +46,7 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
         // if district_ids is not null
         // or if district_ids is not empty array
         console.log(district_ids);
-        if (district_ids !== null) {
+        if (district_ids !== null && district_ids !== undefined) {
             if (Array.isArray(district_ids)) {
                 for (let i = 0; i < district_ids.length; i++) {
                     if (!isNumeric(district_ids[i] as string)) {
@@ -76,8 +76,8 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
 
         // CATEGORY IDS
         const categoryIds: number[] = []
-        console.log(category_ids);
-        if (category_ids !== null) {
+        console.log(category_ids );
+        if (category_ids !== null && category_ids !== undefined) {
             if (Array.isArray(category_ids)) {
                 for (let i = 0; i < category_ids.length; i++) {
                     if (!isNumeric(category_ids[i] as string)) {
