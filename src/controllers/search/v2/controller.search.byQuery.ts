@@ -84,7 +84,7 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
                     categoryIds.push(parseInt(category_ids[i] as string));
                 }
             } else {
-                if (!isNumeric(category_ids as string)) {
+                if (isNumeric(category_ids as string)) {
                     categoryIds.push(parseInt(category_ids as string));
                 }
             }
