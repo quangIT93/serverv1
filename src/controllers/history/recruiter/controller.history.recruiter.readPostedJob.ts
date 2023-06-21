@@ -14,6 +14,7 @@ const readPostedJobByRecruiterIdController = async (
     const { id: recruiterId } = req.user;
     const { threshold, limit } = req.query;
 
+
     try {
         const posts = await postService.readAllPostsByAccountIdService(
             req.query.lang.toString(),
