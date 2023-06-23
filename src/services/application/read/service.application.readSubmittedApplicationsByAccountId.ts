@@ -45,6 +45,7 @@ const readSubmittedApplicationByAccountIdService = async (
           : "salary_types.value_ko"
       } as salary_type,` +
       "company_resource.icon as company_resource_icon, " +
+      "posts.is_inhouse_data, " +
       "posts.money_type, " +
       "posts.job_type, " +
       `${

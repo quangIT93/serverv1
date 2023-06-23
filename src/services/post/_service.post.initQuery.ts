@@ -29,6 +29,7 @@ const initQueryReadPost = (lang: string): string => {
         provinces.id as province_id,
         ${lang === "vi" ? "salary_types.value" : lang === "en" ? "salary_types.value_en" : "salary_types.value_ko"} as salary_type,
         post_images.image AS image,
+        posts.expired_date,
         company_resource.icon as company_resource_icon
         FROM posts
     LEFT JOIN wards
