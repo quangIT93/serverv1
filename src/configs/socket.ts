@@ -26,6 +26,7 @@ const configSocket = (server) => {
   // Authorization midddleware
   io.use((socket, next) => {
     // const token = socket.handshake.auth.token;
+    console.log('middleware is running');
     const headerAuthorization = socket.request.headers.authorization;
 
 
@@ -56,14 +57,15 @@ const configSocket = (server) => {
       async function (err, payload: Payload) {
         if (err) {
           // EXPIRED ERROR
-          if (err.name === 'TokenExpiredError') {
+          if (err.name !== 'TokenExpiredError') {
             logging.error('Token expired');
-            return next(createError(403));
+            return next(createError(401));
+
+            // return next(createError(403));
           }
 
           // OTHER ERROR
           logging.error(err.message);
-          return next(createError(401));
         }
 
         const { id } = payload;
