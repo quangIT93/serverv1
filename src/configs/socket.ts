@@ -54,21 +54,25 @@ const configSocket = (server) => {
     jwt.verify(
       accessToken,
       process.env.ACCESS_TOKEN_SECRET,
+      { ignoreExpiration: true },
       async function (err, payload: Payload) {
+        // let payloadExpried;
         if (err) {
           // EXPIRED ERROR
           if (err.name !== 'TokenExpiredError') {
-            logging.error('Token expired');
+            // logging.error('Token expired error');
+            // payloadExpried = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, {ignoreExpiration: true} );
+            // return next(createError(403));
             return next(createError(401));
 
-            // return next(createError(403));
           }
 
           // OTHER ERROR
-          logging.error(err.message);
+          // logging.error(err.message);
+          // return next(createError(401));
         }
 
-        const { id } = payload;
+        const {id} = payload;
 
         // VERIFY SUCCESS
         // SET SOCKET ID TO REDIS
