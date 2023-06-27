@@ -23,7 +23,7 @@ const createPostController = async (
         multerUploadImages(req, res, async (err) => {
             if (err) {
                 logging.error("Multer error");
-                return next(createError(400, "You can only upload 5 images"));
+                return next(createError(400, err.message));
             }
 
             if (!req.user && !req.user.id) {
