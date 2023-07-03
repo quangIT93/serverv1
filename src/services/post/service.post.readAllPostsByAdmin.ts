@@ -1,11 +1,13 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database/database";
 
-const readAllPostsByAdmin = async () => {
+const readAllPostsByAdmin = async (page: number = 0, limit: number = 10) => {
     try {
         logging.info("Read posts service start ...");
         const query =
-            "SELECT posts.id, " +
+            "SELECT " +
+            // "COUNT(posts.id) OVER() as total, " +
+            "posts.id, " +
             "posts.status, " +
             "posts.account_id, " +
             "posts.title, " +
@@ -32,7 +34,8 @@ const readAllPostsByAdmin = async () => {
             "LEFT JOIN provinces " +
             "ON provinces.id = districts.province_id " +
             "GROUP BY posts.id " +
-            "ORDER BY posts.id DESC";
+            "ORDER BY posts.id DESC " +
+            `LIMIT ${limit} OFFSET ${page * limit};`;
         const res = await executeQuery(query);
         return res ? res : null;
     } catch (error) {

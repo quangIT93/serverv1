@@ -5,8 +5,6 @@ import verifyAccessToken from "../../../middlewares/middleware.verifyAccessToken
 
 const router = express.Router();
 
-router.get("/count", verifyAccessToken, homeAdminController.counter);
 
-router.get("/image", getImageFromS3);
 
 export default router;

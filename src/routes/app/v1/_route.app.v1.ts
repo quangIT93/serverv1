@@ -16,10 +16,10 @@ import appSearchRouter from './route.app.search';
 import appNotificationRouter from '../v1/route.app.notification';
 import chatRouter from './route.app.chat';
 import fcmRouter from './route.app.fcm-token';
+// import homeAdminRouter from './route.app.homeAdmin';
 
 const routeV1 = Router();
 
-// app.use('/api/v1/home-admin', homeAdminRouter);
 
 // app.use('/api/v1/sign-in', appSignInRouter); // SIGN IN
 // app.use('/api/v1/accounts', appAccountRouter); // ACCOUNT
@@ -39,6 +39,8 @@ const routeV1 = Router();
 // app.use('/api/v1', appSiteRouter); // SITE
 
 routeV1.use("/home-admin", appAccountRouter);
+// routeV1.use('/home-admin', homeAdminRouter);
+
 
 routeV1.use("/sign-in", appSignInRouter);
 routeV1.use("/accounts", appAccountRouter);
