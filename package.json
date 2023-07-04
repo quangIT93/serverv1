@@ -41,7 +41,8 @@
         "ts-node": "^10.9.1",
         "twilio": "^3.83.2",
         "util": "^0.12.5",
-        "uuid": "^9.0.0"
+        "uuid": "^9.0.0",
+        "validator": "^13.9.0"
     },
     "devDependencies": {
         "@types/cors": "^2.8.12",
