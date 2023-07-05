@@ -34,22 +34,7 @@ const admimSignOutController = async (
             const { id, role } = payload;
             if (role === 1 || role === 2) {
                 // REMOVE REFRESH TOKEN BY EMAIL IN REDIS SERVER
-                redisClient.del(id, (err, reply) => {
-                    if (err) {
-                        logging.error(
-                            "Remove refresh token by id on redis server error: ",
-                            err
-                        );
-                        return next(createError(500));
-                    }
-
-                    // Success
-                    return res.status(200).json({
-                        code: 200,
-                        success: true,
-                        message: "Successfully",
-                    });
-                });
+                redisClient.del(id);
             } else {
                 return next(createError(401));
             }

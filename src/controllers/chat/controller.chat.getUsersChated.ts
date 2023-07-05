@@ -19,7 +19,7 @@ const getUsersChattedController = async (
             return next(createError(401));
         }
 
-        const id = req.user.id;
+    const id = req.user.id;
 
         // Get users chatted
         const usersChatted = await chatServices.getUsersChatted(
@@ -31,7 +31,7 @@ const getUsersChattedController = async (
         }
 
         // Modify
-        await Promise.all(
+    await Promise.all(
             usersChatted.map(async (userChatted, _) => {
                 if (userChatted.sender_id === id) {
                     userChatted.user_id = userChatted.receiver_id;

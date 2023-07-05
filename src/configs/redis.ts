@@ -5,9 +5,12 @@ import logging from '../utils/logging';
 const PORT = +process.env.REDIS_PORT || 6379;
 const HOST = process.env.REDIS_HOST || '127.0.0.1';
 
+
 const client = createClient({
   url: `redis://${HOST}:${PORT}`,
-});
+})
+
+client.connect();
 
 client.on('error', (err) => logging.error(`Connect to redis failure: ${err}`));
 
