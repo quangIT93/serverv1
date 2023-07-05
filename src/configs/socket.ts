@@ -26,12 +26,10 @@ const configSocket = (server) => {
   // Authorization midddleware
   io.use((socket, next) => {
     // const token = socket.handshake.auth.token;
-    console.log('middleware is running');
     const headerAuthorization = socket.request.headers.authorization;
 
 
     if (!headerAuthorization.trim()) {
-      logging.warning('socket: Invalid header authorization');
       return next(createError(401));
     }
 
@@ -42,7 +40,6 @@ const configSocket = (server) => {
       : null;
 
     if (!accessToken) {
-      logging.warning('Invalid access token');
       return next(createError(401));
     }
 
@@ -76,6 +73,8 @@ const configSocket = (server) => {
 
         // VERIFY SUCCESS
         // SET SOCKET ID TO REDIS
+        console.log('id: ' + id);
+        console.log('socket.id: ' + socket.id);
         await redisClient.set(
           `socket-${id}`,
           socket.id,
@@ -133,7 +132,6 @@ const configSocket = (server) => {
             postId,
             createdAt
           );
-          logging.success('Create chat success');
           // let buf = Buffer.from(files[0], 'base64');
           if (!chatIdInserted) {
             // SEND ERROR MESSAGE TO CLIENT
@@ -233,6 +231,7 @@ const configSocket = (server) => {
                   });
                 }
               } catch (error) {
+                console.log(error);
                 socket.emit(
                   'server-send-error-message',
                   'Send message to receiver failure'
