@@ -33,22 +33,12 @@ const signOutController = async (
         if (payload && payload.id) {
             const { id } = payload;
             // REMOVE REFRESH TOKEN BY EMAIL IN REDIS SERVER
-            redisClient.del(id, (err, reply) => {
-                if (err) {
-                    logging.error(
-                        "Remove refresh token by id on redis server error: ",
-                        err
-                    );
-                    return next(createError(500));
-                }
+            redisClient.del(id);
 
-                // Success
-                return res.status(200).json({
-                    code: 200,
-                    success: true,
-                    message: "Successfully",
-                });
-            });
+            // REMOVE SOCKET BY ID IN REDIS SERVER
+            redisClient.del(`socket-${id}`);
+
+            logging.success("Delete refresh token and socket success");
         }
     } catch (error) {
         logging.error("Sign out controller has error: ", error);

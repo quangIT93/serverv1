@@ -21,13 +21,9 @@ const signRefreshTokenService = async (payload: Payload) => {
             redisClient.set(
                 payload.id,
                 token,
-                "EX",
-                30 * 24 * 60 * 60, // 1 month
-                (err, reply) => {
-                    if (err) {
-                        reject("Set refresh token to redis error");
-                    }
-                }
+                {
+                    EX: 60 * 60 * 24 * 30,
+                },
             );
             resolve(token);
         });

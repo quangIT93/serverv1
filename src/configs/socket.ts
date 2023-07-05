@@ -78,12 +78,8 @@ const configSocket = (server) => {
         await redisClient.set(
           `socket-${id}`,
           socket.id,
-          'EX',
-          30 * 24 * 60 * 60, // 1 month
-          (err, reply) => {
-            if (err) {
-              return next(createError(500));
-            }
+          {
+            EX: 60 * 60 * 24 * 30,
           }
         );
 

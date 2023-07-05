@@ -6,8 +6,7 @@ const PORT = +process.env.REDIS_PORT || 6379;
 const HOST = process.env.REDIS_HOST || '127.0.0.1';
 
 const client = createClient({
-  port: PORT,
-  host: HOST,
+  url: `redis://${HOST}:${PORT}`,
 });
 
 client.on('error', (err) => logging.error(`Connect to redis failure: ${err}`));
@@ -20,6 +19,9 @@ client.on('ready', (err) =>
 
 client.on('disconnect', () => logging.warning('Redis disconnected'));
 
-client.get = util.promisify(client.get);
+// client.get = util.promisify(client.get);
+client.get = util.promisify(client.get).bind(client);
+
+client.del = util.promisify(client.del).bind(client);
 
 export default client;
