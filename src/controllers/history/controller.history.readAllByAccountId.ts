@@ -57,7 +57,7 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
                     const firstParentCategoryImage =
                     await readDefaultPostImageByPostId(
                             a.post_id
-                            );
+                    );
                     if (!firstParentCategoryImage) {
                         a.image = null;
                     } else {
@@ -78,6 +78,7 @@ const readAllByAccountId = async (req: Request, res: Response, next: NextFunctio
                 }
             }
             a.created_at_text = formatPostedTime(a.created_at, req.query.lang.toString());
+            a.expired_date = new Date(a.expired_date).getTime();
             return a;
         }));
         
