@@ -1,5 +1,5 @@
 import { createClient } from 'redis';
-import util from 'util';
+// import util from 'util';
 import logging from '../utils/logging';
 
 const PORT = +process.env.REDIS_PORT || 6379;
@@ -23,8 +23,8 @@ client.on('ready', (err) =>
 client.on('disconnect', () => logging.warning('Redis disconnected'));
 
 // client.get = util.promisify(client.get);
-client.get = util.promisify(client.get).bind(client);
+// client.get = util.promisify(client.get).bind(client);
 
-client.del = util.promisify(client.del).bind(client);
+// client.del = util.promisify(client.del).bind(client);
 
 export default client;
