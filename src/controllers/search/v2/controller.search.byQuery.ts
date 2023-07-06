@@ -45,7 +45,7 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
         const districtIds: string[] = []
         // if district_ids is not null
         // or if district_ids is not empty array
-        console.log('district_ids from query:', district_ids);
+        // console.log('district_ids from query:', district_ids);
         if (district_ids !== null && district_ids !== undefined) {
             if (Array.isArray(district_ids)) {
                 for (let i = 0; i < district_ids.length; i++) {
@@ -72,11 +72,11 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
             }
         }
 
-        console.log('districtIds:', districtIds);
+        // console.log('districtIds:', districtIds);
 
         // CATEGORY IDS
         const categoryIds: number[] = []
-        console.log('category_ids from query:', category_ids);
+        // console.log('category_ids from query:', category_ids);
         if (category_ids !== null && category_ids !== undefined) {
             if (Array.isArray(category_ids)) {
                 for (let i = 0; i < category_ids.length; i++) {
@@ -104,7 +104,7 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
         }
 
 
-        console.log('categoryIds:', categoryIds);
+        // console.log('categoryIds:', categoryIds);
 
         const jobTypeIds: number[] = []
         if (job_type_id) {
