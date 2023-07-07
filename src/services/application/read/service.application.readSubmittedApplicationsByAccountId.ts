@@ -54,7 +54,8 @@ const readSubmittedApplicationByAccountIdService = async (
           : lang === "en"
           ? "job_types.name_en"
           : "job_types.name_ko"
-      } as job_type_name ` +
+      } as job_type_name, ` +
+      " posts.expired_date " +
       " FROM applications" +
       " LEFT JOIN posts ON applications.post_id = posts.id" +
       " LEFT JOIN wards ON posts.ward_id = wards.id" +
