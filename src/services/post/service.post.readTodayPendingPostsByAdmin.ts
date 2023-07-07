@@ -29,6 +29,11 @@ const readTodayPendingPostsByAdmin = async (page, limit) => {
     try {
       logging.info("Read today pending posts by admin service start ...");
       const offset = (page - 1) * limit; 
+
+      const countQuery = "SELECT COUNT(*) as total FROM posts WHERE DATE(created_at) = CURDATE() AND status = ?";
+      const countParams = [0];
+      const countResult = await executeQuery(countQuery, countParams);
+      const totalPosts = countResult[0].total;
       const query =
         "SELECT posts.id, posts.status, posts.account_id, posts.title, posts.company_name, " +
         "posts.created_at, profiles.name as poster " +
@@ -41,7 +46,7 @@ const readTodayPendingPostsByAdmin = async (page, limit) => {
         "LIMIT ?, ?";
       const params = [0, offset, limit]; 
       const res = await executeQuery(query, params);
-      return res ? res : null;
+      return { totalPosts, data: res ? res : null };
     } catch (error) {
       logging.error(
         "Read today pending posts by admin service has error: ",

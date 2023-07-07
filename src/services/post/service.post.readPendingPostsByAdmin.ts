@@ -27,6 +27,12 @@ const readPendingPostsByAdmin = async (page, limit) => {
     try {
       logging.info("Read pending posts by admin service start ...");
       const offset = (page - 1) * limit; // Tính offset (vị trí bắt đầu của trang)
+
+      const countQuery = "SELECT COUNT(*) as total FROM posts WHERE status = ?";
+      const countParams = [0];
+      const countResult = await executeQuery(countQuery, countParams);
+      const totalPosts = countResult[0].total;
+      
       const query = `
         SELECT posts.id, posts.status, posts.account_id, posts.title, posts.company_name,
           posts.created_at, profiles.name as poster
@@ -39,7 +45,7 @@ const readPendingPostsByAdmin = async (page, limit) => {
         LIMIT ${limit} OFFSET ${offset}`;
       const params = [0];
       const res = await executeQuery(query, params);
-      return res ? res : null;
+      return { totalPosts, data: res ? res : null };
     } catch (error) {
       logging.error("Read pending posts by admin service has error: ", error);
       throw error;

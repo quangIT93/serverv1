@@ -18,11 +18,16 @@ const readUserAccounts = async (page, limit) => {
     try {
       logging.info("Read all accounts service start: ");    
       const offset = (page - 1) * limit;
+      
+      const countQuery = "SELECT COUNT(*) as total FROM accounts";
+      const countResult = await executeQuery(countQuery);
+      const totalAccounts = countResult[0].total;
+
       const query =
         "SELECT id, email, phone, created_at FROM accounts WHERE role = 0 LIMIT ? OFFSET ?";
       const params = [limit, offset];
       const res = await executeQuery(query, params);
-      return res ? res : null;
+      return { totalAccounts, data: res ? res : null };
     } catch (error) {
       logging.error("Read all accounts service has error: ", error);
       throw error;

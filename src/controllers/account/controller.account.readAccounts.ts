@@ -20,7 +20,7 @@ const readAccountsController = async (
             return next(createError(406));
         }
         const role = +req.query.role;
-        let accounts;
+        let accounts, totalAccounts;
         if (role === 2) {
             // Read worker accounts
             accounts = await accountServices.readWorkerAccounts(+page, +limit);
@@ -32,9 +32,13 @@ const readAccountsController = async (
             }
         }
 
+        totalAccounts = parseInt(accounts.totalAccounts);
+        accounts = accounts.data;
+
         // SUCCESS
         return res.status(200).json({
             code: 200,
+            totalAccounts,
             success: true,
             data: accounts,
             message: "Successfully",

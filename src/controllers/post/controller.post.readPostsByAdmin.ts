@@ -23,7 +23,7 @@ const readPostsByAdminController = async (
         const isOwn = req.query.is_own;
         const aid = req.query.aid;
 
-        let posts;
+        let posts, totalPosts;
 
         // GET POSTS
         if (aid) {
@@ -43,12 +43,15 @@ const readPostsByAdminController = async (
         } else {
             // READ ALL POSTS
             posts = (await postServices.readAllPostsByAdmin(+page, +limit));
+            
         }
+
+        totalPosts = parseInt(posts.totalPosts);
+        posts = posts.data;
+
         if (!posts) {
             return next(createError(500));
         }
-
-        console.log(posts.res);
         // MODIFY
         (posts).forEach((post) => {
             post.created_at = new Date(post.created_at).getTime();
@@ -58,6 +61,7 @@ const readPostsByAdminController = async (
         return res.status(200).json({
             code: 200,
             success: true,
+            totalPosts: totalPosts,
             data: posts,
             message: "Successfully",
         });

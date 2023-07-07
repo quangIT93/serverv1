@@ -13,9 +13,13 @@ const readTodayAccountsController = async (
         logging.info("Read today accounts controller start ...");
 
         const { page, limit } = req.query;
+        let accounts, totalAccounts;
 
         // READ ALL ACCOUNTS
-        const accounts = await accountServices.readTodayUserAccounts(+page, +limit);
+        accounts = await accountServices.readTodayUserAccounts(+page, +limit);
+        totalAccounts = parseInt(accounts.totalAccounts);
+        accounts = accounts.data;
+
         if (!accounts) {
             return next(createError(500));
         }
@@ -24,6 +28,7 @@ const readTodayAccountsController = async (
         return res.status(200).json({
             code: 200,
             success: true,
+            totalAccounts,
             data: accounts,
             message: "Successfully",
         });
