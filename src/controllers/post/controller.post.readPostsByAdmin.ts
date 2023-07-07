@@ -10,12 +10,14 @@ const readPostsByAdminController = async (
     next: NextFunction
 ) => {
     try {
-        // logging.info("Read posts by admin controller start ...");
+        // logging.info("Read posts by admin controller start ...")
 
         if (!req.user || !req.user.id) {
             return next(createError(401));
         }
 
+        const { page, limit } = req.query;
+      
         const isToday = req.query.is_today;
         const status = req.query.status;
         const isOwn = req.query.is_own;
@@ -26,29 +28,29 @@ const readPostsByAdminController = async (
         // GET POSTS
         if (aid) {
             // Read post by account id
-            posts = await postServices.readPostsByAdminId(aid);
+            posts = await postServices.readPostsByAdminId(aid, +page, +limit);    
         } else if (isToday === "true" && Number(status) === 0) {
             // READ TODAY PENDING POSTS
-            posts = await postServices.readTodayPendingPostsByAdmin();
+            posts = await postServices.readTodayPendingPostsByAdmin(+page, +limit);
         } else if (isToday === "true") {
             // READ TODAY POSTS
-            posts = await postServices.readTodayPostsByAdmin();
+            posts = await postServices.readTodayPostsByAdmin(+page, +limit);
         } else if (Number(status) === 0) {
             // READ PENDING POSTS
-            posts = await postServices.readPendingPostsByAdmin();
+            posts = await postServices.readPendingPostsByAdmin(+page, +limit);
         } else if (isOwn === "true") {
-            posts = await postServices.readPostsByAdminId(req.user.id);
+            posts = await postServices.readPostsByAdminId(req.user.id, +page, +limit);
         } else {
             // READ ALL POSTS
-            posts = await postServices.readAllPostsByAdmin();
+            posts = (await postServices.readAllPostsByAdmin(+page, +limit));
         }
-
         if (!posts) {
             return next(createError(500));
         }
 
+        console.log(posts.res);
         // MODIFY
-        posts.forEach((post) => {
+        (posts).forEach((post) => {
             post.created_at = new Date(post.created_at).getTime();
         });
 

@@ -13,6 +13,8 @@ const readAccountsController = async (
         logging.info("Read all accounts controller start ...");
         // GET ROLE
         const { role: roleFromToken } = req.user;
+
+        const { page, limit } = req.query;
         if (roleFromToken !== 1) {
             logging.warning("Invalid role");
             return next(createError(406));
@@ -21,10 +23,10 @@ const readAccountsController = async (
         let accounts;
         if (role === 2) {
             // Read worker accounts
-            accounts = await accountServices.readWorkerAccounts();
+            accounts = await accountServices.readWorkerAccounts(+page, +limit);
         } else {
             // READ ALL ACCOUNTS
-            accounts = await accountServices.readUserAccounts();
+            accounts = await accountServices.readUserAccounts(+page, +limit);
             if (!accounts) {
                 return next(createError(500));
             }

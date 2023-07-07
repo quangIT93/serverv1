@@ -12,8 +12,10 @@ const readTodayAccountsController = async (
     try {
         logging.info("Read today accounts controller start ...");
 
+        const { page, limit } = req.query;
+
         // READ ALL ACCOUNTS
-        const accounts = await accountServices.readTodayUserAccounts();
+        const accounts = await accountServices.readTodayUserAccounts(+page, +limit);
         if (!accounts) {
             return next(createError(500));
         }

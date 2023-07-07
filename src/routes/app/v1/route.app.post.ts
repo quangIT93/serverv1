@@ -7,7 +7,7 @@ import { checkBookmark } from "../../../middlewares/checkBookmark";
 const router = express.Router();
 
 // READ POSTS BY ADMIN
-router.get("/by-admin", verifyAccessToken, postController.readPostsByAdmin); // ADMIN ROLE
+router.get(`/by-admin`, verifyAccessToken, postController.readPostsByAdmin); // ADMIN ROLE
 
 // READ ALL POSTS BY THEME
 router.get("/theme/all", verifyAccessToken, postController.readAllPostsByTheme); // ADMIN ROLE
