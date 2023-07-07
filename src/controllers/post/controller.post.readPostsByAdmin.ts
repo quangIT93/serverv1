@@ -2,7 +2,6 @@ import createError from "http-errors";
 import { NextFunction, Request, Response } from "express";
 import logging from "../../utils/logging";
 import * as postServices from "../../services/post/_service.post";
-import { countAllPostsByAdminService } from "../../services/post/service.post.countAllByAdmin";
 // import MoneyType from "../../enum/money_type.enum";
 
 const readPostsByAdminController = async (
@@ -16,10 +15,6 @@ const readPostsByAdminController = async (
         if (!req.user || !req.user.id) {
             return next(createError(401));
         }
-
-        // GET QUERY
-        const page = Number(req.query.page) || 0;
-        const limit = Number(req.query.limit) || 10;
 
         const isToday = req.query.is_today;
         const status = req.query.status;
@@ -45,32 +40,23 @@ const readPostsByAdminController = async (
             posts = await postServices.readPostsByAdminId(req.user.id);
         } else {
             // READ ALL POSTS
-            posts = await postServices.readAllPostsByAdmin(page, limit);
+            posts = await postServices.readAllPostsByAdmin();
         }
 
         if (!posts) {
             return next(createError(500));
         }
 
-        
-        const totalRes = await countAllPostsByAdminService();
-                
-        const total = totalRes ? parseInt(totalRes[0].total) : 0;
-
         // MODIFY
         posts.forEach((post) => {
             post.created_at = new Date(post.created_at).getTime();
         });
-        
 
         // SUCCESS
         return res.status(200).json({
             code: 200,
             success: true,
-            data: {
-                total,
-                posts,
-            },
+            data: posts,
             message: "Successfully",
         });
     } catch (error) {
