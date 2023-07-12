@@ -27,10 +27,16 @@ const verifyRefreshTokenService = (refreshToken: string) => {
                 // Get refresh token by email in redis
                 try {
                     const reply = await redisClient.get(id);
-                    if (reply === null || refreshToken !== reply) {
-                        reject("Invalid refresh token");
+                    if (reply === null) {
+                        reject('Invalid refresh token');
                     } else {
-                        resolve(payload);
+                        let arrayRefreshToken = reply.split(",");
+                        let index = arrayRefreshToken.indexOf(refreshToken);
+                        if (index > -1) {
+                            resolve(payload);
+                        } else {
+                            resolve(1);
+                        }
                     }
                 } catch (error) {
                     reject("Get refresh token by email error");

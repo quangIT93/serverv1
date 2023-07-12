@@ -6,7 +6,7 @@ const getLastOtpByEmailService = async (email: String) => {
         const query =
             "SELECT otp, created_at, account, type " +
             "FROM otps " +
-            "WHERE account = ? AND type = 1 " +
+            "WHERE account = ? AND type = 1 AND status = 0 " +
             "ORDER BY otps.created_at DESC " +
             "LIMIT 1";
         const params = [email];

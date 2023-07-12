@@ -33,6 +33,14 @@ const resetAccessTokenController = async (
             return next(createError(401, "Invalid refresh token"));
         }
 
+        if (payload === 1) {
+            return res.status(401).json({
+                status: 401,
+                success: false,
+                message: "Invalid refresh token",
+            });
+        }
+
         const newPayload = {
             id: payload.id,
             role: payload.role,
