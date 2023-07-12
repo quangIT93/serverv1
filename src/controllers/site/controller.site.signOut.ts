@@ -37,7 +37,6 @@ const signOutController = async (
                 message: "Sign out success",
             });
         }
-
         const { id } = payload;
         if (payload && payload.id) {
             // REMOVE REFRESH TOKEN BY EMAIL IN REDIS SERVER
@@ -62,7 +61,15 @@ const signOutController = async (
         // });
     } catch (error) {
         logging.error("Sign out controller has error: ", error);
-        next(createError(500));
+        if (error === "Token expired" || error === "Invalid token" || error === "Verify refresh token failure") {
+            return res.status(200).json({
+                success: true,
+                message: "Sign out success",
+            });
+        } else if (error === "Get refresh token by email error") {
+            return next(createError.InternalServerError());
+        }
+        return next(createError(500));
     }
 };
 

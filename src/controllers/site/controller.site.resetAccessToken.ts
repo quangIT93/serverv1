@@ -62,9 +62,16 @@ const resetAccessTokenController = async (
         });
     } catch (error) {
         logging.error(error);
-        return next(
-            createError(500, "Internal server error or invalid refresh token")
-        );
+        if (error === "Token expired") {
+            return next(createError(401, "Invalid refresh token"));
+        } else if (error === "Invalid token") {
+            return next(createError(401, "Invalid refresh token"));
+        } else if (error === "Verify refresh token failure") {
+            return next(createError(401, "Invalid refresh token"));
+        } else if (error === "Get refresh token by email error") {
+            return next(createError.InternalServerError());
+        }
+        return next(createError.InternalServerError());
     }
 };
 

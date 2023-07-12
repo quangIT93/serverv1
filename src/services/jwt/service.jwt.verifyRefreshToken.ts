@@ -6,7 +6,7 @@ interface Payload {
     role: number;
 }
 
-const verifyRefreshTokenService = (refreshToken: string) => {
+const verifyRefreshTokenService = async (refreshToken: string) => {
     return new Promise((resolve, reject) => {
         jwt.verify(
             refreshToken,
@@ -15,10 +15,16 @@ const verifyRefreshTokenService = (refreshToken: string) => {
                 if (err) {
                     // Token expired
                     if (err.name === "TokenExpiredError") {
-                        reject("Refresh token expired");
+                        reject("Token expired");
+                        return;
+                        // Invalid token
+                    } else if (err.name === "JsonWebTokenError") {
+                        reject("Invalid token");
+                        return;
+                    } else {
+                        reject("Verify refresh token failure");
+                        return;
                     }
-
-                    reject("Verify refresh token failure");
                 }
 
                 // Get payload
@@ -41,23 +47,9 @@ const verifyRefreshTokenService = (refreshToken: string) => {
                 } catch (error) {
                     reject("Get refresh token by email error");
                 }
-
-                // redisClient.get(id, (err, reply) => {
-                //     if (err) {
-                //         reject("Get refresh token by email error");
-                //     }
-
-                //     // Check refresh token is valid
-                //     if (refreshToken !== reply) {
-                //         reject("Invalid refresh token");
-                //     }
-
-                //     // Success
-                //     resolve(payload);
-                // });
             }
         );
-    });
-};
+    })
+}
 
 export default verifyRefreshTokenService;
