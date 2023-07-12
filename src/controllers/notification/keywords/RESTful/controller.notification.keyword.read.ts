@@ -29,8 +29,6 @@ const readKeywordNotification = async (req: Request, res: Response, next: NextFu
 
         const typeOfPlatform = await readTypeOfNotificationPlatformService({accountId});
 
-        
-
         return res.status(200).json({
             message: "Read keyword notification successfully",
             data: {

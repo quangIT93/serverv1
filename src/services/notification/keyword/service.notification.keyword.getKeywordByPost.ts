@@ -27,10 +27,10 @@ const readKeywordByPostDetailService = async (
             `;
 
         const values = [
+            ...categoryId,
             wardId,
             postTitle,
         ];
-        // ...categoryId,
         // console.log(query, " query");
         // console.log(values, " values");
     
