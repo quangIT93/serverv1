@@ -30,6 +30,14 @@ const admimSignOutController = async (
         const payload: Payload | any = await verifyRefreshTokenService(
             refreshToken
         );
+
+        if (payload === 1 || payload.id) {
+            res.status(200).json({
+                success: true,
+                message: "Sign out success",
+            });
+        }
+
         if (payload && payload.id) {
             const { id, role } = payload;
             if (role === 1 || role === 2) {
