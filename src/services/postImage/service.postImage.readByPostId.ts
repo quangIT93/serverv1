@@ -7,7 +7,7 @@ const readImagesOfPost = async (postId: number) => {
         const query =
             "SELECT id, image, status " +
             "FROM post_images " +
-            "WHERE post_id = ?";
+            "WHERE post_id = ? AND type = 0";
         const params = [postId];
         const res = await executeQuery(query, params);
         return res ? res : null;
