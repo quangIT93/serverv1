@@ -13,10 +13,14 @@ const readTodayAccountsController = async (
         logging.info("Read today accounts controller start ...");
 
         const { page, limit } = req.query;
+
+        let pageNumber = +page ? +page : 1;
+        let limitNumber = +limit ? +limit : 10;
+
         let accounts, totalAccounts;
 
         // READ ALL ACCOUNTS
-        accounts = await accountServices.readTodayUserAccounts(+page, +limit);
+        accounts = await accountServices.readTodayUserAccounts(+pageNumber, +limitNumber);
         totalAccounts = parseInt(accounts.totalAccounts);
         accounts = accounts.data;
 

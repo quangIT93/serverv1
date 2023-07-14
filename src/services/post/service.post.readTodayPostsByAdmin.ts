@@ -22,14 +22,14 @@ import { executeQuery } from "../../configs/database/database";
 // };
 
 
-const readTodayPostsByAdmin = async (page, limit) => {
+const readTodayPostsByAdmin = async (page = 1, limit = 10) => {
     try {
       logging.info("Read today posts by admin service start ...");
       const offset = (page - 1) * limit; // Tính offset (vị trí bắt đầu của trang)
 
-      const countQuery = "SELECT COUNT(*) as total FROM posts WHERE DATE(created_at) = CURDATE()";
-      const countResult = await executeQuery(countQuery);
-      const totalPosts = countResult[0].total;
+      // const countQuery = "SELECT COUNT(*) as total FROM posts WHERE DATE(created_at) = CURDATE()";
+      // const countResult = await executeQuery(countQuery);
+      // const totalPosts = countResult[0].total;
       
       const query = `
         SELECT posts.id, posts.status, posts.account_id, posts.title, posts.company_name,
@@ -42,7 +42,7 @@ const readTodayPostsByAdmin = async (page, limit) => {
         ORDER BY posts.id DESC
         LIMIT ${limit} OFFSET ${offset}`;
       const res = await executeQuery(query);
-      return { totalPosts, data: res ? res : null };
+      return { data: res ? res : null };
     } catch (error) {
       logging.error("Read today posts by admin service has error: ", error);
       throw error;
