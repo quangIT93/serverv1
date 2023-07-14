@@ -14,19 +14,19 @@ import logging from "../../utils/logging";
 //     }
 // };
 
-const readWorkerAccounts = async (page, limit) => {
+const readWorkerAccounts = async (page = 1, limit = 10) => {
     try {
       logging.info("Read worker accounts service start: ");
       const offset = (page - 1) * limit;
 
-      const countQuery = "SELECT COUNT(*) as total FROM accounts";
-      const countResult = await executeQuery(countQuery);
-      const totalAccounts = countResult[0].total;
+      // const countQuery = "SELECT COUNT(*) as total FROM accounts";
+      // const countResult = await executeQuery(countQuery);
+      // const totalAccounts = countResult[0].total;
 
       const query = "SELECT * FROM accounts WHERE role = ? LIMIT ? OFFSET ?";
       const params = [2, limit, offset];
       const res = await executeQuery(query, params);
-      return { totalAccounts, data: res ? res : null };
+      return { data: res ? res : null };
     } catch (error) {
       logging.error("Read worker accounts service has error: ", error);
       throw error;

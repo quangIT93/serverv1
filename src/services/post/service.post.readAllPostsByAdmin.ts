@@ -46,14 +46,14 @@ import { executeQuery } from "../../configs/database/database";
 
 // Phân trang 
 
-const readAllPostsByAdmin = async (page : number ,limit : number) => {
+const readAllPostsByAdmin = async (page = 1, limit = 10) => {
   try {
     logging.info("Read posts service start ...");
     const offset = (page - 1) * limit; 
 
-    const countQuery = "SELECT COUNT(*) as total FROM posts";
-    const countResult = await executeQuery(countQuery);
-    const totalPosts = countResult[0].total;
+    // const countQuery = "SELECT COUNT(*) as total FROM posts";
+    // const countResult = await executeQuery(countQuery);
+    // const totalPosts = countResult[0].total;
 
     const query =
       "SELECT " +
@@ -88,7 +88,7 @@ const readAllPostsByAdmin = async (page : number ,limit : number) => {
       "LIMIT ?, ?";
     const params = [offset, limit];
     const res = await executeQuery(query, params);
-    return { totalPosts, data: res ? res : null };
+    return { data: res ? res : null };
   } catch (error) {
     logging.error("Read posts service has error: ", error);
     throw error;
