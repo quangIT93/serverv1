@@ -9,13 +9,18 @@ import { formatPostBeforeReturn } from '../../post/_controller.post.formatPostBe
 const readQuantityApplicationOfAllPostsController = async (req: Request, res: Response, next: NextFunction) => {
     const { id: recruiterId } = req.user;
     const { threshold, limit } = req.query;
+    const { status = -1 } = req.query;
+    if (isNaN(+status)) {
+        return next(createError(400, "Invalid data"));
+    }
     try {
 
         const titles = await applicationService.read.readByRecruiterId(
             req.query.lang.toString(),
             recruiterId,
             +limit + 1,
-            Number.isInteger(+threshold) ? +threshold : null
+            Number.isInteger(+threshold) ? +threshold : null,
+            +status
         );
 
         if (!titles) {

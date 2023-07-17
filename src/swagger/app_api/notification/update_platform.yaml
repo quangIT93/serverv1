@@ -16,12 +16,12 @@ paths:
             schema:
               type: object
               properties:
-                type:
+                emailStatus:
                   type: number
-                  enum:
-                    - 0
-                    - 1
-                  description: "0: Email, 1: Push"
+                  description: "0: disable, 1: enable"
+                pushStatus:
+                  type: number
+                  description: "0: disable, 1: enable"
       responses:
         '200':
           description: Notification keyword object
