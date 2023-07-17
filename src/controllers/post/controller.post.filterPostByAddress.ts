@@ -18,7 +18,7 @@ const filterPostByAddress = async (
        
         var data=[]
 
-            // check valid query parameters
+        // check valid query parameters
         if (districts_id==""&&provinces_id==""&&wards_id=="") {
                 data = await postServices.filterPostsByAddress("")
                 

@@ -3,23 +3,26 @@ import logging from "../../../utils/logging";
 
 const updateTypeOfNotificationPlatformService = async ({
     accountId,
-    type,
+    emailStatus,
+    pushStatus,
 }: {
     accountId: string;
-    type: number;
+    emailStatus: number;
+    pushStatus: number;
 }) => {
     try {
 
-        const query = `
-            UPDATE type_notification_platform
-            SET type = ?
-            WHERE account_id = ?
-        `;
+        const query = 
+            "UPDATE type_notification_platform SET " +
+            `${emailStatus !== -1 ? "email_status = ? " : ""}` +
+            `${emailStatus !== -1 && pushStatus !== -1 ? ", " : ""}` +
+            `${pushStatus !== -1 ? "push_status = ? " : ""}` +
+            "WHERE account_id = ? " 
         
-        const values = [
-            type,
-            accountId,
-        ];
+        const values: any[] = []
+        .concat(emailStatus !== -1 ? emailStatus : [])
+        .concat(pushStatus !== -1 ? pushStatus : [])
+        .concat(accountId);
     
         const res = await executeQuery(query, values);
 

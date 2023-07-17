@@ -10,17 +10,19 @@ import updateTypeOfNotificationPlatformService from "../../../../services/notifi
 const updateTypeOfNotificationPlatform = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id: accountId } = req.user;
-        const { type } = req.body;
+        
+        const emailStatus = req.body.emailStatus ?? -1;
+        const pushStatus = req.body.pushStatus ?? -1;
 
         if (!accountId) {
             return next(createHttpError(400, 'Invalid data'));
         }
 
-        if (+type !== 0 && +type !== 1) {
+        if (isNaN(+emailStatus) || isNaN(+pushStatus)) {
             return next(createHttpError(400, 'Invalid data'));
         }
 
-        const isUpdateSuccess = await updateTypeOfNotificationPlatformService({accountId, type: +type});
+        const isUpdateSuccess = await updateTypeOfNotificationPlatformService({accountId, emailStatus, pushStatus});
 
         if (!isUpdateSuccess) {
             return next(createHttpError(500, 'Internal server error'));

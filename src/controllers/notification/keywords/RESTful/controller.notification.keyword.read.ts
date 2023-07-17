@@ -29,13 +29,15 @@ const readKeywordNotification = async (req: Request, res: Response, next: NextFu
 
         const typeOfPlatform = await readTypeOfNotificationPlatformService({accountId});
 
-        
-
         return res.status(200).json({
             message: "Read keyword notification successfully",
             data: {
                 type: typeOfPlatform[0]?.type,
                 typeText: typeOfPlatform[0]?.type === 1 ? "Email" : "Mobile",
+                status: {
+                    emailStatus: typeOfPlatform[0]?.email_status,
+                    pushStatus: typeOfPlatform[0]?.push_status,
+                },
                 keywords: response,
             },
             success: true,

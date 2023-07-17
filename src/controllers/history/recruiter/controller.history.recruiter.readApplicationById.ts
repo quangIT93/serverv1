@@ -52,7 +52,7 @@ const readApplicationByIdController = async (req: Request, res: Response, next: 
         applicationProfile.birthday = applicationProfile.birthday ? +applicationProfile.birthday : null;
 
         applicationProfile.cv_url = applicationProfile.cv_url
-            ? `$${process.env.AWS_BUCKET_PREFIX_URL}/${ProfilesBucket.APPLICATION_BUCKET}/${applicationId}/` +
+            ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ProfilesBucket.APPLICATION_BUCKET}/${applicationId}/` +
             applicationProfile.cv_url
             : null;
 

@@ -10,45 +10,53 @@ const readPostsByAdminController = async (
     next: NextFunction
 ) => {
     try {
-        // logging.info("Read posts by admin controller start ...");
+        // logging.info("Read posts by admin controller start ...")
 
         if (!req.user || !req.user.id) {
             return next(createError(401));
         }
 
+        const { page, limit } = req.query;
+      
         const isToday = req.query.is_today;
         const status = req.query.status;
         const isOwn = req.query.is_own;
         const aid = req.query.aid;
+
+        let pageNumber = +page ? +page : 1;
+        let limitNumber = +limit ? +limit : 10;
 
         let posts;
 
         // GET POSTS
         if (aid) {
             // Read post by account id
-            posts = await postServices.readPostsByAdminId(aid);
+            posts = await postServices.readPostsByAdminId(aid, +pageNumber, +limitNumber);    
         } else if (isToday === "true" && Number(status) === 0) {
             // READ TODAY PENDING POSTS
-            posts = await postServices.readTodayPendingPostsByAdmin();
+            posts = await postServices.readTodayPendingPostsByAdmin(+pageNumber, +limitNumber);
         } else if (isToday === "true") {
             // READ TODAY POSTS
-            posts = await postServices.readTodayPostsByAdmin();
+            posts = await postServices.readTodayPostsByAdmin(+pageNumber, +limitNumber);
         } else if (Number(status) === 0) {
             // READ PENDING POSTS
-            posts = await postServices.readPendingPostsByAdmin();
+            posts = await postServices.readPendingPostsByAdmin(+pageNumber, +limitNumber);
         } else if (isOwn === "true") {
-            posts = await postServices.readPostsByAdminId(req.user.id);
+            posts = await postServices.readPostsByAdminId(req.user.id, +pageNumber, +limitNumber);
         } else {
             // READ ALL POSTS
-            posts = await postServices.readAllPostsByAdmin();
+            posts = (await postServices.readAllPostsByAdmin(+pageNumber, +limitNumber));
+            
         }
+
+        // totalPosts = parseInt(posts.totalPosts);
+        posts = posts.data;
 
         if (!posts) {
             return next(createError(500));
         }
-
         // MODIFY
-        posts.forEach((post) => {
+        (posts).forEach((post) => {
             post.created_at = new Date(post.created_at).getTime();
         });
 
@@ -56,6 +64,7 @@ const readPostsByAdminController = async (
         return res.status(200).json({
             code: 200,
             success: true,
+            // totalPosts: totalPosts,
             data: posts,
             message: "Successfully",
         });

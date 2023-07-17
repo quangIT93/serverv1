@@ -12,6 +12,8 @@ const readKeywordByPostDetailService = async (
         const query = `
             SELECT keywords_notification.*
             FROM keywords_notification
+            LEFT JOIN child_categories
+            ON child_categories.id IN (${categoryId.map(() => '?').join(', ')})
             LEFT JOIN wards
             ON wards.id = ?
             LEFT JOIN type_notification_platform
@@ -20,17 +22,15 @@ const readKeywordByPostDetailService = async (
             AND keywords_notification.status = 1
             AND type_notification_platform.type = 0
             AND (keywords_notification.district_status = 0 OR keywords_notification.district_id = wards.district_id)
+            AND (keywords_notification.category_status = 0 OR keywords_notification.category_id = child_categories.parent_category_id)
             GROUP BY keywords_notification.account_id
             `;
-            // LEFT JOIN child_categories
-            // ON child_categories.id IN (${categoryId.map(() => '?').join(', ')})
-            // AND (keywords_notification.category_status = 0 OR keywords_notification.category_id = child_categories.parent_category_id)
 
         const values = [
+            ...categoryId,
             wardId,
             postTitle,
         ];
-        // ...categoryId,
         // console.log(query, " query");
         // console.log(values, " values");
     

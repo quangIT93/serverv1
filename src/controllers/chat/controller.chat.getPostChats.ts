@@ -28,7 +28,7 @@ const getPostChatsController = async (
         }
 
         // Update status of chat messages to 1
-        await chatServices.updateMessagesStatus(uid, id, pid, 1);
+        await chatServices.updateMessagesStatus(uid, id, 1);
 
         // Get users chated
         const postChats = await chatServices.getChatMessages(id, uid, pid);

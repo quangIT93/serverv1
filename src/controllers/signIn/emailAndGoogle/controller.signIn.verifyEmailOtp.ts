@@ -5,6 +5,7 @@ import { getLastOtpByEmailService } from "../../../services/otp/_service.otp";
 import removeUnnecessaryDots from "../../../helpers/formatData/removeUnnecessaryDotsInEmail";
 import isNumeric from 'validator/lib/isNumeric'
 import isEmail from "validator/lib/isEmail";
+import deleteOtpByEmailService from "../../../services/otp/service.otp.deleteOtpByEmail";
 
 const verifyEmailOtpController = async (
     req: Request,
@@ -50,6 +51,8 @@ const verifyEmailOtpController = async (
         ) {
             return next(createError(400, "Otp expired"));
         }
+
+        // deleteOtpByEmailService(email);
 
         req.body.emailRemovedDots = email;
 

@@ -5,7 +5,8 @@ const readApplicationsByRecruiterIdService = async (
     lang: string | null = "vi",
     recruiterId: string,
     limit: number | null,
-    threshold: number | null
+    threshold: number | null,
+    status: number | null
 ) => {
     try {
         logging.info("Read applications of recruiter id service start ...");
@@ -56,12 +57,18 @@ const readApplicationsByRecruiterIdService = async (
             "AS post_images ON post_images.post_id = posts.id " +
             "LEFT JOIN job_types ON job_types.id = posts.job_type " +
             "WHERE posts.account_id = ? " +
+            ` ${status !== -1 ? "AND posts.status = ? " : ""}` +
             ` ${threshold ? "AND posts.id < ? " : ""}` +
             "GROUP BY posts.id ORDER BY posts.id DESC " +
             ` ${limit ? "LIMIT ?" : ""}`;
-        const params = threshold
-            ? [recruiterId, threshold, limit]
-            : [recruiterId, limit];
+        // const params = threshold
+        //     ? [recruiterId, threshold, limit]
+        //     : [recruiterId, limit];
+        const params = []
+        .concat(recruiterId)
+        .concat(status !== -1 ? status : [])
+        .concat(threshold ? threshold : [])
+        .concat(limit ? limit : []);
         // console.log(query);
         const res = await executeQuery(query, params);
         return res ? res : null;

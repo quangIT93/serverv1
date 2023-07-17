@@ -12,15 +12,29 @@ const signRefreshTokenService = async (payload: Payload) => {
         const options = {
             expiresIn: "30d",
         };
-        jwt.sign(payload, secret, options, (err, token) => {
+        jwt.sign(payload, secret, options, async (err, token) => {
             if (err) {
                 reject(err);
+            }
+
+            const currentToken = await redisClient.get(payload.id);
+
+            let newToken = token;
+
+            if (currentToken) {
+                let arrToken = currentToken.split(",");
+                // Limit 3 token for each user
+                if (arrToken.length >= 3) {
+                    arrToken.shift();
+                }
+
+                newToken = arrToken.join(",") + "," + token;
             }
 
             // SET REFRESH TOKEN TO REDIS
             redisClient.set(
                 payload.id,
-                token,
+                newToken,
                 {
                     EX: 60 * 60 * 24 * 30,
                 },

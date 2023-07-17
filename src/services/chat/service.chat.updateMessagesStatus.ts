@@ -4,15 +4,15 @@ import logging from "../../utils/logging";
 const updateMessagesStatusToSeen = async (
     senderId: string,
     receiverId: string,
-    postId: number,
+    // postId: number,
     status: number
 ) => {
     try {
         logging.info("Update messages status service start ...");
 
         let query =
-            "UPDATE chats SET status = ? WHERE sender_id = ? AND receiver_id = ? AND post_id = ?";
-        let params = [status, senderId, receiverId, postId];
+            "UPDATE chats SET status = ? WHERE sender_id = ? AND receiver_id = ?";
+        let params = [status, senderId, receiverId];
 
         await executeQuery(query, params);
     } catch (error) {

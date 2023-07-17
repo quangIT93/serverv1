@@ -9,7 +9,7 @@ const readTypeOfNotificationPlatformService = async ({
     try {
 
         const query = `
-            SELECT type
+            SELECT type, email_status, push_status
             FROM type_notification_platform
             WHERE account_id = ?
         `;
