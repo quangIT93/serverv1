@@ -201,7 +201,7 @@ const updatePostInformationController = async (
             }
 
             if (description.length > 4000) {
-                return next(createError(400, "Mô tả quá dài (tối đa 1500 ký tự)"));
+                return next(createError(400, "Mô tả quá dài (tối đa 4000 ký tự)"));
             }
             if (!categoryIds) {
                 return next(createError(400, "CategoryIds is required"));

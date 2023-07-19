@@ -122,12 +122,12 @@ const updatePostInformationByAdminController = async (
             return next(createError(400));
         }
 
-        if (!Number.isInteger(salaryMin) || salaryMin <= 0) {
+        if (!Number.isInteger(salaryMin) || salaryMin < 0) {
             logging.warning("Invalid salary value");
             return next(createError(400));
         }
 
-        if (!Number.isInteger(salaryMax) || salaryMax <= 0) {
+        if (!Number.isInteger(salaryMax) || salaryMax < 0) {
             logging.warning("Invalid salary value");
             return next(createError(400));
         }
@@ -149,9 +149,9 @@ const updatePostInformationByAdminController = async (
             );
         }
 
-        if (description.length > 1500) {
+        if (description.length > 4000) {
             logging.warning("Description is too long");
-            return next(createError(400, "Mô tả quá dài (tối đa 1500 ký tự)"));
+            return next(createError(400, "Mô tả quá dài (tối đa 4000 ký tự)"));
         }
         if (!categoryIds) {
             logging.warning("Invalid categoryIds");
