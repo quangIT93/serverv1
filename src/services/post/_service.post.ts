@@ -21,6 +21,13 @@ export { default as updateInformationByAdmin } from "./service.post.updateInform
 export { default as readPostByIdByAdmin } from "./service.post.readPostByIdByAdmin";
 export { default as readPostsByAdminId } from "./service.post.readAllPostsByAdminId";
 
+// Search for posts
+export { default as searchAllPostsByAdmin } from "./service.post.searchAllPostsByAdmin";
+export { default as searchPostsByAdminId } from "./service.post.searchPostsByAdminId";
+export { default as searchPendingPostsByAdmin} from "./service.post.searchPendingPostsByAdmin";
+export { default as searchTodayPostsByAdmin } from "./service.post.searchTodayPostsByAdmin";
+export  { default as searchTodayPendingPostsByAdmin} from "./service.post.searchTodayPendingPostsByAdmin";
+
 // COUNT
 export { default as countTotalPostQuantity } from "./service.post.countTotalPostQuantity";
 export { default as countTodayPostQuantity } from "./service.post.countTodayPostQuantity";

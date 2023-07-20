@@ -8,6 +8,10 @@ const router = express.Router();
 
 router.get("/today", verifyAccessToken, accountController.readTodayAccounts);
 router.get("/", verifyAccessToken, accountController.readAccounts);
+// search for accounts
+router.get("/search", verifyAccessToken, accountController.searchAccounts);
+// search for accounts today
+router.get("/search/today", verifyAccessToken, accountController.searchTodayAccounts);
 router.delete("/delete/:id", verifyAccessToken, accountController.deleteAccount);
 router.get("/count", verifyAccessToken, homeAdminController.counter);
 

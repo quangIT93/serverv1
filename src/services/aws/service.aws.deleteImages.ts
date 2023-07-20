@@ -7,7 +7,6 @@ const deleteImages = async (urls: string[]) => {
         const params = urls.map((url) => ({
             Bucket: process.env.AWS_BUCKET_NAME , // Bucket name
             Key: url
-            
         }));
         
         await Promise.all(

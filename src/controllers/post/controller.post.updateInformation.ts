@@ -24,6 +24,8 @@ const updatePostInformationController = async (
             }
 
             // UPLOAD IMAGES TO AWS
+
+            console.log(req.body);
             const postId = +req.body.id;
 
             if (!Number.isInteger(postId) || postId <= 0) {
@@ -57,8 +59,8 @@ const updatePostInformationController = async (
             const endDate = req.body.endDate ? +req.body.endDate : null;
             const startTime = +req.body.startTime;
             const endTime = +req.body.endTime;
-            const salaryMin = +req.body.salaryMin || 0;
-            const salaryMax = +req.body.salaryMax || 0;
+            const salaryMin = +req.body.salaryMin;
+            const salaryMax = +req.body.salaryMax;
             const salaryType = +req.body.salaryType;
             const description = req.body.description
                 ? req.body.description.toString().trim()
@@ -86,7 +88,6 @@ const updatePostInformationController = async (
                 if (deletedImages) deletedImages = [JSON.parse(deletedImages)];
                 else deletedImages = [];
             }
-
             // VALIDATION
 
             if (!title || !companyName || !description) {

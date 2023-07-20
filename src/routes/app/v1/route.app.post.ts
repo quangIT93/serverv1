@@ -9,6 +9,8 @@ const router = express.Router();
 // READ POSTS BY ADMIN
 router.get(`/by-admin`, verifyAccessToken, postController.readPostsByAdmin); // ADMIN ROLE
 
+router.get(`/admin/search`, verifyAccessToken, postController.searchPostsByAdmin); // ADMIN ROLE
+
 // READ ALL POSTS BY THEME
 router.get("/theme/all", verifyAccessToken, postController.readAllPostsByTheme); // ADMIN ROLE
 

@@ -22,5 +22,6 @@ router.put("/", verifyAccessToken, multerUploadImages, bannerController.update);
 
 router.get("/all", verifyAccessToken, bannerController.readAllBanners); // ADMIN
 router.get("/ena", bannerController.readEnabledBanners);
+router.post("/delete", verifyAccessToken, bannerController.deleteBanners); // ADMIN
 
 export default router;
