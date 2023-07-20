@@ -12,7 +12,7 @@ const readPostsByAdminController = async (
     try {
         // logging.info("Read posts by admin controller start ...")
 
-        if (!req.user || !req.user.id) {
+        if (!req.user || !req.user.id || req.user.role === 0) {
             return next(createError(401));
         }
 
@@ -57,6 +57,8 @@ const readPostsByAdminController = async (
         }
         // MODIFY
         (posts).forEach((post) => {
+            post.start_time = new Date(post.start_time).getTime();
+            post.end_time = new Date(post.end_time).getTime();
             post.created_at = new Date(post.created_at).getTime();
         });
 
