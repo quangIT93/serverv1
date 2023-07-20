@@ -57,8 +57,8 @@ const readPostsByAdminController = async (
         }
         // MODIFY
         (posts).forEach((post) => {
-            post.start_time = new Date(post.start_time).getTime();
-            post.end_time = new Date(post.end_time).getTime();
+            post.start_time = new Date(+post.start_time).getTime();
+            post.end_time = new Date(+post.end_time).getTime();
             post.created_at = new Date(post.created_at).getTime();
         });
 
