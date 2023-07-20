@@ -21,12 +21,19 @@ const updateCategoriesController = async (
 
         // GET BODY DATA
 
-        const categoryIds = req.body.categoryIds ? req.body.categoryIds : null;
+        const categoryIds: number[] = req.body.categoryIds ? req.body.categoryIds : null;
 
         // VALIDATION
         if (!categoryIds || typeof categoryIds !== "object") {
             logging.warning("Invalid data");
             return next(createError(400));
+        }
+
+        for (let i = 0; i < categoryIds.length; i++) {
+            if (typeof categoryIds[i] !== "number" || isNaN(+categoryIds[i])) {
+                logging.warning("Invalid data");
+                return next(createError(400, "Invalid data"));
+            }
         }
 
         // HANDLE

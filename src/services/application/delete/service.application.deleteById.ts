@@ -4,7 +4,7 @@ import { executeQuery } from "../../../configs/database/database";
 const deleteApplicationService = async (applicationId: number) => {
     try {
         logging.info("Delete application service start ...");
-        const query = "DELETE FROM applications WHERE application_id = ?";
+        const query = "DELETE FROM applications WHERE id = ?";
         const params = [applicationId];
         const res = await executeQuery(query, params);
         // console.log(res);
