@@ -9,3 +9,6 @@ export { default as updateBannersStatus } from "./service.banner.updateBannersSt
 
 export { default as readEnabledBanners } from "./service.banner.readEnabledBanners";
 export { default as readAllBanners } from "./service.banner.readAllBanners";
+
+// DELETE
+export { default as deleteBanner } from "./service.banner.deleteBanner";

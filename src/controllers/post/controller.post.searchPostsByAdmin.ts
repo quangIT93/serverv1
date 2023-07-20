@@ -15,37 +15,34 @@ const searchPostsByAdminController = async (
         if (!req.user || !req.user.id) {
             return next(createError(401));
         }
-
-        const { page, limit } = req.query;
       
         const isToday = req.query.is_today;
         const status = req.query.status;
         const isOwn = req.query.is_own;
         const aid = req.query.aid;
 
-        let pageNumber = +page ? +page : 1;
-        let limitNumber = +limit ? +limit : 10;
-
+        // search post
+        const searchPost = req.query.search ? req.query.search : ''
         let posts;
 
         // GET POSTS
         if (aid) {
             // Read post by account id
-            posts = await postServices.readPostsByAdminId(aid, +pageNumber, +limitNumber);    
+            posts = await postServices.searchPostsByAdminId(aid, searchPost);    
         } else if (isToday === "true" && Number(status) === 0) {
             // READ TODAY PENDING POSTS
-            posts = await postServices.readTodayPendingPostsByAdmin(+pageNumber, +limitNumber);
+            posts = await postServices.searchTodayPendingPostsByAdmin(searchPost);
         } else if (isToday === "true") {
             // READ TODAY POSTS
-            posts = await postServices.readTodayPostsByAdmin(+pageNumber, +limitNumber);
+            posts = await postServices.searchTodayPostsByAdmin(searchPost);
         } else if (Number(status) === 0) {
             // READ PENDING POSTS
-            posts = await postServices.readPendingPostsByAdmin(+pageNumber, +limitNumber);
+            posts = await postServices.searchPendingPostsByAdmin(searchPost);
         } else if (isOwn === "true") {
-            posts = await postServices.readPostsByAdminId(req.user.id, +pageNumber, +limitNumber);
+            posts = await postServices.searchPostsByAdminId(req.user.id, searchPost);
         } else {
             // READ ALL POSTS
-            posts = (await postServices.readAllPostsByAdmin(+pageNumber, +limitNumber));
+            posts = (await postServices.searchAllPostsByAdmin(searchPost));
             
         }
 

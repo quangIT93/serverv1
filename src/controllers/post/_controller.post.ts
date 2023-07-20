@@ -17,10 +17,14 @@ import updateStatusOfManyPostsController from "./controller.post.updateStatusOfM
 import readPostByIdByAdminController from "./controller.post.readPostByIdByAdmin";
 import filterPostByAddressController from "./controller.post.filterPostByAddress";
 import readRelatedPostsController from "./readPost/handler/controller.post.readRelatedPosts";
+import searchPostsByAdminController from "./controller.post.searchPostsByAdmin";
 
 const postController = {
     // READ ALL POSTS
     readPostsByAdmin: readPostsByAdminController,
+
+    // SEARCH POSTS BY ADMIN
+    searchPostsByAdmin:searchPostsByAdminController,
 
     // READ ALL POSTS BY THEME
     readAllPostsByTheme: readAllPostsByThemeController,
