@@ -30,8 +30,17 @@ const readAllPostsByAdminId = async (accountId, page = 1, limit = 10) => {
       // const totalPosts = countResult[0].total;
 
       const query =
-        "SELECT id, status, account_id, title, company_name, created_at " +
+        "SELECT id, " +
+        "status, " +
+        "account_id, " +
+        "title, " +
+        "company_name, " +
+        "start_time, " +
+        "end_time, " +
+        "post_resource.url, " +
+        "created_at " +
         "FROM posts " +
+        "LEFT JOIN post_resource ON posts.id = post_resource.post_id " +
         "WHERE account_id = ? " +
         "GROUP BY posts.id " +
         "ORDER BY posts.id DESC " +
