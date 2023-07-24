@@ -1,6 +1,8 @@
 import mariadb, { PoolConnection } from "mariadb";
 import dotenv from "dotenv";
 import logging from "../../utils/logging";
+// import { DatabaseError } from "../../models/database/error/entity/error";
+import { DatabaseError, DatabaseErrorStatus } from "./database.error";
 
 dotenv.config();
 
@@ -56,22 +58,15 @@ export const executeQuery = async (query: string, params = []) => {
                     const res = await conn.query(query, params);
                     return res;
                 } catch (error) {
-                    logging.error(`Error: ${error.message}`);
                     return null;
                 }
             case "ER_DUP_ENTRY":
-                // logging.error(`Error: ${error.message}`);
-                console.log(error.code);
-                return error.code;   
+                throw new DatabaseError(DatabaseErrorStatus.ER_DUP_ENTRY);
             case "ER_NO_REFERENCED_ROW_2":
-                logging.error(`Error: ${error.message}`);
-                console.log(error.code);
-                return error.code;
+                throw new DatabaseError(DatabaseErrorStatus.ER_NO_REFERENCED_ROW_2);
             default:
                 logging.error(error.code);
-                logging.error(`Error: ${error.message}`)
-                // console.log(error.message);
-                return null;
+                throw new DatabaseError(error.code);
         }
     } finally {
         conn.release();
