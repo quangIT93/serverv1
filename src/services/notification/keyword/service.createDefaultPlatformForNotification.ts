@@ -2,14 +2,18 @@ import { executeQuery } from "../../../configs/database/database";
 import { CreateKeywordNotificationDto } from "../../../models/notification/keyword/dto/keyword-create.dto";
 import logging from "../../../utils/logging";
 
-const createDefaultPlatformNotificationService = async (accountId: string) => {
+const createDefaultPlatformNotificationService = async (
+    accountId: string,
+    pushStatus: number,
+    emailStatus: number,
+) => {
     try {
 
         const query = "INSERT INTO type_notification_platform " +
-        "(account_id, type) " +
-        "VALUES (?, ?) RETURNING *";
+        "(account_id, type, push_status, email_status) " +
+        "VALUES (?, ?, ?, ?) RETURNING *";
         
-        const values = [accountId, 0];
+        const values = [accountId, 0, pushStatus, emailStatus];
     
         const res = await executeQuery(query, values);
 

@@ -23,9 +23,7 @@ const createKeywordNotificationService = async (dto: CreateKeywordNotificationDt
         return res;
 
     } catch (error) {
-        logging.error(error);
-        return null;
-
+        throw error
     }
 }
 

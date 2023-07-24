@@ -13,12 +13,12 @@ router.get(
     historyRecruiterController.readQuantityApplicationsOfAllPosts
 ); // read all post and quantity of applications
 
-// router.get(
-//     "/posts",
-//     verifyAccessToken,
-//     checkLimitAndThresholdParams,
-//     historyRecruiterController.readAllPostedJobs
-// ); // read all posted jobs
+router.get(
+    "/posts",
+    verifyAccessToken,
+    checkLimitAndThresholdParams,
+    historyRecruiterController.readAllPostedJobs
+); // read all posted jobs
 
 // router.get(
 //     "/applications/accepted",
@@ -38,6 +38,7 @@ router.get(
     verifyAccessToken,
     historyRecruiterController.readApplicationsByApplicationId
 ); // read application by application id
+
 
 
 // router.post(
