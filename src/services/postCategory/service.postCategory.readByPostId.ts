@@ -13,7 +13,8 @@ const readCategoriesOfPost = async (lang: string | null = "vi", postId: number) 
                 ${lang === "vi" ? "child_categories.name" 
                     : lang === "en" ? "child_categories.name_en" 
                     : "child_categories.name_kor"} as child_category,
-                child_categories.parent_category_id
+                child_categories.parent_category_id,
+                parent_categories.default_post_image
             FROM posts_categories
             LEFT JOIN child_categories
             ON child_categories.id = posts_categories.category_id
