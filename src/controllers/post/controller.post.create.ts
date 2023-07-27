@@ -33,17 +33,17 @@ const createPostController = async (
             // GET ROLE OF USER
             const { role } = req.user;
 
-            // if (role === 0) {
-            //     // CHECK LIMITATION OF POST QUANTITY
-            //     const postQuantity = await countPostQuantityByDayByAccountId(
-            //         req.user.id
-            //     );
+            if (role === 0) {
+                // CHECK LIMITATION OF POST QUANTITY
+                const postQuantity = await countPostQuantityByDayByAccountId(
+                    req.user.id
+                );
 
-            //     if (parseInt(postQuantity[0].quantity) >= 3 && role === 0) {
-            //         logging.warning("Post quantity limit");
-            //         return next(createError(400, "You only can post 3 jobs/day"));
-            //     }
-            // }
+                if (postQuantity.length > 0 && parseInt(postQuantity[0].quantity) >= 1 && role === 0) {
+                    logging.warning("Post quantity limit");
+                    return next(createError(400, "You only can post 1 jobs/day"));
+                }
+            }
 
             // GET DATA
             const accountId = req.user.id;
@@ -84,9 +84,6 @@ const createPostController = async (
                 : null;
             let moneyType = req.body.moneyType ? +req.body.moneyType : null;
 
-            
-            
-            // NEW FIELDS
             const siteUrl = req.body.url ? req.body.url : null;
             
             const email = req.body.email ? req.body.email : "";
@@ -99,7 +96,7 @@ const createPostController = async (
             //
 
             // VALIDATION
-            if (!accountId || !title || !companyName) {
+            if (!title || !companyName) {
                 logging.warning("Invalid body data");
                 return next(createError(400, "Invalid body data"));
             }
