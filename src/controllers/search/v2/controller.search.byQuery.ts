@@ -20,7 +20,7 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
         let lang = req.query.lang as string;
 
         // GET SEARCH KEYWORD
-        let { q, page } = req.query;
+        let { q, page = 0 } = req.query;
  
         const { district_ids } = req.query;
         const { category_ids } = req.query;
@@ -230,7 +230,7 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
         const posts = await searchService.searchByQueryV2Service(
             lang,
             q as string,
-            parseInt(page as string) || 1,
+            +page,
             districtIds,
             categoryIds,
             salaryMin,
