@@ -4,7 +4,7 @@ import logging from './../../utils/logging';
 const searchByQueryV2Service = async (
     lang: string,
     q: string,
-    page: number | null,
+    page: number = 0 ,
     districtIds: string[] | undefined | null,
     categoryIds: number[] | undefined | null,
     salaryMin: number | undefined | null,
@@ -105,7 +105,7 @@ const searchByQueryV2Service = async (
             "GROUP BY posts.id " + 
             "ORDER BY posts.created_at DESC " +
             "LIMIT 20 " +
-            `OFFSET ${page ? (page - 1) * 20 : 0}`;
+            `OFFSET ${page * 20}`;
         const params = []
         .concat(accountId !== null ? [accountId] : [])
         .concat(onlyCompany !== 0 ? [`%${q}%`] : [`%${q}%`, `%${q}%`])
