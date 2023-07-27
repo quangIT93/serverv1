@@ -8,7 +8,12 @@ const createFcmTokenForAccountController = async (req: Request, res: Response, n
     const { id } = req.user;
     try {
         logging.info("Create fcm token for account controller start ...");
+
         const { token: fcmToken } = req.params;
+
+        // VALIDATION
+        
+        
         if (!fcmToken) {
             logging.warning("Invalid fcm token");
             return next(createError(400, "Invalid fcm token"));

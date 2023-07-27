@@ -9,10 +9,11 @@ const readSuggestedListSearchService = async (limit: number) => {
         // group by keyword
         // order by sum of count keyword
         const query = `
-            SELECT keyword, SUM(count) AS count FROM search_history
-            GROUP BY keyword
-            ORDER BY count DESC
-            LIMIT ?
+        SELECT keyword, 1 as count
+        FROM suggest_search
+        GROUP BY keyword
+        ORDER BY \`order\`
+        LIMIT ?
         `;
 
         const params = [limit];
