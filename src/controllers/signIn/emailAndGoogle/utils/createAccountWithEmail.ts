@@ -42,6 +42,7 @@ const createAccountWithEmail = async (
     }
     else {
         accountId = account.id;
+        role = account.role;
     }
 
     return {

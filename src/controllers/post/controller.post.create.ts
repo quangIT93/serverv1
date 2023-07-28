@@ -39,9 +39,9 @@ const createPostController = async (
                     req.user.id
                 );
 
-                if (postQuantity.length > 0 && parseInt(postQuantity[0].quantity) >= 1 && role === 0) {
+                if (parseInt(postQuantity[0].quantity) >= 1 && role === 0) {
                     logging.warning("Post quantity limit");
-                    return next(createError(400, "You only can post 1 jobs/day"));
+                    return next(createError(400, "You only can post 1 job/day"));
                 }
             }
 
@@ -83,6 +83,7 @@ const createPostController = async (
                 ? req.body.phoneNumber
                 : null;
             let moneyType = req.body.moneyType ? +req.body.moneyType : null;
+
 
             const siteUrl = req.body.url ? req.body.url : null;
             
