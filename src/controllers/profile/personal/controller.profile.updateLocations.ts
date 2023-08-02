@@ -29,9 +29,9 @@ const updateLocationsOfProfileController = async (
             return next(createError(400));
         }
 
-        if (locationIds.length > 3) {
+        if (locationIds.length > 10) {
             logging.warning("Invalid data");
-            return next(createError(400, "You can only select 3 locations"));
+            return next(createError(400, "You can only select 10 locations"));
         }
 
         // HANDLE
