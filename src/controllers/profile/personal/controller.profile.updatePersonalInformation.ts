@@ -38,8 +38,8 @@ const updatePersonalInformationController = async (
             new Date(birthday).toString() === "Invalid Date" ||
             !Number.isInteger(gender) ||
             gender < 0 ||
-            gender > 1 
-            // !introduction
+            gender > 1  ||
+            introduction.toString().trim().length > 500
         ) {
             logging.warning("Invalid body data");
             return next(createError(400));
