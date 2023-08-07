@@ -34,7 +34,9 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
         const { end_date } = req.query;
         const { jobTypeId: job_type_id } = req.query;
         const { only_company } = req.query;
-
+        const salary_sort  = req.query.salary_sort ? req.query.salary_sort : ''
+        const expried_sort = req.query.expried_sort ? req.query.expried_sort : ''
+        const sort_by = req.query.sort_by ? req.query.sort_by : ''
         // VALIDATION
         // FORMAT query to string
         if (!q) {
@@ -226,25 +228,91 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
         // GET BOOKMARKS
         // CHECK AUTHORIZE OR NOT?
         const { id } = req.user;
+        let posts;
 
-        const posts = await searchService.searchByQueryV2Service(
-            lang,
-            q as string,
-            +page,
-            districtIds,
-            categoryIds,
-            salaryMin,
-            salaryMax,
-            salaryType,
-            isWorkingWeekend,
-            isRemotely,
-            startDate,
-            endDate,
-            money_type ? +money_type : null,
-            jobTypeIds,
-            only_company ? +only_company : 0,
-            id,
-        );
+
+        if (salary_sort) {
+            posts = await searchService.readPostsSalarySortService(
+                lang,
+                q as string,
+                +page,
+                districtIds,
+                categoryIds,
+                salaryMin,
+                salaryMax,
+                salaryType,
+                isWorkingWeekend,
+                isRemotely,
+                startDate,
+                endDate,
+                money_type ? +money_type : null,
+                jobTypeIds,
+                only_company ? +only_company : 0,
+                id,
+                salary_sort.toString()
+            );
+        }
+        else if (expried_sort){
+            posts = await searchService.readPostsExpriedSortService(
+                lang,
+                q as string,
+                +page,
+                districtIds,
+                categoryIds,
+                salaryMin,
+                salaryMax,
+                salaryType,
+                isWorkingWeekend,
+                isRemotely,
+                startDate,
+                endDate,
+                money_type ? +money_type : null,
+                jobTypeIds,
+                only_company ? +only_company : 0,
+                id,
+                expried_sort.toString()
+            )
+        }else if (sort_by) {
+
+            posts = await searchService.readPostsSortByService(
+                lang,
+                q as string,
+                +page,
+                districtIds,
+                categoryIds,
+                salaryMin,
+                salaryMax,
+                salaryType,
+                isWorkingWeekend,
+                isRemotely,
+                startDate,
+                endDate,
+                money_type ? +money_type : null,
+                jobTypeIds,
+                only_company ? +only_company : 0,
+                id,
+                sort_by.toString()
+            )
+        }else {
+            posts = await searchService.searchByQueryV2Service(
+                lang,
+                q as string,
+                +page,
+                districtIds,
+                categoryIds,
+                salaryMin,
+                salaryMax,
+                salaryType,
+                isWorkingWeekend,
+                isRemotely,
+                startDate,
+                endDate,
+                money_type ? +money_type : null,
+                jobTypeIds,
+                only_company ? +only_company : 0,
+                id
+            )
+        }
 
         if (!posts || posts.length === 0) {
             return res.status(200).json({
