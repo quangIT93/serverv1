@@ -27,18 +27,40 @@ const adminSignUpController = async (
     try {
         logging.info("Admin sign up controller start ...");
 
-        const role = +req.body.role;
+        const ROLE = 2
         const email = req.body.email
             ? removeDots(req.body.email.toString().trim())
             : "";
-        if (role !== 2 || !email) {
-            return next(createError(400, "Invalid data"));
-        }
 
         // Check email was existed?
         const account = await accountServices.readAccountByEmailService(email);
         if (account) {
-            return next(createError(409));
+
+            await accountServices.updateRolesForAccountService(account.id, 2);
+
+            sendEmailToUser({
+                to: email,
+                // to: "phanthang052@gmail.com",
+                subject: "Hi Job: Account Password",
+                html: `<!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Hi Job: Account Password</title>
+                </head>
+                <body>
+                    <div>
+                        Đăng ký thành công tài khoản admin cho email: <b>${email}</b>
+                        <br>
+                        Mât khẩu của bạn là: <b>${account.id}</b>
+                        <br>
+                        Đăng nhập tại: <a href="https://admin.neoworks.vn/admin/auth" target="_blank">https://admin.neoworks.vn/admin/auth</a>
+                    </div>
+                </body>
+                </html>`,
+            })
+            return res.status(200).json({
+                message: "Account was existed, update role success",
+            });
         }
 
         // Create account with email
@@ -48,7 +70,7 @@ const adminSignUpController = async (
                 accountId,
                 email,
                 "",
-                role
+                ROLE
             );
         if (!isCreateAccountSuccess) {
             return next(createError(500));

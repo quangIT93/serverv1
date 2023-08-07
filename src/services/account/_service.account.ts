@@ -16,6 +16,7 @@ export { default as countTodayAccountQuantity } from "./service.post.countTodayA
 export { default as countAccountQuantityPerMonth } from "./service.post.countAccountQuantityPerMonth";
 
 // UPDATE
+export { default as updateRolesForAccountService } from "./service.account.updateRoles";
 
 // DELETE
 
