@@ -143,7 +143,7 @@ const sortByCompanyResource = (companyResource: number[] = [2]) => {
  * 
  */
 const sortByDate = () => {
-    return `DATE_FORMAT(posts.created_at, '%Y/%m/%d') DESC`;
+    return `posts.id DESC`;
 }
 
 const sort = (condition: string[]) => {
