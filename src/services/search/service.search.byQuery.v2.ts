@@ -18,6 +18,9 @@ const searchByQueryV2Service = async (
     job_type_id: number[] | undefined | null,
     onlyCompany: number | undefined | null,
     accountId: string | undefined | null,
+    salary_sort: string | undefined | null,
+    expried_sort: string | undefined | null,
+    sort_by: string | undefined | null,
 ) => {
     try {
         // search by like, match in boolean mode, match in natural language mode
@@ -25,9 +28,10 @@ const searchByQueryV2Service = async (
         // then order by relevance
         // then limit 20
         logging.info("Search by query service called: ");
-        const query =
+        let query =
             "SELECT " +
             "posts.id," +
+            "posts.expired_date,"+
             "posts.status," +
             "posts.account_id," +
             "posts.title," +
@@ -99,13 +103,35 @@ const searchByQueryV2Service = async (
             `${isRemotely !== null ? "AND posts.is_remotely = ? " : ""}` +
             `${startDate !== null ? "AND posts.start_date >= ? " : ""}` +
             `${endDate !== null ? "AND posts.end_date <= ? " : ""}` +
-            `${job_type_id.length > 0 ? `AND posts.job_type IN (${job_type_id.join(",")}) ` : ''}` +
-            "AND (posts.expired_date IS NULL OR " +
-            "posts.expired_date >= NOW()) " +
-            "GROUP BY posts.id " + 
-            "ORDER BY posts.created_at DESC " +
-            "LIMIT 20 " +
-            `OFFSET ${page * 20}`;
+            `${job_type_id.length > 0 ? `AND posts.job_type IN (${job_type_id.join(",")}) ` : ''}`;
+            
+            if (sort_by) {
+                query+= "AND (posts.expired_date IS NULL OR posts.expired_date >= NOW())" +
+                        "GROUP BY posts.id " + 
+                        `ORDER BY posts.created_at ${(sort_by === 'asc' || sort_by === "ASC") ? 'ASC' : 'DESC'} ` +
+                        "LIMIT 20 " +
+                        `OFFSET ${page * 20}`;
+            } else if (salary_sort) {
+                query+= "AND (posts.expired_date IS NULL OR posts.expired_date >= NOW())" +
+                        "GROUP BY posts.id " + 
+                        `ORDER BY posts.salary_max ${(salary_sort === 'asc' || expried_sort === "ASC") ? 'ASC' : 'DESC'} ` +
+                        "LIMIT 20 " +
+                        `OFFSET ${page * 20}`;
+            }else if (expried_sort) {
+                query+= "AND posts.expired_date >= NOW() " +
+                        "GROUP BY posts.id " +
+                        "ORDER BY " +
+                        "CASE WHEN posts.expired_date IS NULL THEN 1 ELSE 0 END, " +
+                        "ABS(DATEDIFF(NOW(), posts.expired_date)) " + ((expried_sort === "asc" || expried_sort === "ASC") ? "ASC" : "DESC") + " " +
+                        "LIMIT 20";
+                        `OFFSET ${page * 20}`;
+            }else {
+                query+= "AND (posts.expired_date IS NULL OR posts.expired_date >= NOW()) " +
+                        "GROUP BY posts.id " + 
+                        "ORDER BY posts.created_at DESC " +
+                        "LIMIT 20 " +
+                        `OFFSET ${page * 20}`;
+            }
         const params = []
         .concat(accountId !== null ? [accountId] : [])
         .concat(onlyCompany !== 0 ? [`%${q}%`] : [`%${q}%`, `%${q}%`])
