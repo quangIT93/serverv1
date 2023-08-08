@@ -49,7 +49,6 @@ async function formatPostBeforeReturn(post: PostService, lang: string = "vi") {
         share_link: `${process.env.WEB_DEEP_LINK}?link=${process.env.PREVIEW_PAGE_URL
             }?postId=${post.post_id ? post.post_id : post.id
             }&st=${`${encodeURIComponent(post.title)}`}&sd=${encodeURIComponent(
-                // post.description.substring(0, 100)
                 "Welcome to HiJob!"
             )}&si=`,
         job_type: {
