@@ -34,7 +34,9 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
         const { end_date } = req.query;
         const { jobTypeId: job_type_id } = req.query;
         const { only_company } = req.query;
-
+        const salary_sort  = req.query.salary_sort ? req.query.salary_sort : ''
+        const expried_sort = req.query.expried_sort ? req.query.expried_sort : ''
+        const sort_by = req.query.sort_by ? req.query.sort_by : ''
         // VALIDATION
         // FORMAT query to string
         if (!q) {
@@ -244,7 +246,11 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
             jobTypeIds,
             only_company ? +only_company : 0,
             id,
+            salary_sort.toString(),
+            expried_sort.toString(),
+            sort_by.toString()
         );
+        
 
         if (!posts || posts.length === 0) {
             return res.status(200).json({

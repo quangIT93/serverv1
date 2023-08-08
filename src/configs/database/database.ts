@@ -66,6 +66,7 @@ export const executeQuery = async (query: string, params = []) => {
                 throw new DatabaseError(DatabaseErrorStatus.ER_NO_REFERENCED_ROW_2);
             default:
                 logging.error(error.code);
+                console.log(error);
                 throw new DatabaseError(error.code);
         }
     } finally {

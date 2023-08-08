@@ -1,6 +1,6 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database/database";
-import { expiredDateCondition, initQueryReadPost } from "./_service.post.initQuery";
+import { expiredDateCondition, initQueryReadPost, sort, sortByCompanyResource, sortByDate } from "./_service.post.initQuery";
 
 const readNewestAcceptedPostsByParentCategory = async (
     lang: string = "vi",
@@ -24,7 +24,8 @@ const readNewestAcceptedPostsByParentCategory = async (
             "AND child_categories.parent_category_id = ? AND posts.salary_type = salary_types.id " +
             `${threshold && threshold > 0 ? "AND posts.id < ? " : " "}` +
             "GROUP BY posts.id " +
-            "ORDER BY posts.id DESC LIMIT ?";
+            sort([sortByDate(), sortByCompanyResource()]) +
+            `${limit && limit > 0 ? "LIMIT ?" : ""}`;
 
         let params = [1, parentCategoryId]
             .concat(threshold && threshold > 0 ? [threshold] : [])
