@@ -123,7 +123,7 @@ const searchByQueryV2Service = async (
                         "ORDER BY " +
                         "CASE WHEN posts.expired_date IS NULL THEN 1 ELSE 0 END, " +
                         "ABS(DATEDIFF(NOW(), posts.expired_date)) " + ((expried_sort === "asc" || expried_sort === "ASC") ? "ASC" : "DESC") + " " +
-                        "LIMIT 20";
+                        "LIMIT 20 " +
                         `OFFSET ${page * 20}`;
             }else {
                 query+= "AND (posts.expired_date IS NULL OR posts.expired_date >= NOW()) " +

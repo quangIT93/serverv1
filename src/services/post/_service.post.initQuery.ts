@@ -130,4 +130,26 @@ const expiredDateCondition = () => {
     `;
 }
 
-export { initQueryReadPost, initQueryReadDetailPost, expiredDateCondition };
+const sortByCompanyResource = (companyResource: number[] = [2]) => {
+    return `CASE WHEN post_resource.company IN (${companyResource.join(',')}) THEN 0 ELSE 1 END ASC`;
+}
+
+/**
+ * 
+ * @returns 
+ * 
+ * @description
+ * sort by format date dd/mm/yyyy
+ * 
+ */
+const sortByDate = () => {
+    return `DATE_FORMAT(posts.created_at, '%Y/%m/%d') DESC`;
+}
+
+const sort = (condition: string[]) => {
+    return `
+    ORDER BY ${condition.join(",")}
+    `;
+}
+
+export { initQueryReadPost, initQueryReadDetailPost, expiredDateCondition, sortByCompanyResource, sortByDate, sort };
