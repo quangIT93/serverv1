@@ -118,6 +118,24 @@ paths:
               - 0
               - 1
           example: 1
+        - name: expried_sort
+          in: query
+          required: false
+          schema:
+            type: string
+          description: DESC (desc) or ASC (asc)
+        - name: salary_sort
+          in: query
+          required: false
+          schema:
+            type: string
+          description: DESC (desc) or ASC (asc)
+        - name: sort_by
+          in: query
+          required: false
+          schema:
+            type: string
+          description: DESC (desc) or ASC (asc)
       responses:
         '200':
           description: OK
