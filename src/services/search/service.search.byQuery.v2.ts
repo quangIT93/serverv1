@@ -105,25 +105,19 @@ const searchByQueryV2Service = async (
             `${endDate !== null ? "AND posts.end_date <= ? " : ""}` +
             `${job_type_id.length > 0 ? `AND posts.job_type IN (${job_type_id.join(",")}) ` : ''}`;
             
-            if (sort_by) {
+            if (sort_by || salary_sort) {
                 query+= "AND (posts.expired_date IS NULL OR posts.expired_date >= NOW())" +
                         "GROUP BY posts.id " + 
-                        `ORDER BY posts.created_at ${(sort_by === 'asc' || sort_by === "ASC") ? 'ASC' : 'DESC'} ` +
-                        "LIMIT 20 " +
-                        `OFFSET ${page * 20}`;
-            } else if (salary_sort) {
-                query+= "AND (posts.expired_date IS NULL OR posts.expired_date >= NOW())" +
-                        "GROUP BY posts.id " + 
-                        `ORDER BY posts.salary_max ${(salary_sort === 'asc' || expried_sort === "ASC") ? 'ASC' : 'DESC'} ` +
+                        `ORDER BY ${sort_by ? 'posts.created_at' : 'posts.salary_max'} ${(sort_by === 'asc' || sort_by === "ASC" || salary_sort==='asc' || salary_sort==='ASC') ? 'ASC' : 'DESC'} ` +
                         "LIMIT 20 " +
                         `OFFSET ${page * 20}`;
             }else if (expried_sort) {
-                query+= "AND posts.expired_date >= NOW() " +
+                query+= "AND (posts.expired_date IS NULL OR posts.expired_date >= NOW() OR posts.expired_date IS NOT NULL) " +
                         "GROUP BY posts.id " +
                         "ORDER BY " +
                         "CASE WHEN posts.expired_date IS NULL THEN 1 ELSE 0 END, " +
-                        "ABS(DATEDIFF(NOW(), posts.expired_date)) " + ((expried_sort === "asc" || expried_sort === "ASC") ? "ASC" : "DESC") + " " +
-                        "LIMIT 20";
+                        "ABS(DATEDIFF(NOW(), posts.expired_date)) " + ((expried_sort === "asc" || expried_sort === "ASC") ? "ASC" : "DESC") +
+                        " LIMIT 20 "+
                         `OFFSET ${page * 20}`;
             }else {
                 query+= "AND (posts.expired_date IS NULL OR posts.expired_date >= NOW()) " +
