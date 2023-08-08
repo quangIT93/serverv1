@@ -97,6 +97,7 @@ const readPostsExpriedSortService = async (
             `${startDate !== null ? "AND posts.start_date >= ? " : ""}` +
             `${endDate !== null ? "AND posts.end_date <= ? " : ""}` +
             `${job_type_id.length > 0 ? `AND posts.job_type IN (${job_type_id.join(",")}) ` : ''}` +
+            "AND posts.expired_date >= NOW() " +
             "GROUP BY posts.id " +
             "ORDER BY " +
             "CASE WHEN posts.expired_date IS NULL THEN 1 ELSE 0 END, " +
