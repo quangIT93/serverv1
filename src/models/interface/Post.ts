@@ -98,6 +98,8 @@ interface PostResponse {
     },
     expired_date?: number;
     created_at_text?: string;
+
+    [key: string]: any;
 }
 
 export { PostService, PostResponse };
