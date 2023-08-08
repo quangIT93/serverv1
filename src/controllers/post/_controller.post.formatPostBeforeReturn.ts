@@ -29,6 +29,8 @@ async function formatPostBeforeReturn(post: PostService, lang: string = "vi") {
         end_date: post.end_date ? +post.end_date : null,
         start_time: +post.start_time,
         end_time: +post.end_time,
+        "new_start_time": "00:00",
+        "new_end_time": "00:00",
         salary_min: post.salary_min || 0,
         salary_max: post.salary_max || 0,
         ward_id: post.ward_id,
