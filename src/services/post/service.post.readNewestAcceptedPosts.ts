@@ -18,7 +18,7 @@ const readNewestAcceptedPosts = async (
             sort([sortByDate(), sortByCompanyResource()]) +
             `${limit && limit > 0 ? "LIMIT ?" : ""}`;
 
-        console.log(query);
+        // console.log(query);
 
         let params = [1]
         .concat(threshold && threshold > 0 ? [threshold] : [])
