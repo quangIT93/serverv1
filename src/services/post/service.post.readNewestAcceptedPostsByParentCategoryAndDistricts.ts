@@ -23,7 +23,6 @@ const readNewestAcceptedPostsByParentCategoryAndDistricts = async (
             "JOIN parent_categories " +
             "ON parent_categories.id = child_categories.parent_category_id " +
             "WHERE posts.status = ? AND parent_categories.id = ? " +
-            expiredDateCondition() +
             `${districtIds.length > 0 ? `AND district_id IN (${districtIds.map((_) => `?`).join(", ")})` : ""}` +
             `${threshold && threshold > 0 ? "AND posts.id < ? " : " "}` +
             expiredDateCondition() +

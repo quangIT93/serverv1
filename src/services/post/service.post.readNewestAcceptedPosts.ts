@@ -15,7 +15,7 @@ const readNewestAcceptedPosts = async (
             expiredDateCondition() +
             `${threshold && threshold > 0 ? "AND posts.id < ? " : " "}` +
             "GROUP BY posts.id " +
-            sort([sortByDate(), sortByCompanyResource()]) +
+            sort([sortByDate()]) +
             `${limit && limit > 0 ? "LIMIT ?" : ""}`;
 
         // console.log(query);

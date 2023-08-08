@@ -24,7 +24,7 @@ const readNewestAcceptedPostsByParentCategory = async (
             "AND child_categories.parent_category_id = ? AND posts.salary_type = salary_types.id " +
             `${threshold && threshold > 0 ? "AND posts.id < ? " : " "}` +
             "GROUP BY posts.id " +
-            sort([sortByDate(), sortByCompanyResource()]) +
+            sort([sortByDate()]) +
             `${limit && limit > 0 ? "LIMIT ?" : ""}`;
 
         let params = [1, parentCategoryId]
