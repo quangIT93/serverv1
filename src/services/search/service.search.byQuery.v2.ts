@@ -31,7 +31,6 @@ const searchByQueryV2Service = async (
         let query =
             "SELECT " +
             "posts.id," +
-            "posts.expired_date,"+
             "posts.status," +
             "posts.account_id," +
             "posts.title," +
