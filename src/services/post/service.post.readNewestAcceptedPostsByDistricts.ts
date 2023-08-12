@@ -1,6 +1,7 @@
 import logging from "../../utils/logging";
 import { executeQuery } from "../../configs/database/database";
-import { expiredDateCondition, initQueryReadPost, sort, sortByCompanyResource } from "./_service.post.initQuery";
+import { expiredDateCondition, initQueryReadPost } from "./_service.post.initQuery";
+import { query } from "express";
 
 const readNewestAcceptedPostsByDistricts = async (
     lang: string = "vi",
@@ -19,8 +20,7 @@ const readNewestAcceptedPostsByDistricts = async (
             expiredDateCondition() +
             `AND districts.id IN (${districtIds.map((_) => `?`).join(", ")}) ` +
             `${threshold && threshold > 0 ? "AND posts.id < ? " : " "}` +
-            "GROUP BY posts.id " +
-            sort([sortByDate(), sortByCompanyResource()]) +
+            "GROUP BY posts.id ORDER BY posts.id DESC " +
             `${limit && limit > 0 ? "LIMIT ?" : ""}`;
 
         let params = [1, ...districtIds]
@@ -40,7 +40,3 @@ const readNewestAcceptedPostsByDistricts = async (
 };
 
 export default readNewestAcceptedPostsByDistricts;
-function sortByDate(): any {
-    throw new Error("Function not implemented.");
-}
-
