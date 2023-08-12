@@ -39,7 +39,7 @@ const updatePersonalInformationController = async (
             !Number.isInteger(gender) ||
             gender < 0 ||
             gender > 1  ||
-            introduction.toString().trim().length > 500
+            introduction && introduction.length > 500 ||
         ) {
             logging.warning("Invalid body data");
             return next(createError(400));
