@@ -30,7 +30,7 @@ const createBookmarkController = async (
             return next(createError(404, "Post not found"));
         }
 
-        if (postInfo.account_id === accountId) {
+        if (postInfo[0].account_id === accountId) {
             return next(createError(406, "You cannot bookmark your own post"));
         }
 
