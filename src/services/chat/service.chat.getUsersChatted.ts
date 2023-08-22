@@ -25,7 +25,8 @@ const getUsersChatted = async (
             } AS salary_type,` + 
             "post_images.image AS image, " +
             "applications.status AS application_status, " +
-            "posts.account_id AS post_account_id " +
+            "posts.account_id AS post_account_id, " +
+            "posts.status AS post_status " +
             "FROM (select chats.* from chats " +
             "join " +
             "(select user, max(id) m from " +
