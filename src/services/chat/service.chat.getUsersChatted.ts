@@ -24,7 +24,8 @@ const getUsersChatted = async (
                 lang === "en" ? "salary_types.value_en" : "salary_types.value_ko"
             } AS salary_type,` + 
             "post_images.image AS image, " +
-            "applications.status AS application_status " +
+            "applications.status AS application_status, " +
+            "posts.account_id AS post_account_id " +
             "FROM (select chats.* from chats " +
             "join " +
             "(select user, max(id) m from " +

@@ -76,6 +76,13 @@ const getUsersChattedController = async (
                 } else {
                     userChatted.image = `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.POST_IMAGES}/${userChatted.post_id}/` + userChatted.image;
                 }
+                if (userChatted.post_account_id === id) {
+                    userChatted.is_owner = true;
+                } else {
+                    userChatted.is_owner = false;
+                }
+                delete userChatted.post_account_id;
+
             })
         );
 
