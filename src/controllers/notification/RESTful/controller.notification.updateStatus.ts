@@ -1,16 +1,19 @@
-import { Request, Response, NextFunction } from 'express';
-import createHttpError from 'http-errors';
-import * as notificationService from '../../../services/notification/_service.notification';
-import logging from '../../../utils/logging';
+import { Request, Response, NextFunction } from "express";
+import createHttpError from "http-errors";
+import * as notificationService from "../../../services/notification/_service.notification";
+import logging from "../../../utils/logging";
 
-const updateNotificationStatus = async (req: Request, res: Response, next: NextFunction) => {
+const updateNotificationStatus = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     const { id: accountId } = req.user;
     const { notification_id: notificationId } = req.body;
     const { is_read: isRead } = req.body;
     const { typeText } = req.body;
 
     try {
-
         // CHECK DATA
         if (notificationId === undefined || notificationId === null) {
             return next(createHttpError(400, "Notification id is required"));
@@ -22,19 +25,34 @@ const updateNotificationStatus = async (req: Request, res: Response, next: NextF
 
         let result = null;
 
-
         if (typeText && typeText === "keyword") {
-            result = await notificationService.updateNotificationKeywordService(isRead, notificationId, accountId);
+            result = await notificationService.updateNotificationKeywordService(
+                isRead,
+                notificationId,
+                accountId
+            );
+        } else if (typeText && typeText === "communicationComment") {
+            console.log("update notification status");
+            result =
+                await notificationService.updateReadStatusForNotificationCommunicationComment(
+                    isRead,
+                    notificationId
+                );
         } else {
-            result = await notificationService.updateNotificationService(isRead, notificationId, accountId);
+            result = await notificationService.updateNotificationService(
+                isRead,
+                notificationId,
+                accountId
+            );
         }
 
         if (result.affectedRows === 0) {
             return res.status(200).json({
                 code: 200,
                 success: true,
-                message: "Notification not found or you are not the owner of this notification",
-                data: null
+                message:
+                    "Notification not found or you are not the owner of this notification",
+                data: null,
             });
         }
 
@@ -42,7 +60,7 @@ const updateNotificationStatus = async (req: Request, res: Response, next: NextF
             code: 200,
             success: true,
             message: "Update notification status successfully",
-            data: null
+            data: null,
         });
     } catch (error) {
         logging.error(error);
