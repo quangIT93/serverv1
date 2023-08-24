@@ -96,8 +96,8 @@ const readAllNotificationsByAccountIdController = async (
             // image need to use when get notification type 3 by mobile
             // No need image when push notification type 3 to mobile
           notification = createNewKeywordNotification({
-            notificationId: item.id,
-            postId: item.post_id,
+            notificationId: +item.id,
+            postId: +item.post_id,
             postTitle: item.post_title,
             type: +item.type,
             companyName: item.company_name,
@@ -122,9 +122,9 @@ const readAllNotificationsByAccountIdController = async (
         // Notification type 1: Application
         // Notification type 2: Recruiter
           notification = createNewNotificationForApplication({
-            notificationId: item.id,
-            applicationId: item.application_id,
-            postId: item.post_id,
+            notificationId: +item.id,
+            applicationId: +item.application_id,
+            postId: +item.post_id,
             type: +item.type,
             applicationStatus: +item.application_status,
             postTitle: item.post_title,
