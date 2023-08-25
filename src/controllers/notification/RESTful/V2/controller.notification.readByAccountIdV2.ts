@@ -65,6 +65,10 @@ const readAllNotificationsByAccountIdV2Controller = async (
     // After format, data will be implemented to notifications array
     // Interface INotification
 
+    if (result.length === +limit + 1) {
+      result.pop();
+    }
+
     const total = parseInt(result[0].total) || 0;
 
     const notifications: INotification[] = await Promise.all(
@@ -137,8 +141,8 @@ const readAllNotificationsByAccountIdV2Controller = async (
       data: {
         total: total,
         notifications: notifications,
-        // is_over: notifications.length <= +limit ? true : false,
-        is_over: true,
+        is_over: notifications.length < +limit ? true : false,
+        // is_over: true,
       },
     });
   } catch (error) {

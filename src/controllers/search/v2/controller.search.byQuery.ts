@@ -6,7 +6,6 @@ import MoneyType from '../../../models/enum/money_type.enum';
 import readDefaultPostImageByPostId from '../../../services/category/service.category.readDefaultPostImageByPostId';
 import ImageBucket from '../../../models/enum/imageBucket.enum';
 import isNumeric from 'validator/lib/isNumeric';
-import isAscii from 'validator/lib/isAscii';
 import formatPostedTime from '../../../helpers/formatData/formatPostedTime';
 import saveHistorySearchService from '../../../services/search/service.search.saveHistory';
 import readCurrentLocationsById from '../../../services/profileLocation/service.profile.readCurrentLocationsById';
