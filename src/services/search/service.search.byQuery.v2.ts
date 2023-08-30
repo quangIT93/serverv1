@@ -4,7 +4,7 @@ import logging from './../../utils/logging';
 const searchByQueryV2Service = async (
     lang: string,
     q: string,
-    page: number = 0 ,
+    page: number | null,
     districtIds: string[] | undefined | null,
     categoryIds: number[] | undefined | null,
     salaryMin: number | undefined | null,
@@ -23,11 +23,60 @@ const searchByQueryV2Service = async (
     sort_by: string | undefined | null,
 ) => {
     try {
-        // search by like, match in boolean mode, match in natural language mode
-        // then union all
-        // then order by relevance
-        // then limit 20
-        logging.info("Search by query service called: ");
+        logging.info("Search by query v2 service called: ");
+
+        let listIds = await executeQuery(
+        `
+            SELECT
+                posts.id,
+                COUNT(*) OVER() AS total
+            FROM posts USE INDEX(rev_id_idx)
+            INNER JOIN wards ON wards.id = posts.ward_id ${districtIds
+                ? `AND wards.district_id IN (${districtIds})`
+                : ''
+            }
+            INNER JOIN posts_categories ON posts_categories.post_id = posts.id ${categoryIds
+                ? `AND posts_categories.category_id IN (${categoryIds})`
+                : ''
+            }
+            WHERE posts.status = 1
+                AND (posts.expired_date IS NULL OR posts.expired_date >= NOW())
+                AND (posts.end_date IS NULL OR posts.end_date >= UNIX_TIMESTAMP(CURRENT_TIMESTAMP()) * 1000)
+                ${onlyCompany !== 0 ? "AND company_name LIKE ? " : "AND (company_name LIKE ? OR title LIKE ?) "}
+                ${salaryMin !== null ? " AND posts.salary_min >= ? " : ""}
+                ${salaryMax !== null ? "AND posts.salary_max <= ? " : ""}
+                ${salaryType && salaryType.length > 0 ? `AND posts.salary_type IN (${salaryType.join(",")}) ` : ''}
+                ${moneyType !== null ? "AND posts.money_type = ? " : ""}
+                ${isWorkingWeekend !== null ? "AND posts.is_working_weekend = ? " : ""}
+                ${isRemotely !== null ? "AND posts.is_remotely = ? " : ""}
+                ${startDate !== null ? "AND posts.start_date >= ? " : ""}
+                ${endDate !== null ? "AND posts.end_date <= ? " : ""}
+                ${job_type_id && job_type_id.length > 0 ? `AND posts.job_type IN (${job_type_id.join(",")}) ` : ''}
+            GROUP BY posts.id
+            ORDER BY created_at_date DESC, field(company_resource_id,2) desc, posts.id desc
+            LIMIT 20 OFFSET ?
+            `
+            .replace(/\n/g, ' ')
+            .replace(/\s+/g, ' '),
+            []
+            .concat(onlyCompany !== 0 ? [`%${q}%`] : [`%${q}%`, `%${q}%`])
+            .concat(salaryMin !== null ? [salaryMin] : [])
+            .concat(salaryMax !== null ? [salaryMax] : [])
+            .concat(moneyType !== null ? [moneyType] : [])
+            .concat(isWorkingWeekend !== null ? [isWorkingWeekend] : [])
+            .concat(isRemotely !== null ? [isRemotely.toString()] : [])
+            .concat(startDate !== null ? [startDate] : [])
+            .concat(endDate !== null ? [endDate] : [])
+            .concat(page !== null ? [(page) * 20] : [])
+        );
+
+
+        if (listIds.length === 0) {
+            return [];
+        }
+
+        let ids = listIds.map((item: any) => item.id);
+
         let query =
             "SELECT " +
             "posts.id," +
@@ -62,86 +111,31 @@ const searchByQueryV2Service = async (
             "posts.money_type, " +
             `${accountId !== null ? "bookmarks.post_id as bookmark_post_id, " : ""}` +
             "company_resource.icon as company_resource_icon, " +
-            "COUNT(*) OVER() AS total " + 
-            "FROM posts " +
-            "LEFT JOIN salary_types " +
+            `${listIds[0].total} as total ` +
+            "FROM posts USE INDEX(rev_id_idx) " +
+            "INNER JOIN salary_types " +
             "ON posts.salary_type = salary_types.id " +
-            "LEFT JOIN wards " +
+            "INNER JOIN wards " +
             "ON posts.ward_id = wards.id " +
-            "LEFT JOIN districts " +
+            "INNER JOIN districts " +
             "ON wards.district_id = districts.id " +
-            "LEFT JOIN provinces " +
+            "INNER JOIN provinces " +
             "ON districts.province_id = provinces.id " +
             "LEFT JOIN post_images " +
             "ON post_images.post_id = posts.id " +
             `${accountId !== null ? "LEFT JOIN (SELECT post_id FROM bookmarks WHERE account_id = ?) AS bookmarks " +
             "ON bookmarks.post_id = posts.id " : ""}` +
-            "LEFT JOIN post_resource " +
-            "ON post_resource.post_id = posts.id " +
-            "LEFT JOIN company_resource " +
-            "ON company_resource.id = post_resource.company " + //@; HiJob, 7: CHOTOT, 8 :FB  AND company_resource.id IN (7,8,2)
-            "LEFT JOIN job_types " +
+            "INNER JOIN company_resource " +
+            "ON company_resource.id = posts.company_resource_id " + //@; HiJob, 7: CHOTOT, 8 :FB  AND company_resource.id IN (7,8,2)
+            "INNER JOIN job_types " +
             "ON posts.job_type = job_types.id " +
-            "WHERE posts.status = 1 " +
-            "AND " +
-            // If onlyCompany is not null, then only search for posts that have company name or title
-            // If onlyCompany is null, then search for posts that have company name
-            `${onlyCompany !== 0 ? "company_name LIKE ? " : "(company_name LIKE ? OR title LIKE ?) "}` +
-            // "AND (title LIKE ? OR " +
-            // "company_name LIKE ?) " +
-            `${districtIds.length > 0 ? `AND wards.district_id IN (${districtIds.join(",")}) ` : ''}` +
-            `${categoryIds.length > 0 ? 
-                `AND posts.id IN (SELECT post_id 
-                    FROM posts_categories WHERE category_id 
-                        IN (${categoryIds.join(",")}) GROUP BY post_id) ` : ""}` +
-            `${salaryMin !== null ? "AND posts.salary_min >= ? " : ""}` +
-            `${salaryMax !== null ? "AND posts.salary_max <= ? " : ""}` +
-            `${salaryType.length > 0 ? `AND posts.salary_type IN (${salaryType.join(",")}) ` : ''}` +
-            `${moneyType !== null ? "AND posts.money_type = ? " : ""}` +
-            `${isWorkingWeekend !== null ? "AND posts.is_working_weekend = ? " : ""}` +
-            `${isRemotely !== null ? "AND posts.is_remotely = ? " : ""}` +
-            `${startDate !== null ? "AND posts.start_date >= ? " : ""}` +
-            `${endDate !== null ? "AND posts.end_date <= ? " : ""}` +
-            `${job_type_id.length > 0 ? `AND posts.job_type IN (${job_type_id.join(",")}) ` : ''}`;
-            
-            if (sort_by || salary_sort) {
-                query+= "AND (posts.expired_date IS NULL OR posts.expired_date >= NOW())" +
-                        "GROUP BY posts.id " + 
-                        `ORDER BY ${sort_by ? 'posts.created_at' : 'posts.salary_max'} ${(sort_by === 'asc' || sort_by === "ASC" || salary_sort==='asc' || salary_sort==='ASC') ? 'ASC' : 'DESC'} ` +
-                        "LIMIT 20 " +
-                        `OFFSET ${page * 20}`;
-            }else if (expried_sort) {
-                query+= "AND (posts.expired_date IS NULL OR posts.expired_date >= NOW() OR posts.expired_date IS NOT NULL) " +
-                        "GROUP BY posts.id " +
-                        "ORDER BY " +
-                        "CASE WHEN posts.expired_date IS NULL THEN 1 ELSE 0 END, " +
-                        "ABS(DATEDIFF(NOW(), posts.expired_date)) " + ((expried_sort === "asc" || expried_sort === "ASC") ? "ASC" : "DESC") +
-                        " LIMIT 20 "+
-                        `OFFSET ${page * 20}`;
-            }else {
-                query+= "AND (posts.expired_date IS NULL OR posts.expired_date >= NOW()) " +
-                        "GROUP BY posts.id " + 
-                        "ORDER BY posts.created_at DESC " +
-                        "LIMIT 20 " +
-                        `OFFSET ${page * 20}`;
-            }
-        const params = []
-        .concat(accountId !== null ? [accountId] : [])
-        .concat(onlyCompany !== 0 ? [`%${q}%`] : [`%${q}%`, `%${q}%`])
-        .concat(salaryMin !== null ? [salaryMin] : [])
-        .concat(salaryMax !== null ? [salaryMax] : [])
-        .concat(moneyType !== null ? [moneyType] : [])
-        .concat(isWorkingWeekend !== null ? [isWorkingWeekend] : [])
-        .concat(isRemotely !== null ? [isRemotely.toString()] : [])
-        .concat(startDate !== null ? [startDate] : [])
-        .concat(endDate !== null ? [endDate] : [])
-        // .concat(job_type_id.length > 0 ? job_type_id : []);
+            `WHERE posts.id IN (${ids.join(",")}) ` +
+            "GROUP BY posts.id " +
+            "ORDER BY " +
+            `FIELD(posts.id, ${ids.join(",")}) `
 
-        // console.log("query: ", query);
-        // console.log("params: ", params);
-        
-        const res = await executeQuery(query, params);
-
+        // .concat(job_type_id.length > 0 ? job_type_id : []);        
+        const res = await executeQuery(query, [accountId]);
         
         return res ? res : null;
     } catch (error) {

@@ -14,7 +14,7 @@ import readAllByProfileId from '../../../services/profileCategory/service.profil
 const searchByQueryV2Controller = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-        logging.info('Search V2 controller start ...');
+        // logging.info('Search V1 controller start ...');
 
         let lang = req.query.lang as string;
 
@@ -43,7 +43,7 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
         }
 
         // DISTRICT IDS
-        const districtIds: string[] = []
+        let districtIds: string[] = [];
         // if district_ids is not null
         // or if district_ids is not empty array
         // console.log('district_ids from query:', district_ids);
@@ -73,10 +73,13 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
             }
         }
 
+        // Set districtIds to null if districtIds is empty array
+        districtIds = districtIds.length > 0 ? districtIds : null;
+
         // console.log('districtIds:', districtIds);
 
         // CATEGORY IDS
-        const categoryIds: number[] = []
+        let categoryIds: number[] = [];
         // console.log('category_ids from query:', category_ids);
         if (category_ids !== null && category_ids !== undefined) {
             if (Array.isArray(category_ids)) {
@@ -104,10 +107,13 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
             }
         }
 
+        // Set categoryIds to null if categoryIds is empty array
+        categoryIds = categoryIds.length > 0 ? categoryIds : null;
+
 
         // console.log('categoryIds:', categoryIds);
 
-        const jobTypeIds: number[] = []
+        let jobTypeIds: number[] = [];
         if (job_type_id) {
             if (Array.isArray(job_type_id)) {
                 for (let i = 0; i < job_type_id.length; i++) {
@@ -123,6 +129,9 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
                 jobTypeIds.push(parseInt(job_type_id as string));
             }
         }
+
+        // Set jobTypeIds to null if jobTypeIds is empty array
+        jobTypeIds = jobTypeIds.length > 0 ? jobTypeIds : null;
 
         // SALARY MIN
         let salaryMin: number | null = null;
@@ -165,6 +174,10 @@ const searchByQueryV2Controller = async (req: Request, res: Response, next: Next
                 salaryType.push(parseInt(salary_type as string));
             }
         }
+
+        // Set salaryType to null if salaryType is empty array
+        salaryType = salaryType.length > 0 ? salaryType : null;
+
         // IS WORKING WEEKEND
         let isWorkingWeekend: number | null = null;
         if (is_working_weekend) {

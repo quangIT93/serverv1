@@ -32,6 +32,7 @@ export const connectDatabase = async () => {
 
 export const executeQuery = async (query: string, params = []) => {
     try {
+        // console.log(query, params);
         const conn = await connectDatabase();
         const res = await conn.query(query, params);
         return res;
