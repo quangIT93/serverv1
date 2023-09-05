@@ -67,8 +67,9 @@ app.use(
 );
 
 // Socket
-configSocket(server);
-// global.__io = io;
+const io = configSocket(server);
+
+global.__io = io;
 
 // Init firebase app
 // firebaseAdmin.initializeApp({

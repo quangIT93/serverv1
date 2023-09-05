@@ -29,7 +29,7 @@ const configSocket = (server) => {
     const headerAuthorization = socket.request.headers.authorization;
 
 
-    if (!headerAuthorization.trim()) {
+    if (!headerAuthorization) {
       return next(createError(401));
     }
 
@@ -73,15 +73,38 @@ const configSocket = (server) => {
 
         // VERIFY SUCCESS
         // SET SOCKET ID TO REDIS
-        console.log('id: ' + id);
-        console.log('socket.id: ' + socket.id);
+        
+        const currentSocketId = await redisClient.get(`socket-${id}`);
+
+        if (currentSocketId) {
+          // APPEND SOCKET ID TO REDIS
+          redisClient.set(
+            `socket-${id}`,
+            `${currentSocketId},${socket.id}`,
+            {
+              EX: 60 * 60 * 24 * 30,
+            }
+          );
+        } else {
+          // SET SOCKET ID TO REDIS
+          await redisClient.set(
+            `socket-${id}`,
+            socket.id,
+            {
+              EX: 60 * 60 * 24 * 30,
+            }
+          );
+        }
+
+        // SET USER TO SOCKET
         await redisClient.set(
-          `socket-${id}`,
-          socket.id,
+          `socket_id-${socket.id}`,
+          id,
           {
             EX: 60 * 60 * 24 * 30,
           }
         );
+
 
         socket.request['user'] = { id };
         return next();
@@ -91,18 +114,44 @@ const configSocket = (server) => {
 
   // Connect
   io.on('connection', (socket) => {
-    logging.info(`User connected: ${socket.id}`);
-
     // Disconnect
     socket.on('disconnect', async (reason) => {
       logging.info(`User disconnected: ${socket.id} -> ${reason}`);
       // REMOVE SOCKET ID
-      await redisClient.del(`socket-${socket.id}`);
+      // await redisClient.del(`socket-${socket.id}`);
+      //  get user id
+      const userId = await redisClient.get(`socket_id-${socket.id}`);
+      if (userId) {
+        // REMOVE SOCKET ID
+        // GET SOCKET IDS
+        const socketIds = await redisClient.get(`socket-${userId}`);
+
+        if (socketIds) {
+          // REMOVE SOCKET ID
+          const arraySocketIds = socketIds.split(',');
+          const index = arraySocketIds.indexOf(socket.id);
+          arraySocketIds.splice(index, 1);
+
+          if (arraySocketIds.length === 0) {
+            await redisClient.del(`socket-${userId}`);
+          }
+
+          await redisClient.set(
+            `socket-${userId}`,
+            arraySocketIds.join(','),
+            {
+              EX: 60 * 60 * 24 * 30,
+            }
+          );
+
+        }
+        await redisClient.del(`socket_id-${socket.id}`);
+      }
+
     });
 
     // Client send message
     socket.on('client-send-message', async (data) => {
-      // console.log(data);
       const {
         receiverId,
         message = null,
@@ -113,10 +162,15 @@ const configSocket = (server) => {
         imagesType = null,
       } = data;
 
+      if (!receiverId || !createdAt || !type || !postId) {
+        return socket.emit(
+          'server-send-error-message',
+          'Missing data'
+        );
+      }
+
       // INSERT TO DATABASE
       const senderId = socket.request['user'].id;
-
-      // logging.info("type: " + type);
 
       if (type === 'text' || type === 'image') {
         try {
@@ -166,7 +220,10 @@ const configSocket = (server) => {
                   // EMIT TO RECEIVER
                   // GET SOCKET ID OF RECEIVER
                   try {
-                    const reply = await redisClient.get(`socket-${receiverId}`);
+                    const reply = await redisClient.get(`socket-${receiverId}`)
+                    .then((reply) => {
+                      return reply.split(',');
+                    });
                     if (reply) {
                       io.to(reply).emit('server-send-message-to-receiver', {
                         id: chatIdInserted,
@@ -182,25 +239,6 @@ const configSocket = (server) => {
                       'Send message to receiver failure'
                     );
                   }
-                  // redisClient.get(
-                  //     `socket-${receiverId}`,
-                  //     (err, reply) => {
-                  //         if (err) {
-                  //         }
-                  //         if (reply) {
-                  //             io.to(reply).emit(
-                  //                 "server-send-message-to-receiver",
-                  //                 {
-                  //                     id: chatIdInserted,
-                  //                     sender_id: senderId,
-                  //                     images: urlsUploaded,
-                  //                     type: "image",
-                  //                     created_at: createdAt,
-                  //                 }
-                  //             );
-                  //         }
-                  //     }
-                  // );
                 }
               }
             } else {
@@ -215,9 +253,11 @@ const configSocket = (server) => {
               // EMIT TO RECEIVER
               // GET SOCKET ID OF RECEIVER
               try {
-                const reply = await redisClient.get(`socket-${receiverId}`);
+                const reply = await redisClient.get(`socket-${receiverId}`)
+                .then((reply) => {
+                  return reply.split(',');
+                });
                 if (reply) {
-
                   io.to(reply).emit('server-send-message-to-receiver', {
                     id: chatIdInserted,
                     sender_id: senderId,
@@ -227,7 +267,6 @@ const configSocket = (server) => {
                   });
                 }
               } catch (error) {
-                console.log(error);
                 socket.emit(
                   'server-send-error-message',
                   'Send message to receiver failure'
@@ -261,6 +300,8 @@ const configSocket = (server) => {
       }
     });
   });
+
+  return io;
 };
 
 export default configSocket;
