@@ -15,7 +15,6 @@ const signOutController = async (
     res: Response,
     next: NextFunction
 ) => {
-    console.log(req)
     try {
         logging.info("Sign out controller start ...");
         // GET REFRESH TOKEN
