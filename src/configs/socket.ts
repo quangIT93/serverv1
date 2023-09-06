@@ -210,12 +210,24 @@ const configSocket = (server) => {
                 } else {
                   // EMIT TO SENDER
                   // console.log('urlsUploaded: ' + [urlsUploaded].toString());
-                  socket.emit('server-send-message-was-sent', {
-                    id: chatIdInserted,
-                    image: `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.CHAT_IMAGES}/${urlsUploaded[0]}`,
-                    created_at: createdAt,
-                    type: 'image',
-                  });
+                  // socket.emit('server-send-message-was-sent', {
+                  //   id: chatIdInserted,
+                  //   image: `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.CHAT_IMAGES}/${urlsUploaded[0]}`,
+                  //   created_at: createdAt,
+                  //   type: 'image',
+                  // });
+                  const socketIdsOfSender = await redisClient.get(`socket-${senderId}`);
+                  if (socketIdsOfSender) {
+                    const arraySocketIdsOfSender = socketIdsOfSender.split(',');
+                    arraySocketIdsOfSender.forEach((socketId) => {
+                      io.to(socketId).emit('server-send-message-was-sent', {
+                        id: chatIdInserted,
+                        image: `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.CHAT_IMAGES}/${urlsUploaded[0]}`,
+                        created_at: createdAt,
+                        type: 'image',
+                      });
+                    });
+                  }
 
                   // EMIT TO RECEIVER
                   // GET SOCKET ID OF RECEIVER
@@ -243,12 +255,25 @@ const configSocket = (server) => {
               }
             } else {
               // EMIT TO SENDER
-              socket.emit('server-send-message-was-sent', {
-                id: chatIdInserted,
-                message: message,
-                created_at: createdAt,
-                type: 'text',
-              });
+              // socket.emit('server-send-message-was-sent', {
+              //   id: chatIdInserted,
+              //   message: message,
+              //   created_at: createdAt,
+              //   type: 'text',
+              // });
+              const socketIdsOfSender = await redisClient.get(`socket-${senderId}`);
+              if (socketIdsOfSender) {
+                const arraySocketIdsOfSender = socketIdsOfSender.split(',');
+                arraySocketIdsOfSender.forEach((socketId) => {
+                  io.to(socketId).emit('server-send-message-was-sent', {
+                    id: chatIdInserted,
+                    message: message,
+                    created_at: createdAt,
+                    type: 'text',
+                  });
+                });
+              }
+              
 
               // EMIT TO RECEIVER
               // GET SOCKET ID OF RECEIVER
