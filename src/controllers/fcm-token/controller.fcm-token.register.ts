@@ -7,7 +7,7 @@ import * as fcmTokenServices from "../../services/fcm-token/_service.fcm-token";
 const createFcmTokenForAccountController = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.user;
     try {
-        logging.info("Create fcm token for account controller start ...");
+        // logging.info("Create fcm token for account controller start ...");
 
         const { token: fcmToken } = req.params;
 
@@ -21,6 +21,35 @@ const createFcmTokenForAccountController = async (req: Request, res: Response, n
         if (typeof fcmToken !== "string") {
             logging.warning("Invalid fcm token");
             return next(createError(400, "Invalid fcm token"));
+        }
+
+        // CHECK IF FCM TOKEN IS EXIST
+        const isFcmTokenExist = await fcmTokenServices.readByFcmToken(fcmToken);
+
+        if (isFcmTokenExist && isFcmTokenExist[0]) {
+            // console.log(isFcmTokenExist);
+            // logging.warning("This fcm token is already exist");
+            if (isFcmTokenExist[0].account_id === id) {
+                return res.status(200).json({
+                    code: 200,
+                    message: "This fcm token is already exist",
+                    data: {},
+                    success: true
+                });
+            } else {
+                const isUpdateFcmToken = await fcmTokenServices.updateFcmTokenService(id, fcmToken);
+                if (!isUpdateFcmToken) {
+                    logging.warning("Update fcm token failed");
+                    return next(createError(500, "Update fcm token failed"));
+                }
+
+                return res.status(200).json({
+                    code: 200,
+                    message: "Update fcm token successfully",
+                    data: {},
+                    success: true
+                });
+            }
         }
 
         const result = await fcmTokenServices.createFcmTokenService(id, fcmToken);
