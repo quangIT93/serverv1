@@ -114,6 +114,9 @@ const configSocket = (server) => {
 
   // Connect
   io.on('connection', (socket) => {
+
+    // console.log('User connected: ' + socket.id);
+
     // Disconnect
     socket.on('disconnect', async (reason) => {
       logging.info(`User disconnected: ${socket.id} -> ${reason}`);
@@ -134,18 +137,25 @@ const configSocket = (server) => {
 
           if (arraySocketIds.length === 0) {
             await redisClient.del(`socket-${userId}`);
+          } else {
+            await redisClient.set(
+              `socket-${userId}`,
+              arraySocketIds.join(','),
+              {
+                EX: 60 * 60 * 24 * 30,
+              }
+            );
           }
 
-          await redisClient.set(
-            `socket-${userId}`,
-            arraySocketIds.join(','),
-            {
-              EX: 60 * 60 * 24 * 30,
-            }
-          );
 
         }
         await redisClient.del(`socket_id-${socket.id}`);
+
+        socket.disconnect();
+
+        socket.request['user'] = null;
+
+        // io.close();
       }
 
     });
