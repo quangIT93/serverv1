@@ -11,6 +11,7 @@ const readSuggestedListSearchService = async (limit: number) => {
         const query = `
         SELECT keyword, 1 as count
         FROM suggest_search
+        WHERE status = 1
         GROUP BY keyword
         ORDER BY \`order\`
         LIMIT ?
