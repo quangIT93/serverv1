@@ -72,7 +72,7 @@ const signInWithAplleIdController = async (
         }
 
         const account = await readAccountByAppleIdService(sub);
-        let accountId = uuidv4();
+        let accountId = uuidv4(), check = false;
         if (!account) {
             // CREATE NEW ACCOUNT
             const isCreateAccountSuccess = await createAccountWithAppleIdService(
@@ -83,6 +83,8 @@ const signInWithAplleIdController = async (
             if (!isCreateAccountSuccess) {
                 return next(createError(500));
             }
+
+            check = true;
 
             // CREATE PROFILE
             const isCreateProfileSuccess =
@@ -114,6 +116,7 @@ const signInWithAplleIdController = async (
             code: 200,
             success: true,
             data: {
+                isNew: check,
                 accountId,
                 accessToken,
                 refreshToken,

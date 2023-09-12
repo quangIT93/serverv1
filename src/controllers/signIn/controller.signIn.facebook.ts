@@ -70,6 +70,7 @@ const signInWithFacebook = async (
 
         // TRY READ ACCOUNT BY FACEBOOK ID
         let account = await readAccountByFacebookIdService(id);
+        let check = false;
         // IF ACCOUNT IS NOT EXIST, CREATE NEW ACCOUNT
         if (!account) {
             const isCreateAccountSuccess =
@@ -81,6 +82,8 @@ const signInWithFacebook = async (
             if (!isCreateAccountSuccess) {
                 return next(createError(500));
             }
+
+            check = true;
 
             // CREATE PROFILE
             const isCreateProfileSuccess =
@@ -107,6 +110,7 @@ const signInWithFacebook = async (
             code: 200,
             success: true,
             data: {
+                isNew: check,
                 accountId,
                 accessToken,
                 refreshToken,

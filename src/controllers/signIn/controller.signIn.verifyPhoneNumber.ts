@@ -91,6 +91,7 @@ const verifyPhoneNumberOtpController = async (
             code: 200,
             success: true,
             data: {
+                isNew: false,
                 id: accountData.id,
                 accessToken,
                 refreshToken,
