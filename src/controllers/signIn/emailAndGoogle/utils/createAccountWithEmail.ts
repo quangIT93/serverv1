@@ -46,6 +46,9 @@ const createAccountWithEmail = async (
     }
 
     return {
+        // user newly
+        // isCandidate: account?.account_id ? true : false,
+        isNew : account ? false : true,
         accountId: accountId,
         role: role,
     };
