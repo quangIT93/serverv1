@@ -110,7 +110,7 @@ const signInWithFacebook = async (
             code: 200,
             success: true,
             data: {
-                isNew: check ? true : false,
+                isNew: check,
                 accountId,
                 accessToken,
                 refreshToken,
