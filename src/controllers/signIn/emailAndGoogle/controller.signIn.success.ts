@@ -59,7 +59,7 @@ const handlerSignInSuccessful = async (req: Request, res: Response, next: NextFu
             code: 200,
             success: true,
             data: {
-                isNew: accountData.isNew,
+                // isNew: accountData.// isNew,
                 accountId: accountData.accountId,
                 accessToken,
                 refreshToken,

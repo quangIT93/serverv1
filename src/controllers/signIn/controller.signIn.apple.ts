@@ -116,7 +116,7 @@ const signInWithAplleIdController = async (
             code: 200,
             success: true,
             data: {
-                isNew: check,
+                // isNew: check,
                 accountId,
                 accessToken,
                 refreshToken,

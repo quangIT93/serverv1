@@ -79,9 +79,10 @@ async function formatPostBeforeReturn(post: PostService, lang: string = "vi") {
             postResponse.image = firstParentCategoryImage.image;
         }
     }
-    postResponse.share_link += postResponse.image
-        ? postResponse.image
-        : "https://hi-job-app-upload.s3.ap-southeast-1.amazonaws.com/images/deep-link/meta/sharelink-logo.png";
+    postResponse.share_link += "https://hi-job-app-upload.s3.ap-southeast-1.amazonaws.com/images/deep-link/meta/sharelink-logo.png"
+    // postResponse.share_link += postResponse.image
+    //     ? postResponse.image
+    //     : "https://hi-job-app-upload.s3.ap-southeast-1.amazonaws.com/images/deep-link/meta/sharelink-logo.png";
 
     return postResponse;
 }
