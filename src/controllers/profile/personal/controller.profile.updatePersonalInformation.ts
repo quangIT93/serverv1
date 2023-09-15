@@ -31,6 +31,10 @@ const updatePersonalInformationController = async (
             ? bodyData.introduction.toString().trim()
             : null;
 
+        const jobTypeId = +bodyData.jobTypeId;
+
+        const jobTypeName = bodyData.jobTypeName;
+
         // VALIDATION
         if (
             !name ||
@@ -39,7 +43,9 @@ const updatePersonalInformationController = async (
             !Number.isInteger(gender) ||
             gender < 0 ||
             gender > 1  ||
-            introduction && introduction.length > 500
+            introduction && introduction.length > 500 ||
+            (jobTypeId && !Number.isInteger(jobTypeId)) ||
+            (jobTypeName && jobTypeName.length > 255)
         ) {
             logging.warning("Invalid body data");
             return next(createError(400));
@@ -52,7 +58,9 @@ const updatePersonalInformationController = async (
             birthday,
             gender,
             address.toString().trim(),
-            introduction ? introduction.toString().trim() : null
+            introduction ? introduction.toString().trim() : null,
+            jobTypeId ? jobTypeId : null,
+            jobTypeName ? jobTypeName.toString().trim() : null
         );
         if (!isUpdateSuccess) {
             return next(createError(500, "Update personal information failed"));
