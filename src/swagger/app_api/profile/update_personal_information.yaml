@@ -20,6 +20,8 @@ paths:
                             gender: 1
                             address: 201
                             introduction: "My intro"
+                            jobTypeId: 1
+                            jobTypeName: "Developer"
             responses:
                 "200":
                     description: OK

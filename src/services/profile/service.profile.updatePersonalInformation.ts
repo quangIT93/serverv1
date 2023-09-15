@@ -7,7 +7,9 @@ const updatePersonalInformationService = async (
     birthday: number,
     gender: number,
     address: string,
-    introduction: string
+    introduction: string,
+    jobTypeId: number,
+    jobTypeName: string
 ) => {
     try {
         logging.info(
@@ -15,14 +17,15 @@ const updatePersonalInformationService = async (
         );
         const query =
             "UPDATE profiles " +
-            "SET name = ?, birthday = ?, gender = ?, address = ?, introduction = ? " +
+            "SET name = ?, birthday = ?, gender = ?, address = ?, introduction = ?, " +
+            "job_type_id = ?, job_name = ? " +
             "WHERE id = ?";
-        const params = [name, birthday, gender, address, introduction, id];
+        const params = [name, birthday, gender, address, introduction, jobTypeId, jobTypeName, id];
         const res = await executeQuery(query, params);
         // console.log(res);
         return res ? res.affectedRows === 1 : false;
     } catch (error) {
-        logging.error(
+        console.log(
             "Update personal information of profile service has error: ",
             error
         );
