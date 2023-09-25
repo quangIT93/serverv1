@@ -8,8 +8,8 @@ const updatePersonalInformationService = async (
     gender: number,
     address: string,
     introduction: string,
-    jobTypeId: number,
-    jobTypeName: string
+    jobTypeId: number = null,
+    jobTypeName: string = null
 ) => {
     try {
         logging.info(
@@ -17,10 +17,15 @@ const updatePersonalInformationService = async (
         );
         const query =
             "UPDATE profiles " +
-            "SET name = ?, birthday = ?, gender = ?, address = ?, introduction = ?, " +
-            "job_type_id = ?, job_name = ? " +
+            "SET name = ?, birthday = ?, gender = ?, address = ?, introduction = ? " +
+            `${jobTypeId ? ", job_type_id = ? " : ""}` +
+            `${jobTypeName ? ", job_type_name = ? " : ""}` +
             "WHERE id = ?";
-        const params = [name, birthday, gender, address, introduction, jobTypeId, jobTypeName, id];
+        const params = [name, birthday, gender, address, introduction, id];
+        // console.log(query);
+        if (jobTypeId) params.splice(5, 0, jobTypeId);
+        if (jobTypeName) params.splice(6, 0, jobTypeName);
+        // console.log(params);
         const res = await executeQuery(query, params);
         // console.log(res);
         return res ? res.affectedRows === 1 : false;
