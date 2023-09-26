@@ -21,6 +21,7 @@ paths:
                             startDate: 1568073600000
                             endDate: 1686528000000
                             extraInformation: "Nothing to tell"
+                            academicTypeId: 8
             responses:
                 "200":
                     description: OK
@@ -81,6 +82,7 @@ paths:
                             startDate: 1568332800000
                             endDate: 1686441600000
                             extraInformation: "Nothing to tell"
+                            academicTypeId: 8
             responses:
                 "200":
                     description: OK

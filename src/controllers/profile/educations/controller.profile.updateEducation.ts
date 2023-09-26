@@ -35,6 +35,7 @@ const updateEducationController = async (
     const extraInformationForUpdate = bodyData.extraInformation
       ? bodyData.extraInformation.toString().trim()
       : null;
+    const academicTypeIdForUpdate = +bodyData.academicTypeId;
 
     // VALIDATION
     if (
@@ -45,7 +46,7 @@ const updateEducationController = async (
       !Number.isInteger(endDateForUpdate) ||
       companyNameForUpdate.length > 50 ||
       majorForUpdate.length > 50 ||
-      extraInformationForUpdate.length > 50
+      extraInformationForUpdate.length > 50 || !Number.isInteger(academicTypeIdForUpdate)
     ) {
       logging.warning("Invalid data");
       return next(createError(400));
@@ -71,7 +72,8 @@ const updateEducationController = async (
         majorForUpdate,
         startDateForUpdate,
         endDateForUpdate,
-        extraInformationForUpdate
+        extraInformationForUpdate,
+        academicTypeIdForUpdate
       );
     if (!isUpdateSuccess) {
       return next(createError(500));

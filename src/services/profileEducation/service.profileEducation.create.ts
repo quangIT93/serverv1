@@ -7,13 +7,14 @@ const createEducationOfProfile = async (
     major: string,
     startDate: number,
     endDate: number,
-    extraInformation: string | null
+    extraInformation: string | null,
+    academicTypeId: number
 ) => {
     try {
         logging.info("Create education of profie service start ...");
 
         const query =
-            "INSERT INTO profiles_educations (account_id, company_name, major, start_date, end_date, extra_information) VALUES (?, ?, ?, ?, ?, ?)";
+            "INSERT INTO profiles_educations (account_id, company_name, major, start_date, end_date, extra_information, academic_type_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
         const params = [
             profileId,
             companyName,
@@ -21,6 +22,7 @@ const createEducationOfProfile = async (
             startDate,
             endDate,
             extraInformation,
+            academicTypeId,
         ];
 
         const res = await executeQuery(query, params);

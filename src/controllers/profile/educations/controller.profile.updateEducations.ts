@@ -48,6 +48,7 @@ const updateEducationsOfProfileController = async (
                 const extraInformationForCreate = bodyData.extraInformation
                     ? bodyData.extraInformation.toString().trim()
                     : null;
+                const academicTypeIdForCreate = +bodyData.academicTypeId;
 
                 // VALIDATION
                 if (
@@ -82,7 +83,8 @@ const updateEducationsOfProfileController = async (
                         majorForCreate,
                         startDateForCreate,
                         endDateForCreate,
-                        extraInformationForCreate
+                        extraInformationForCreate,
+                        academicTypeIdForCreate
                     );
                 if (!isCreateSuccess) {
                     return next(createError(500));
@@ -107,6 +109,7 @@ const updateEducationsOfProfileController = async (
                 const extraInformationForUpdate = bodyData.extraInformation
                     ? bodyData.extraInformation.toString().trim()
                     : null;
+                const academicTypeIdForUpdate = +bodyData.academicTypeId;
 
                 // VALIDATION
                 if (
@@ -142,7 +145,8 @@ const updateEducationsOfProfileController = async (
                         majorForUpdate,
                         startDateForUpdate,
                         endDateForUpdate,
-                        extraInformationForUpdate
+                        extraInformationForUpdate,
+                        academicTypeIdForUpdate
                     );
                 if (!isUpdateSuccess) {
                     return next(createError(500));

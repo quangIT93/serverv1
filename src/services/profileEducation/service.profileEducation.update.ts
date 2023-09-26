@@ -7,14 +7,15 @@ const updateEducationOfProfile = async (
     major: string,
     startDate: number,
     endDate: number,
-    extraInformation: string | null
+    extraInformation: string | null,
+    academicTypeId: number
 ) => {
     try {
         logging.info("Update education of profie service start ...");
 
         const query =
             "UPDATE profiles_educations " +
-            "SET company_name = ?, major = ?, start_date = ?, end_date = ?, extra_information = ? " +
+            "SET company_name = ?, major = ?, start_date = ?, end_date = ?, extra_information = ?, academic_type_id = ? " +
             "WHERE id = ?";
 
         const params = [
@@ -23,6 +24,7 @@ const updateEducationOfProfile = async (
             startDate,
             endDate,
             extraInformation,
+            academicTypeId,
             id,
         ];
 

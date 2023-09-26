@@ -90,11 +90,14 @@ components:
                 extraInformation:
                     type: string
                     description: Optional
+                academicTypeId:
+                    type: number
             required:
                 - companyName
                 - major
                 - startDate
                 - endDate
+                - academicTypeId
 
         # UPDATE EDUCATION
         UpdateEducationOfProfileBodyForm:
