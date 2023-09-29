@@ -15,7 +15,8 @@ const updateEducationOfProfile = async (
 
         const query =
             "UPDATE profiles_educations " +
-            "SET company_name = ?, major = ?, start_date = ?, end_date = ?, extra_information = ?, academic_type_id = ? " +
+            "SET company_name = ?, major = ?, start_date = ?, end_date = ?, extra_information = ?" +
+            `${academicTypeId ? ", academic_type_id = ? " : ""}` +
             "WHERE id = ?";
 
         const params = [
@@ -24,9 +25,10 @@ const updateEducationOfProfile = async (
             startDate,
             endDate,
             extraInformation,
-            academicTypeId,
-            id,
         ];
+
+        if (academicTypeId) params.push(academicTypeId);
+        params.push(id);
 
         const res = await executeQuery(query, params);
         return res ? res.affectedRows === 1 : false;
