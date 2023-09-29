@@ -32,7 +32,7 @@ const createEducationController = async (
     const extraInformationForCreate = bodyData.extraInformation
       ? bodyData.extraInformation.toString().trim()
       : null;
-    const academicTypeIdForCreate = +bodyData.academicTypeId;
+    const academicTypeIdForCreate = +bodyData.academicTypeId ? +bodyData.academicTypeId : 8;
 
     // VALIDATION
     if (
