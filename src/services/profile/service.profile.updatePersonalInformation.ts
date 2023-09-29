@@ -8,29 +8,32 @@ const updatePersonalInformationService = async (
     gender: number,
     address: string,
     introduction: string,
-    jobTypeId: number,
-    jobTypeName: string
-) => {
+    jobTypeId: number = null,
+    jobTypeName: string = null
+  ) => {
     try {
-        logging.info(
-            "Update personal information of profile service start ..."
-        );
-        const query =
-            "UPDATE profiles " +
-            "SET name = ?, birthday = ?, gender = ?, address = ?, introduction = ?, " +
-            "job_type_id = ?, job_name = ? " +
-            "WHERE id = ?";
-        const params = [name, birthday, gender, address, introduction, jobTypeId, jobTypeName, id];
-        const res = await executeQuery(query, params);
-        // console.log(res);
-        return res ? res.affectedRows === 1 : false;
+      logging.info("Update personal information of profile service start ...");
+      const query =
+        "UPDATE profiles " +
+        "SET name = ?, birthday = ?, gender = ?, address = ?, introduction = ? " +
+        `${jobTypeId ? ", job_type_id = ? " : ""}` +
+        `${jobTypeName ? ", job_name = ? " : ""}` +
+        "WHERE id = ?";
+      const params = [name, birthday, gender, address, introduction];
+      // console.log(query);
+      if (jobTypeId) params.push(jobTypeId);
+      if (jobTypeName) params.push(jobTypeName);
+      params.push(id);
+      const res = await executeQuery(query, params);
+      // console.log(res);
+      return res ? res.affectedRows === 1 : false;
     } catch (error) {
-        console.log(
-            "Update personal information of profile service has error: ",
-            error
-        );
-        throw error;
+      console.log(
+        "Update personal information of profile service has error: ",
+        error
+      );
+      throw error;
     }
-};
+  };
 
 export default updatePersonalInformationService;
