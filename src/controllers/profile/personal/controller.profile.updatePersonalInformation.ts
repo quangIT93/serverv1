@@ -31,10 +31,10 @@ const updatePersonalInformationController = async (
             ? bodyData.introduction.toString().trim()
             : null;
 
-        const jobTypeId = +bodyData.jobTypeId;
+        const jobTypeId = +bodyData.jobTypeId ? +bodyData.jobTypeId : null
 
-        const jobTypeName = bodyData.jobTypeName;
-
+        const jobTypeName = (bodyData.jobTypeName) ? bodyData.jobTypeName : (bodyData.jobTypeName === '') ? "" : null
+        
         // VALIDATION
         if (
             !name ||
@@ -59,9 +59,10 @@ const updatePersonalInformationController = async (
             gender,
             address.toString().trim(),
             introduction ? introduction.toString().trim() : null,
-            jobTypeId ? jobTypeId : null,
-            jobTypeName ? jobTypeName.toString().trim() : null
+            jobTypeId,
+            jobTypeName
         );
+
         if (!isUpdateSuccess) {
             return next(createError(500, "Update personal information failed"));
         }

@@ -8,8 +8,8 @@ const updatePersonalInformationService = async (
     gender: number,
     address: string,
     introduction: string,
-    jobTypeId: number = null,
-    jobTypeName: string = null
+    jobTypeId: number,
+    jobTypeName: string
   ) => {
     try {
       logging.info("Update personal information of profile service start ...");
@@ -17,12 +17,12 @@ const updatePersonalInformationService = async (
         "UPDATE profiles " +
         "SET name = ?, birthday = ?, gender = ?, address = ?, introduction = ? " +
         `${jobTypeId ? ", job_type_id = ? " : ""}` +
-        `${jobTypeName ? ", job_name = ? " : ""}` +
+        `${(jobTypeName || jobTypeName === '') ? ", job_name = ? " : ""}` +
         "WHERE id = ?";
       const params = [name, birthday, gender, address, introduction];
       // console.log(query);
       if (jobTypeId) params.push(jobTypeId);
-      if (jobTypeName) params.push(jobTypeName);
+      if (jobTypeName || jobTypeName === '') params.push(jobTypeName);
       params.push(id);
       const res = await executeQuery(query, params);
       // console.log(res);
