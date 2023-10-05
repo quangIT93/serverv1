@@ -46,7 +46,7 @@ const updateEducationController = async (
       !Number.isInteger(endDateForUpdate) ||
       companyNameForUpdate.length > 50 ||
       majorForUpdate.length > 50 ||
-      extraInformationForUpdate.length > 50 
+      extraInformationForUpdate.length > 500
     ) {
       logging.warning("Invalid data");
       return next(createError(400));

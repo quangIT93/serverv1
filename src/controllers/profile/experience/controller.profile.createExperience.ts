@@ -42,7 +42,7 @@ const createExperienceOfProfileController = async (
       !Number.isInteger(endDateForCreate) ||
       titleForCreate.length > 50 ||
       companyNameForCreate.length > 50 ||
-      extraInformationForCreate.length > 50
+      extraInformationForCreate.length > 500
     ) {
       logging.warning("Invalid body data");
       return next(createError(400));

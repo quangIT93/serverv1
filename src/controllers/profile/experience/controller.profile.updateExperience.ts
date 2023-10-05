@@ -45,7 +45,7 @@ const updateExperienceOfProfileController = async (
       !Number.isInteger(endDateForUpdate) ||
       titleForUpdate.length > 50 ||
       companyNameForUpdate.length > 50 ||
-      extraInformationForUpdate.length > 50
+      extraInformationForUpdate.length > 500
     ) {
       logging.warning("Invalid data");
       return next(createError(400));

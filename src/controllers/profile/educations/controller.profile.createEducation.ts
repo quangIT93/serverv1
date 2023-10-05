@@ -42,7 +42,7 @@ const createEducationController = async (
       !Number.isInteger(endDateForCreate) ||
       companyNameForCreate.length > 50 ||
       majorForCreate.length > 50 ||
-      extraInformationForCreate.length > 50 || !Number.isInteger(academicTypeIdForCreate)
+      extraInformationForCreate.length > 500 || !Number.isInteger(academicTypeIdForCreate)
     ) {
       logging.warning("Invalid body data");
       return next(createError(400));
