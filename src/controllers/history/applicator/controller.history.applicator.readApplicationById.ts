@@ -41,7 +41,7 @@ const readApplicationByIdController = async (
 
         // FORMAT AVATAR
         applicationProfile.avatar = applicationProfile.avatar
-            ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ProfilesBucket.APPLICATION_BUCKET}/${applicationId}/` +
+            ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ProfilesBucket.APPLICATION_BUCKET}/${applicationProfile.account_id}/${applicationId}/` +
             applicationProfile.avatar
             : null;
 
