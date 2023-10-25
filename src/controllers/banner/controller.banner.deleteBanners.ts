@@ -25,7 +25,7 @@ const deleteBannersController = async (
 
         try {
 
-            console.log(imageName);
+            // console.log(imageName);
             // Delete banner from s3
 
             // if (deleteImages.length > 0 ) {

@@ -18,7 +18,6 @@ const uploadCVToS3Service = async (
             Bucket: process.env.AWS_BUCKET_NAME , // Bucket name
             Key: `${bucket}${profileId ? "/" + profileId.toString() : ""}/${file_name}`,
             Body: file.buffer,
-            
         };
 
 

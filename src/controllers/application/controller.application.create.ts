@@ -76,9 +76,9 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
         // STARTING COPY FILE FROM CV FOLDER TO APPLICATION FOLDER
         // COPY CV FILE
         if (userProfile.cv_url) {
-            const copySource = `${process.env.AWS_BUCKET_PREFIX_URL}/${ProfilesBucket.CV_BUCKET}/${accountId}/${userProfile.cv_url}`;
+            const copySource = `${ProfilesBucket.CV_BUCKET}/${accountId}/${userProfile.cv_url}`;
             const key = `${ProfilesBucket.APPLICATION_BUCKET}/${applicationIdNumber}/${userProfile.cv_url}`;
-            const isSuccessful = copyFileService(
+            const isSuccessful = await copyFileService(
                 copySource,
                 key,
             )
@@ -89,12 +89,13 @@ const createApplicationController = async (req: Request, res: Response, next: Ne
 
         // COPY AVATAR FILE
         if (userProfile.avatar) {
-            const copySource = `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.AVATAR_IMAGES}/${userProfile.avatar}`;
+            const copySource = `${ImageBucket.AVATAR_IMAGES}/${userProfile.avatar}`;
             const key = `${ProfilesBucket.APPLICATION_BUCKET}/${accountId}/${applicationIdNumber}/${userProfile.avatar}`;
-            const isSuccessful = copyFileService(
+            const isSuccessful = await copyFileService(
                 copySource,
                 key,
             )
+
             if (!isSuccessful) {
                 return next(createError(500, "Copy avatar file failed"));
             }

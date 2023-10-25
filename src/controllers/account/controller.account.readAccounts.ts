@@ -19,7 +19,7 @@ const readAccountsController = async (
         let pageNumber = +page ? +page : 1;
         let limitNumber = +limit ? +limit : 10;
         
-        console.log(pageNumber, limitNumber)
+        // console.log(pageNumber, limitNumber)
 
         if (roleFromToken !== 1) {
             logging.warning("Invalid role");

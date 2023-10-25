@@ -25,7 +25,7 @@ const updatePostInformationController = async (
 
             // UPLOAD IMAGES TO AWS
 
-            console.log(req.body);
+            // console.log(req.body);
             const postId = +req.body.id;
 
             if (!Number.isInteger(postId) || postId <= 0) {

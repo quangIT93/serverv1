@@ -26,7 +26,7 @@ export class NotificationTransporter implements INotificationTransporter {
     // the transporter is the firebase admin app
     async initialize(): Promise<void> {
         try {
-            console.log("initialize");
+            // console.log("initialize");
             if (!NotificationTransporter.transporter) {
                 NotificationTransporter.transporter = admin.initializeApp({
                     credential: admin.credential.cert(
