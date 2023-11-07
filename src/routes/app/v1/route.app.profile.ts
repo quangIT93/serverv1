@@ -2,6 +2,7 @@ import express from "express";
 import profileController from "../../../controllers/profile/_controller.profile";
 import verifyAccessTokenMiddleware from "../../../middlewares/middleware.verifyAccessToken";
 import { multerUploadImages, multerUploadPdf } from "../../../configs/multer";
+import { createProxyMiddleware } from "http-proxy-middleware";
 
 const router = express.Router();
 // READ
@@ -81,9 +82,35 @@ router.put(
 
 router.put(
     "/avt",
-    verifyAccessTokenMiddleware,
-    multerUploadImages,
-    profileController.updateAvatar
+    // verifyAccessTokenMiddleware,
+    // multerUploadImages,
+    createProxyMiddleware({
+        target: "http://localhost:8000",
+        changeOrigin: false,
+        pathRewrite: {
+            [`^/api/v1/profiles/avt`]: `/api/v3/profiles/me/avatar`,
+        },
+        logProvider: () => {
+            return {
+                log: (message: string) => {
+                    console.log(`[Proxy] ${message}`);
+                },
+                debug: (message: string) => {
+                    console.debug(`[Proxy] ${message}`);
+                },
+                info: (message: string) => {
+                    console.info(`[Proxy] ${message}`);
+                },
+                warn: (message: string) => {
+                    console.warn(`[Proxy] ${message}`);
+                },
+                error: (message: string) => {
+                    console.error(`[Proxy] ${message}`);
+                },
+            };
+        },
+        logLevel: "info",
+    })
 );
 
 // CV upload
