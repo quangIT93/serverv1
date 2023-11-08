@@ -14,6 +14,9 @@ const readApplicationsByPostIdService = async (postId: number, limit: number | n
         "applications.address, " +
         "applications.gender, " +
         "applications.created_at, " +
+        "applications.phone, " +
+        "applications.email, " +
+        "applications.introduction, " +
         "provinces.full_name as province, " +
         "provinces.name as province_name " +
         " FROM applications" +
