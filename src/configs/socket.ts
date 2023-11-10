@@ -168,11 +168,11 @@ const configSocket = (server) => {
         files = null,
         createdAt,
         type,
-        postId,
+        postId = null,
         imagesType = null,
       } = data;
 
-      if (!receiverId || !createdAt || !type || !postId) {
+      if (!receiverId || !createdAt || !type) {
         return socket.emit(
           'server-send-error-message',
           'Missing data'
@@ -244,6 +244,9 @@ const configSocket = (server) => {
                   try {
                     const reply = await redisClient.get(`socket-${receiverId}`)
                     .then((reply) => {
+                      if (!reply) {
+                        return null;
+                      }
                       return reply.split(',');
                     });
                     if (reply) {
@@ -256,6 +259,7 @@ const configSocket = (server) => {
                       });
                     }
                   } catch (error) {
+                    console.log(error);
                     socket.emit(
                       'server-send-error-message',
                       'Send message to receiver failure'
@@ -274,6 +278,7 @@ const configSocket = (server) => {
               const socketIdsOfSender = await redisClient.get(`socket-${senderId}`);
               if (socketIdsOfSender) {
                 const arraySocketIdsOfSender = socketIdsOfSender.split(',');
+                console.log('arraySocketIdsOfSender: ' + arraySocketIdsOfSender);
                 arraySocketIdsOfSender.forEach((socketId) => {
                   io.to(socketId).emit('server-send-message-was-sent', {
                     id: chatIdInserted,
@@ -290,6 +295,9 @@ const configSocket = (server) => {
               try {
                 const reply = await redisClient.get(`socket-${receiverId}`)
                 .then((reply) => {
+                  if (!reply) {
+                    return null;
+                  }
                   return reply.split(',');
                 });
                 if (reply) {
@@ -302,6 +310,7 @@ const configSocket = (server) => {
                   });
                 }
               } catch (error) {
+                console.log(error);
                 socket.emit(
                   'server-send-error-message',
                   'Send message to receiver failure'
@@ -330,6 +339,7 @@ const configSocket = (server) => {
           }
         } catch (error) {
           // SEND ERROR MESSAGE TO CLIENT
+
           socket.emit('server-send-error-message', 'Create chat failure');
         }
       }

@@ -17,8 +17,8 @@ const getChatMessages = async (
             "FROM chats " +
             // "LEFT JOIN posts ON chats.post_id = posts.id " +
             "LEFT JOIN chat_images ON chats.id = chat_images.chat_id " +
-            "WHERE post_id = ? AND ((sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?))";
-        const params = [postId, firstId, secondId, secondId, firstId];
+            "WHERE ((sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?))";
+        const params = [firstId, secondId, secondId, firstId];
         const res = await executeQuery(query, params);
         return res && res;
     } catch (error) {

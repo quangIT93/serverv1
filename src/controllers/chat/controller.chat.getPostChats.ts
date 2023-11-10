@@ -20,9 +20,14 @@ const getPostChatsController = async (
 
         // Get user id and post id
         const uid = req.query.uid ? req.query.uid.toString().trim() : null;
-        const pid = +req.query.pid;
+        const pid = req.query.pid ? Number(req.query.pid) : null;
 
-        if (!uid || !Number.isInteger(pid)) {
+        if (!uid) {
+            logging.warning("Invalid query parameters");
+            return next(createError(400));
+        }
+
+        if (pid && isNaN(+pid)) {
             logging.warning("Invalid query parameters");
             return next(createError(400));
         }

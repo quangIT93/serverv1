@@ -10,7 +10,7 @@ const createChat = async (
     createdAt: number
 ) => {
     try {
-        logging.info("Create chat service start ...");
+        // logging.info("Create chat service start ...");
         const query =
             "INSERT INTO chats (sender_id, receiver_id, type, message, post_id, created_at) VALUES (?, ?, ?, ?, ?, ?)";
         const params = [senderId, receiverId, type, message, postId, createdAt];
