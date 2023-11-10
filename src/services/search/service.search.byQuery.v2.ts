@@ -41,7 +41,7 @@ const searchByQueryV2Service = async (
             }
             WHERE posts.status = 1
                 AND (posts.expired_date IS NULL OR posts.expired_date >= NOW())
-                AND (posts.end_date IS NULL OR posts.end_date >= UNIX_TIMESTAMP(CURRENT_TIMESTAMP()) * 1000)
+                AND (posts.end_date IS NULL OR posts.end_date >= UNIX_TIMESTAMP(CURDATE()) * 1000)
                 ${onlyCompany !== 0 ? "AND company_name LIKE ? " : "AND (company_name LIKE ? OR title LIKE ?) "}
                 ${salaryMin !== null ? " AND posts.salary_min >= ? " : ""}
                 ${salaryMax !== null ? "AND posts.salary_max <= ? " : ""}

@@ -51,7 +51,7 @@ const searchByQueryService = async (
             }
             WHERE posts.status = 1
                 AND (posts.expired_date IS NULL OR posts.expired_date >= NOW())
-                AND (posts.end_date IS NULL OR posts.end_date >= UNIX_TIMESTAMP(CURRENT_TIMESTAMP()) * 1000)
+                AND (posts.end_date IS NULL OR posts.end_date >= UNIX_TIMESTAMP(CURDATE()) * 1000)
                 AND ${lastCompanyResourceId ? lastCompanyResourceId  === 2
                 ? `(posts.company_resource_id != 2 OR posts.id < ${threshold})`
                 : `(posts.id < ${threshold} AND posts.company_resource_id != 2)` : '1=1'}
