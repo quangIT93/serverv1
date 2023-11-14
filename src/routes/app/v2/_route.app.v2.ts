@@ -2,6 +2,7 @@ import { Router } from "express";
 import searchByQueryV2Controller from "../../../controllers/search/v2/controller.search.byQuery";
 import checkAccessToken from "../../../middlewares/middleware.checkAccessToken";
 import notificationController from "../../../controllers/notification/RESTful/_controller.notification";
+import chatController from "../../../controllers/chat/_controller.chat";
 
 const routeV2 = Router();
 
@@ -15,4 +16,10 @@ routeV2.use(
     checkAccessToken,
     notificationController.readByAccountIdV2
 );
+
+routeV2.use(
+    "/chats/users",
+    checkAccessToken,
+    chatController.getUsersChatedV2
+)
 export default routeV2;
