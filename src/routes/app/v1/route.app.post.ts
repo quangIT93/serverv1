@@ -3,6 +3,7 @@ import postController from "../../../controllers/post/_controller.post";
 import verifyAccessToken from "../../../middlewares/middleware.verifyAccessToken";
 import { checkLimitAndThresholdParams } from "../../../middlewares/utils/midleware.checkUtilsParams";
 import { checkBookmark } from "../../../middlewares/checkBookmark";
+import checkPermisionCreatePost from "../../../middlewares/middleware.checkPermisionCreatePost";
 
 const router = express.Router();
 
@@ -59,7 +60,7 @@ router.get(
 
 // READ POST BY ID
 router.get(
-    "/:id", 
+    "/:id",
     postController.readPostById
 );
 
@@ -77,7 +78,10 @@ router.get(
 ); // ADMIN ROLE
 
 // CREATE POST
-router.post("/", verifyAccessToken, postController.create);
+router.post("/",
+    verifyAccessToken,
+    checkPermisionCreatePost,
+    postController.create);
 
 // UPDATE POST INFORMATION
 router.put(
@@ -103,8 +107,8 @@ router.get("/filter/post", postController.filterPostByAddress);
 
 //Related posts
 router.get(
-    "/related/:postId", 
-    postController.readRelatedPosts, 
+    "/related/:postId",
+    postController.readRelatedPosts,
     checkBookmark
 );
 
