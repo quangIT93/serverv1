@@ -49,6 +49,7 @@ const readAllNotificationsByAccountIdController = async (
         String(req.query.lang)
       );
 
+
     if (!result || result.length === 0) {
       return res.status(200).json({
         code: 200,
@@ -67,9 +68,12 @@ const readAllNotificationsByAccountIdController = async (
     const total = parseInt(result[0].total) || 0;
 
     if (result.length === +limit + 1) {
-      
       result.pop();
     }
+
+    const havingUnreadNotification = result.some(
+      (item) => +item.is_read === 0
+    );
 
     const notifications: INotification[] = await Promise.all(
       result.map(async (item, index: number) => {
@@ -87,7 +91,7 @@ const readAllNotificationsByAccountIdController = async (
                 notificationId: +item.id,
                 communicationId: item.post_id,
                 commentId: item.application_id,
-                isRead: Boolean(+item.is_read),
+                isRead: +item.is_read === 1 ? true : false,
                 createdAt: new Date(item.created_at).getTime(),
                 lang: req.query.lang.toString(),
             });
@@ -101,7 +105,7 @@ const readAllNotificationsByAccountIdController = async (
             postTitle: item.post_title,
             type: +item.type,
             companyName: item.company_name,
-            isRead: Boolean(+item.is_read),
+            isRead: +item.is_read === 1 ? true : false,
             createdAt: new Date(item.created_at).getTime(),
             image: item.image
               ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.POST_IMAGES}/${item.post_id}/` +
@@ -130,7 +134,7 @@ const readAllNotificationsByAccountIdController = async (
             postTitle: item.post_title,
             companyName: item.company_name,
             name: item.name,
-            isRead: Boolean(+item.is_read),
+            isRead: +item.is_read === 1 ? true : false,
             createdAt: new Date(item.created_at).getTime(),
             lang: req.query.lang.toString(),
           });
@@ -142,6 +146,13 @@ const readAllNotificationsByAccountIdController = async (
         
       })
     );
+
+    // Update status of notifications to read
+      if (havingUnreadNotification) {
+        await notificationService.updateStatusAllNotificationService(
+          accountId
+        );
+      }
 
     return res.status(200).json({
       code: 200,
