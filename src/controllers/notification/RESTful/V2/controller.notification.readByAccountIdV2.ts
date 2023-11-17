@@ -8,7 +8,10 @@ import createNewNotificationForApplication from "../../createNotificationContent
 import readDefaultPostImageByPostId from "../../../../services/category/service.category.readDefaultPostImageByPostId";
 import ImageBucket from "../../../../models/enum/imageBucket.enum";
 import readCategoriesOfPost from "../../../../services/postCategory/service.postCategory.readByPostId";
+import createCommunicationCommentNotification from "../../createNotificationContent/communication/createCommunicationNotification";
+import createViewProfileNotification from "../../createNotificationContent/viewProfile/createForViewProfile";
 
+// Version 2
 const readAllNotificationsByAccountIdV2Controller = async (
   req: Request,
   res: Response,
@@ -25,7 +28,7 @@ const readAllNotificationsByAccountIdV2Controller = async (
     //
     const { id: accountId } = req.user;
 
-    const { page } = req.query;
+    const { page = 0 } = req.query;
 
     const { limit = 20 } = req.query;
 
@@ -48,7 +51,6 @@ const readAllNotificationsByAccountIdV2Controller = async (
         String(req.query.lang)
       );
 
-    
 
     if (!result || result.length === 0) {
       return res.status(200).json({
@@ -65,11 +67,15 @@ const readAllNotificationsByAccountIdV2Controller = async (
     // After format, data will be implemented to notifications array
     // Interface INotification
 
+    const total = parseInt(result[0].total) || 0;
+
     if (result.length === +limit + 1) {
       result.pop();
     }
 
-    const total = parseInt(result[0].total) || 0;
+    const havingUnreadNotification = result.some(
+      (item) => +item.is_read === 0
+    );
 
     const notifications: INotification[] = await Promise.all(
       result.map(async (item, index: number) => {
@@ -81,18 +87,27 @@ const readAllNotificationsByAccountIdV2Controller = async (
           );
         }
         const categories = await readCategoriesOfPost(String(req.query.lang), item.post_id);
-        if (+item.type === 3) {
+        if (+item.type === 4) {
+            notification = createCommunicationCommentNotification({
+                type: +item.type,
+                notificationId: +item.id,
+                communicationId: item.post_id,
+                commentId: item.application_id,
+                isRead: +item.is_read === 1 ? true : false,
+                createdAt: new Date(item.created_at).getTime(),
+                lang: req.query.lang.toString(),
+            });
+        } 
+        else if (+item.type === 3) {
             // image need to use when get notification type 3 by mobile
             // No need image when push notification type 3 to mobile
-
-
           notification = createNewKeywordNotification({
-            notificationId: item.id,
-            postId: item.post_id,
+            notificationId: +item.id,
+            postId: +item.post_id,
             postTitle: item.post_title,
             type: +item.type,
             companyName: item.company_name,
-            isRead: Boolean(+item.is_read),
+            isRead: +item.is_read === 1 ? true : false,
             createdAt: new Date(item.created_at).getTime(),
             image: item.image
               ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.POST_IMAGES}/${item.post_id}/` +
@@ -109,19 +124,34 @@ const readAllNotificationsByAccountIdV2Controller = async (
             companyResourceLogo: item.company_resource_logo,
             lang: req.query.lang.toString(),
           });
+        } else if (+item.type === 5) {
+          // Notification type 5: Viewed Profile
+          notification = createViewProfileNotification({
+            type: +item.type,
+            notificationId: +item.id,
+            companyId: +item.account_id,
+            companyName: item.company_name,
+            isRead: +item.is_read === 1 ? true : false,
+            createdAt: new Date(item.created_at).getTime(),
+            companyLogo: item.image
+              ? `${process.env.AWS_BUCKET_PREFIX_URL}/${ImageBucket.COMPANY_LOGO}/${item.account_id}/` +
+                item.image
+              : null,
+            lang: req.query.lang.toString(),
+          });
         } else {
         // Notification type 1: Application
         // Notification type 2: Recruiter
           notification = createNewNotificationForApplication({
-            notificationId: item.id,
-            applicationId: item.application_id,
-            postId: item.post_id,
+            notificationId: +item.id,
+            applicationId: +item.application_id,
+            postId: +item.post_id,
             type: +item.type,
             applicationStatus: +item.application_status,
             postTitle: item.post_title,
             companyName: item.company_name,
             name: item.name,
-            isRead: Boolean(+item.is_read),
+            isRead: +item.is_read === 1 ? true : false,
             createdAt: new Date(item.created_at).getTime(),
             lang: req.query.lang.toString(),
           });
@@ -134,6 +164,13 @@ const readAllNotificationsByAccountIdV2Controller = async (
       })
     );
 
+    // Update status of notifications to read
+      if (havingUnreadNotification) {
+        await notificationService.updateStatusAllNotificationService(
+          accountId
+        );
+      }
+
     return res.status(200).json({
       code: 200,
       success: true,
@@ -141,8 +178,7 @@ const readAllNotificationsByAccountIdV2Controller = async (
       data: {
         total: total,
         notifications: notifications,
-        is_over: notifications.length < +limit ? true : false,
-        // is_over: true,
+        is_over: notifications.length < +limit,
       },
     });
   } catch (error) {

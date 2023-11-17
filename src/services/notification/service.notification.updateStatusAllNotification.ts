@@ -34,6 +34,15 @@ const updateStatusAllNotificationService = async (accountId: string) => {
 
         await executeQuery(query3, params);
 
+        const query4 = `
+            UPDATE view_profiles
+            SET is_read = 2
+            WHERE profile_id = ?
+            AND is_read = 0
+        `;
+
+        await executeQuery(query4, params);
+
         return true;
     } catch (error) {
         return null;

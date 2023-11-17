@@ -8,3 +8,4 @@ export { default as readQuantityOfNewNotificationsService } from './service.noti
 export { default as updateNotificationKeywordService } from './service.notification.updateNotificationKeyword';
 export { default as updateReadStatusForNotificationCommunicationComment } from './service.notification.updateCommunicationCommentNoti';
 export { default as updateStatusAllNotificationService } from './service.notification.updateStatusAllNotification';
+export { default as updateNotificationViewProfileService } from './service.notification.updateViewProfileNotification';

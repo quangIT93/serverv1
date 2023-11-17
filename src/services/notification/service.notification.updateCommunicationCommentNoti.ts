@@ -8,7 +8,7 @@ const updateReadStatusForNotificationCommunicationComment = async (
 ) => {
     try {
 
-        logging.info("Updating notification status");
+        // logging.info("Updating notification status");
 
         const query = "UPDATE communication_notifications SET status = ? WHERE id = ?";
         const params = [isRead, id,];

@@ -1,16 +1,13 @@
 import { executeQuery } from '../../configs/database/database';
 import logging from '../../utils/logging';
 
-const updateReadStatusForNotificationKeywordService = async (
+const updateViewProfileNotificationService = async (
     isRead: number,
     id: number,
     account_id: string,
 ) => {
     try {
-
-        // logging.info("Updating notification status");
-
-        const query = "UPDATE post_notification SET is_read = ? WHERE id = ? AND account_id = ?";
+        const query = "UPDATE view_profiles SET is_read = ? WHERE id = ? AND profile_id = ?";
         const params = [isRead, id, account_id];
         const result = await executeQuery(query, params);
         return result;
@@ -20,5 +17,5 @@ const updateReadStatusForNotificationKeywordService = async (
     }
 }
 
-export default updateReadStatusForNotificationKeywordService;
+export default updateViewProfileNotificationService;
 

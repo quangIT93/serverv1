@@ -22,4 +22,11 @@ routeV2.use(
     checkAccessToken,
     chatController.getUsersChatedV2
 )
+
+routeV2.use(
+    "/notification/new",
+    checkAccessToken,
+    notificationController.readQuantityOfNewNotificationsV2
+)
+
 export default routeV2;

@@ -38,6 +38,12 @@ const updateNotificationStatus = async (
                     isRead,
                     notificationId
                 );
+        } else if (typeText && typeText === "viewProfile") {
+            result = await notificationService.updateNotificationViewProfileService(
+                isRead,
+                notificationId,
+                accountId
+            );
         } else {
             result = await notificationService.updateNotificationService(
                 isRead,
