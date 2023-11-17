@@ -110,10 +110,10 @@ const readAllNotificationsByAccountIdV2Service = async (
             null as province,
             null as job_type,
             null as company_resource_logo,
-			companies.id as account_id
+			      companies.id as account_id
             FROM view_profiles
             INNER JOIN companies ON companies.account_id = view_profiles.recruit_id
-            WHERE view_profiles.profile_id = "c53fe2a4-52c3-4332-b7e8-9b3baae27764"
+            WHERE view_profiles.profile_id = ?
             GROUP BY view_profiles.id
             
         ) as t
@@ -125,7 +125,7 @@ const readAllNotificationsByAccountIdV2Service = async (
     // ${page ? ` LIMIT ? OFFSET ${page * 10}` : 'LIMIT ?'}
 
     // console.log(query);
-    const params = [accountId, accountId, accountId, limit, page * (limit - 1)];
+    const params = [accountId, accountId, accountId, accountId, limit, page * (limit - 1)];
     const result = await executeQuery(query, params);
     return result;
   } catch (error) {
