@@ -91,6 +91,7 @@ const readAllNotificationsByAccountIdService = async (
             FROM communication_notifications
             INNER JOIN communications ON communications.id = communication_notifications.communication_id
             WHERE communications.account_id = ?
+            GROUP BY communication_notifications.id
         ) as t
         ORDER BY created_at DESC
         LIMIT ? OFFSET ${page * limit}
