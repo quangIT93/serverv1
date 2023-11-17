@@ -94,14 +94,14 @@ const readAllNotificationsByAccountIdService = async (
             GROUP BY communication_notifications.id
         ) as t
         ORDER BY created_at DESC
-        LIMIT ? OFFSET ${page * limit}
+        LIMIT ? OFFSET ?
     `;
     // LIMIT ${limit}
     // OFFSET ${page * limit}
     // ${page ? ` LIMIT ? OFFSET ${page * 10}` : 'LIMIT ?'}
 
     // console.log(query);
-    const params = [accountId, accountId, accountId, limit];
+    const params = [accountId, accountId, accountId, limit, page * (limit - 1)];
     const result = await executeQuery(query, params);
     return result;
   } catch (error) {
