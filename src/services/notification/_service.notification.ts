@@ -7,3 +7,4 @@ export { default as readAllNotificationsByAccountIdService } from './service.not
 export { default as readQuantityOfNewNotificationsService } from './service.notification.readQuantityOfNewNotifications';
 export { default as updateNotificationKeywordService } from './service.notification.updateNotificationKeyword';
 export { default as updateReadStatusForNotificationCommunicationComment } from './service.notification.updateCommunicationCommentNoti';
+export { default as updateStatusAllNotificationService } from './service.notification.updateStatusAllNotification';

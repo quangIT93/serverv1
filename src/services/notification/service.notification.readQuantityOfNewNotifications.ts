@@ -21,10 +21,20 @@ const readQuantityOfNewNotificationsService = async (accountId: string) => {
             FROM notifications
             WHERE account_id = ?
             AND is_read = '0'
-        ) AS total
+        ) + (
+          SELECT COUNT(*)
+          FROM communication_notifications
+          WHERE communication_id IN (
+            SELECT id
+            FROM communications
+            WHERE account_id = ?
+          )
+          AND status = 0
+        )
+        AS total
 
     `;
-    const params = [accountId, accountId];
+    const params = [accountId, accountId, accountId];
     const result = await executeQuery(query, params);
     return result[0].total;
   } catch (error) {
