@@ -35,6 +35,7 @@ const createViewProfileNotification = ({
             isRead,
             createdAt,
             typeText: "viewProfile",
+            companyLogo,
         };
 
         // CONTENT
